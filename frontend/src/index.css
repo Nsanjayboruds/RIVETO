@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+body {
+  overflow-x: hidden;
+  background: #000000;
+}
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 255, 255, 0.8);
+    transform: scale(1.05);
+  }
+}
+
+.glow-logo {
+  animation: glow 1.8s infinite ease-in-out;
+}
+/* In your index.css or Tailwind config */

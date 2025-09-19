@@ -1,0 +1,108 @@
+.circular-gallery-container {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.circular-gallery {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.circular-gallery-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-controls {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 10;
+}
+
+.gallery-control {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.gallery-control:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.gallery-control i.chevron-left::before {
+  content: "←";
+}
+
+.gallery-control i.chevron-right::before {
+  content: "→";
+}
+
+.gallery-control i.play::before {
+  content: "▶";
+}
+
+.gallery-control i.pause::before {
+  content: "⏸";
+}
+
+/* Loading state */
+.circular-gallery::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  z-index: 5;
+  display: none;
+}
+
+.circular-gallery.loading::before {
+  display: block;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .circular-gallery-container {
+    height: 60vh;
+  }
+  
+  .gallery-controls {
+    bottom: 20px;
+  }
+  
+  .gallery-control {
+    width: 40px;
+    height: 40px;
+  }
+}
