@@ -9,18 +9,19 @@
 ## 🚀 Overview
 
 **RIVETO** is a modern, fullstack web application built for scalability, advanced analytics, and seamless payment integration.  
-It features a robust admin panel for management, user tracking, and advanced UI components.
+It features a robust admin panel for management, user tracking, advanced UI components, and secure file/image upload via Cloudinary.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, Tailwind CSS
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB (Mongoose ODM)
-- **Payments:** Razorpay Integration
-- **Tracking:** Custom analytics & event tracking
-- **UI:** Advanced, responsive design with Tailwind
+- **Frontend:** React, Tailwind CSS  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB (Mongoose ODM)  
+- **Payments:** Razorpay Integration  
+- **Tracking:** Custom analytics & event tracking  
+- **UI:** Advanced, responsive design with Tailwind  
+- **Image Uploads:** [Cloudinary](https://cloudinary.com/) for secure and performant media management
 
 ---
 
@@ -32,6 +33,7 @@ graph TD
     B -->|REST API| C[Express.js Server]
     C -->|ODM| D[(MongoDB Database)]
     C -->|API| E[Razorpay]
+    C -->|API| H[Cloudinary]
     B & C --> F[Admin Panel]
     B --> G[Tracking & Analytics]
 ```
@@ -40,10 +42,11 @@ graph TD
 
 ## ⚙️ Features
 
-- 📊 **Admin Panel:** Manage users, payments, analytics and more
+- 📊 **Admin Panel:** Manage users, payments, analytics, and more
 - 💳 **Razorpay Integration:** Seamless and secure payment workflow
 - 📈 **Advanced Tracking:** User behavior, transactions, and event analytics
 - 🎨 **Modern UI:** Responsive, accessible, and beautiful interface (Tailwind)
+- 🖼️ **Cloudinary Image Upload:** Fast, secure, and optimized media storage
 - 🔐 **Authentication & Authorization:** Secure user and admin access
 - 📝 **RESTful API:** Powerful backend for frontend and mobile clients
 
@@ -69,7 +72,7 @@ cd RIVETO
     ```bash
     cp frontend/.env.example frontend/.env
     ```
-- Fill in your MongoDB, Razorpay keys, JWT secrets, etc.
+- Fill in your MongoDB, Razorpay keys, Cloudinary credentials, JWT secrets, etc.
 
 ### 3. Install dependencies
 
@@ -96,7 +99,61 @@ npm start
 
 - Backend: [http://localhost:5000](http://localhost:5000)
 - Frontend: [http://localhost:3000](http://localhost:3000)
--ADMIN-PANEL [http://localhost:5174](http://localhost:3000)
+
+---
+
+## 🖼️ Image Upload with Cloudinary
+
+### Backend Integration
+
+- Uses the [cloudinary npm package](https://www.npmjs.com/package/cloudinary).
+- Secure image upload endpoints with authentication/middleware.
+- Stores Cloudinary URLs in MongoDB model fields.
+
+**Sample Endpoint (Express.js):**
+```js
+// /backend/routes/upload.js
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+
+// Cloudinary config (use your .env)
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'riveto_uploads',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'svg', 'webp'],
+  },
+});
+const upload = multer({ storage });
+
+router.post('/upload', upload.single('image'), (req, res) => {
+  res.json({ url: req.file.path });
+});
+```
+
+### Frontend Integration
+
+- Use a file input and upload images using a form or fetch/Axios to the backend `/upload` endpoint.
+- Store the returned Cloudinary URL for use in UI or database.
+
+**Sample Usage:**
+```js
+const handleUpload = async (event) => {
+  const formData = new FormData();
+  formData.append('image', event.target.files[0]);
+  const response = await fetch('/api/upload', { method: 'POST', body: formData });
+  const data = await response.json();
+  setImageUrl(data.url); // Save/display Cloudinary URL
+};
+```
+
 ---
 
 ## 🧪 Testing
@@ -151,6 +208,10 @@ JWT_SECRET=
 RAZORPAY_KEY_ID=
 RAZORPAY_KEY_SECRET=
 BASE_URL=http://localhost:5000
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
 
 ### Frontend (`frontend/.env.example`)
@@ -216,4 +277,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-> _Built with React, Tailwind, Node.js, Express, MongoDB, and Razorpay_
+> _Built with React, Tailwind, Node.js, Express, MongoDB, Razorpay, and Cloudinary_
