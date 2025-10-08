@@ -5,7 +5,7 @@
 ![Stars](https://img.shields.io/github/stars/Nsanjayboruds/RIVETO)
 
 ---
-ADMIN-PANEL:-https://riveto-backend.onrender.com
+
 --------
 
 ## 🚀 Overview
