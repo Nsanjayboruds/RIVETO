@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: ["https://riveto-frontend2.onrender.com", "https://riveto-admin4.onrender.com"],
+  origin: ["https://riveto-frontend2.onrender.com", "https://riveto-admin4.onrender.com","http://localhost:5173" ,"http://localhost:5174"],
   credentials: true
 }));
 app.use(cookieParser());
