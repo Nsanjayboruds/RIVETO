@@ -1,6 +1,6 @@
 // context/AdminContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { authDataContext } from './AuthContext';
+import { authDataContext } from './AuthProvider';
 import axios from 'axios';
 
 export const adminDataContext = createContext();
