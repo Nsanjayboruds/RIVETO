@@ -3,8 +3,8 @@ import axios from 'axios';
 import Logo from '../assets/logof.png';
 import { IoEyeOutline, IoEye } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
-import { authDataContext } from '../Context/AuthContext';
-import { adminDataContext } from '../Context/AdminContext';
+import { authDataContext } from '../Context/AuthProvider';
+import { adminDataContext } from '../Context/AdminProvider';
 import {toast} from 'react-toastify'
 import Loading from '../components/Loading';
 function Login() {

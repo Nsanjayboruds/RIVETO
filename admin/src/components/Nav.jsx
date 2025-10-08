@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import logo from '../assets/logof.png'
 import axios from 'axios'
-import { authDataContext } from '../context/AuthContext'
-import { adminDataContext } from '../context/AdminContext'
+import { authDataContext } from '../Context/AuthProvider'
+import { adminDataContext } from '../Context/AdminProvider'
 
 function Nav() {
   let navigate = useNavigate()

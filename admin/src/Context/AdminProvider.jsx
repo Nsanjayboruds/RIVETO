@@ -1,8 +1,8 @@
 import React, { Children, createContext, useContext, useEffect, useState } from 'react'
-import { authDataContext } from './AuthContext'
+import { authDataContext } from './AuthProvider'
 import axios from 'axios'
 export const adminDataContext =createContext()
-function AdminContext({children}) {
+function AdminProvider({children}) {
     let [adminData,setAdminData]=useState(null)
     let {serverUrl}=useContext(authDataContext)
 
@@ -41,4 +41,4 @@ function AdminContext({children}) {
   )
 }
 
-export default AdminContext
+export default AdminProvider

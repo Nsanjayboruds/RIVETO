@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Nav from '../components/Nav'
 import Sidebar from '../components/Sidebar'
-import { authDataContext } from '../context/AuthContext'
+import { authDataContext } from '../Context/AuthProvider'
 import axios from 'axios'
 import { FiBox, FiShoppingCart, FiTrendingUp, FiActivity } from 'react-icons/fi'
 
