@@ -3,12 +3,10 @@ import React, { createContext } from 'react';
 
 export const authDataContext = createContext();
 
-function AuthContext({ children }) {
+function AuthProvider({ children }) {
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
 
-  const value = {
-    serverUrl,
-  };
+  const value = { serverUrl };
 
   return (
     <authDataContext.Provider value={value}>
@@ -17,4 +15,4 @@ function AuthContext({ children }) {
   );
 }
 
-export default AuthContext;
+export default AuthProvider;
