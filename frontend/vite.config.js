@@ -8,5 +8,5 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   darkMode: 'class',
    theme: { extend: {} },
-  server:{port:5173}
+  
 })

@@ -5,7 +5,7 @@ export const authDataContext = createContext();
 
 function authContext({ children }) {
   // ❌ FIXED: Removed leading space before "http"
-  const serverUrl ="http://localhost:3000";
+  const serverUrl ="https://riveto-backend.onrender.com";
 
   const value = {
     serverUrl,
