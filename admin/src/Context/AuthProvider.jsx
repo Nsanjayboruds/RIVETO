@@ -4,7 +4,7 @@ import React, { createContext } from 'react';
 export const authDataContext = createContext();
 
 function AuthProvider({ children }) {
-  const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
+  const serverUrl = import.meta.env.VITE_SERVER_URL || "https://riveto-backend.onrender.com";
 
   const value = { serverUrl };
 
