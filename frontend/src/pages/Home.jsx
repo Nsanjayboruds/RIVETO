@@ -17,16 +17,32 @@ function Home() {
     { text1: "Choose your perfect Fashion", text2: "Now is the perfect time to shop!" }
   ];
 
-  const [heroCount, setHeroCount] = useState(0);
+  const [bgIndex, setBgIndex] = useState(0);
+  const [heroTextIndex, setHeroTextIndex] = useState(0);
 
+  // 🔹 Background image auto-slide (slower, independent)
   useEffect(() => {
     const interval = setInterval(() => {
-      setHeroCount(prevCount => (prevCount === 3 ? 0 : prevCount + 1));
-    }, 3000);
+      setBgIndex(prev =>
+        prev === heroData.length - 1 ? 0 : prev + 1
+      );
+    }, 7000); // background changes every 7s
+
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ GSAP fade-in animation for sections
+  // 🔹 Hero text auto-change (independent of background)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroTextIndex(prev =>
+        prev === heroData.length - 1 ? 0 : prev + 1
+      );
+    }, 4000); // text changes every 4s
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // ✅ GSAP fade-in animation for sections (unchanged)
   useEffect(() => {
     const elements = document.querySelectorAll(".fade-in");
     if (elements.length > 0) {
@@ -40,23 +56,30 @@ function Home() {
     }
   }, []);
 
+
   return (
     <div className='overflow-x-hidden'>
       {/* Hero Section */}
       <div className='relative w-screen h-screen overflow-hidden'>
-        <Background heroCount={heroCount} />
-        <Hero heroCount={heroCount} heroData={heroData[heroCount]} setHeroCount={setHeroCount} />
+        <Background heroCount={bgIndex} />
+        <Hero
+          heroData={heroData[heroTextIndex]}
+          activeIndex={heroTextIndex}
+          onDotClick={setHeroTextIndex}
+        />
+
+
       </div>
-        
-    {/* <div style={{ height: '600px', position: 'relative' }}>
+
+      {/* <div style={{ height: '600px', position: 'relative' }}>
 
    <CircularGallery bend={3} textColor="#ffffff" borderRadius={0.05} scrollEase={0.02}/> 
 
 </div> */}
-       
+
       {/* Animated Product Section */}
       <div className="fade-in">
-        
+
         <Product />
       </div>
 
@@ -68,9 +91,9 @@ function Home() {
       {/* Animated Newsletter Section */}
       <div className="fade-in">
         <NewLetterBox />
-      
+
       </div>
-       
+
 
       {/* Animated Footer Section */}
       <div className="fade-in">
