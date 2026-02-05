@@ -63,15 +63,6 @@ function LatestCollection() {
     }
   };
 
-   const handleAddToCart = () => {
-      if (!size) {
-        toast.warning('Please select a size before adding to cart.');
-        return;
-      }
-      addtoCart(productData._id, size);
-      toast.success(`${productData.name} added to cart!`);
-    };
-    
   // Handle fullscreen change events
   useEffect(() => {
     const handleFullscreenChange = () => {

@@ -2,46 +2,43 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shopDataContext } from '../context/ShopContext';
 import { FaEye, FaHeart, FaShoppingCart, FaStar, FaCheck } from 'react-icons/fa';
-import { toast } from 'react-toastify';
 
 function Card({ name, image, id, price, showQuickActions = true, badge, badgeColor = "from-blue-500 to-cyan-500" }) {
-  const { currency, addtoCart, addToWishlist } = useContext(shopDataContext);
+  const { currency, addtoCart, addToWishlist, cartItem, UpdateQuantity } = useContext(shopDataContext);
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [showRemoveText, setShowRemoveText] = useState(false);
+  
+  // Check if item is in cart (any size)
+  const isInCart = cartItem[id] && Object.values(cartItem[id]).some(qty => qty > 0);
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    setIsAddingToCart(true);
     
-    // Simulate API call delay
-    setTimeout(() => {
-      addtoCart(id);
-      toast.success(`${name} added to cart! 🛒`, {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      setIsAddingToCart(false);
-    }, 500);
+    if (isInCart) {
+      // Show remove text briefly
+      setShowRemoveText(true);
+      setTimeout(() => {
+        setShowRemoveText(false);
+        // Remove from cart - set all sizes to 0
+        if (cartItem[id]) {
+          Object.keys(cartItem[id]).forEach(size => {
+            UpdateQuantity(id, size, 0);
+          });
+        }
+      }, 800);
+    } else {
+      // Add to cart with default size (first available size or 'M')
+      const defaultSize = 'M';
+      addtoCart(id, defaultSize);
+    }
   };
 
   const handleAddToWishlist = (e) => {
     e.stopPropagation();
     addToWishlist(id);
-    toast.success('Added to wishlist! 💖', {
-      position: "bottom-right",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
   };
 
   const handleQuickView = (e) => {
@@ -159,17 +156,21 @@ function Card({ name, image, id, price, showQuickActions = true, badge, badgeCol
         {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
-          disabled={isAddingToCart}
-          className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 group/button ${
-            isAddingToCart
-              ? 'bg-green-500 text-white'
+          disabled={showRemoveText}
+          className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 group/button relative overflow-hidden ${
+            showRemoveText
+              ? 'bg-red-600 text-white cursor-wait'
+              : isInCart
+              ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg'
               : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white hover:shadow-xl'
           }`}
         >
-          {isAddingToCart ? (
+          {showRemoveText ? (
+            <span className="animate-pulse font-bold">REMOVE</span>
+          ) : isInCart ? (
             <>
-              <FaCheck className="text-white animate-pulse" />
-              Added!
+              <FaCheck className="text-white" />
+              Added
             </>
           ) : (
             <>

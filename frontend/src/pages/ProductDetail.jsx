@@ -4,21 +4,24 @@ import { shopDataContext } from '../context/ShopContext';
 import RelatedProduct from '../components/RelatedProduct';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { FaShoppingCart, FaHeart, FaShare, FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaShoppingCart, FaHeart, FaShare, FaStar, FaChevronLeft, FaChevronRight, FaCheck } from 'react-icons/fa';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function ProductDetail() {
   const { productId } = useParams();
-  const { product, currency, addtoCart, addToWishlist } = useContext(shopDataContext);
+  const { product, currency, addtoCart, addToWishlist, cartItem, UpdateQuantity } = useContext(shopDataContext);
   const [productData, setProductData] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
   const [size, setSize] = useState('');
   const [activeTab, setActiveTab] = useState('description');
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [sizeError, setSizeError] = useState(false);
+  const [showRemoveText, setShowRemoveText] = useState(false);
+  
+  // Check if current product with selected size is in cart
+  const isInCart = size && cartItem[productId] && cartItem[productId][size] > 0;
 
   useEffect(() => {
     const found = product.find(item => item._id === productId);
@@ -57,16 +60,27 @@ function ProductDetail() {
 
   const handleAddToCart = () => {
     if (!size) {
-      toast.warning('Please select a size before adding to cart.');
+      setSizeError(true);
+      setTimeout(() => setSizeError(false), 3000);
       return;
     }
-    addtoCart(productData._id, size, quantity);
-    toast.success(`${quantity} x ${productData.name} added to cart!`);
+    
+    if (isInCart) {
+      // Show remove text briefly
+      setShowRemoveText(true);
+      setTimeout(() => {
+        setShowRemoveText(false);
+        // Remove from cart
+        UpdateQuantity(productData._id, size, 0);
+      }, 800);
+    } else {
+      // Add to cart
+      addtoCart(productData._id, size, quantity);
+    }
   };
 
   const handleAddToWishlist = () => {
     addToWishlist(productData._id);
-    toast.success('Added to wishlist! 💖');
   };
 
   const handleShare = async () => {
@@ -77,13 +91,11 @@ function ProductDetail() {
           text: `Check out ${productData.name} on our store!`,
           url: window.location.href,
         });
-        toast.success('Product shared successfully!');
       } catch (error) {
         console.log('Error sharing:', error);
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
-      toast.info('Link copied to clipboard!');
     }
   };
 
@@ -219,10 +231,15 @@ function ProductDetail() {
                 {productData.sizes?.map((s, i) => (
                   <button
                     key={i}
-                    onClick={() => setSize(s)}
+                    onClick={() => {
+                      setSize(s);
+                      setSizeError(false);
+                    }}
                     className={`px-6 py-3 rounded-xl border-2 text-sm font-semibold transition-all duration-200 ${
                       size === s
                         ? 'bg-cyan-500 border-cyan-500 text-white shadow-lg scale-105'
+                        : sizeError
+                        ? 'bg-gray-800 border-red-500 text-gray-300 animate-pulse'
                         : 'bg-gray-800 border-gray-700 text-gray-300 hover:border-cyan-400 hover:text-white'
                     }`}
                   >
@@ -230,7 +247,13 @@ function ProductDetail() {
                   </button>
                 ))}
               </div>
-              {size && (
+              {sizeError && (
+                <p className="text-red-400 font-medium flex items-center gap-2 animate-slideIn">
+                  <span className="w-2 h-2 bg-red-400 rounded-full"></span>
+                  Please select a size before adding to cart
+                </p>
+              )}
+              {size && !sizeError && (
                 <p className="text-green-400 font-medium flex items-center gap-2">
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                   Selected: {size}
@@ -265,10 +288,28 @@ function ProductDetail() {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white py-4 px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 group"
+                disabled={showRemoveText}
+                className={`flex-1 py-4 px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden ${
+                  showRemoveText
+                    ? 'bg-red-600 text-white cursor-wait'
+                    : isInCart
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white'
+                    : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white'
+                }`}
               >
-                <FaShoppingCart className="group-hover:scale-110 transition-transform" />
-                Add to Cart - {currency}{(productData.price * quantity).toLocaleString()}
+                {showRemoveText ? (
+                  <span className="animate-pulse font-bold text-lg">REMOVE</span>
+                ) : isInCart ? (
+                  <>
+                    <FaCheck />
+                    Added to Cart
+                  </>
+                ) : (
+                  <>
+                    <FaShoppingCart className="group-hover:scale-110 transition-transform" />
+                    Add to Cart - {currency}{(productData.price * quantity).toLocaleString()}
+                  </>
+                )}
               </button>
               
               <div className="flex gap-3">

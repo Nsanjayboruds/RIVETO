@@ -7,7 +7,6 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../utils/Firebase";
 import { authDataContext } from "../context/AuthContext";
 import { userDataContext } from "../context/UserContext";
-import { toast } from "react-toastify";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -23,6 +22,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [preload, setPreload] = useState(true);
+  const [loginError, setLoginError] = useState('');
 
   const { serverUrl } = useContext(authDataContext);
   const { getCurrentUser } = useContext(userDataContext);
@@ -69,12 +69,15 @@ function Login() {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
+    // Clear errors when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
         [name]: ""
       }));
+    }
+    if (loginError) {
+      setLoginError('');
     }
   };
 
@@ -86,6 +89,7 @@ function Login() {
     }
 
     setLoading(true);
+    setLoginError('');
     try {
       await axios.post(
         `${serverUrl}/api/auth/login`,
@@ -93,14 +97,11 @@ function Login() {
         { withCredentials: true }
       );
       
-      toast.success("🎉 Login successful! Welcome back to Riveto");
-      setTimeout(() => {
-        getCurrentUser();
-        navigate("/");
-      }, 500);
+      getCurrentUser();
+      navigate("/");
     } catch (err) {
-      const errorMessage = err?.response?.data?.message || "Login failed. Please check your credentials.";
-      toast.error(errorMessage);
+      const errorMessage = err?.response?.data?.message || "Invalid email or password";
+      setLoginError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -108,6 +109,7 @@ function Login() {
 
   const googleLogin = async () => {
     setGoogleLoading(true);
+    setLoginError('');
     try {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
@@ -122,13 +124,10 @@ function Login() {
         { withCredentials: true }
       );
       
-      toast.success("🎉 Google login successful!");
-      setTimeout(() => {
-        getCurrentUser();
-        navigate("/");
-      }, 500);
+      getCurrentUser();
+      navigate("/");
     } catch (err) {
-      toast.error("Google login failed. Please try again.");
+      setLoginError("Google login failed. Please try again.");
     } finally {
       setGoogleLoading(false);
     }
@@ -205,7 +204,11 @@ function Login() {
                   type="email"
                   name="email"
                   placeholder="Enter your email"
-                  className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                  className={`w-full pl-10 pr-4 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all ${
+                    errors.email || loginError 
+                      ? 'border-2 border-red-500 focus:ring-2 focus:ring-red-500' 
+                      : 'border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent'
+                  }`}
                   value={formData.email}
                   onChange={handleInputChange}
                 />
@@ -222,7 +225,11 @@ function Login() {
                   type={show ? "text" : "password"}
                   name="password"
                   placeholder="Enter your password"
-                  className="w-full pl-10 pr-12 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                  className={`w-full pl-10 pr-12 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all ${
+                    errors.password || loginError 
+                      ? 'border-2 border-red-500 focus:ring-2 focus:ring-red-500' 
+                      : 'border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent'
+                  }`}
                   value={formData.password}
                   onChange={handleInputChange}
                 />
@@ -236,6 +243,9 @@ function Login() {
                 </button>
               </div>
               {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
+              {loginError && !errors.password && !errors.email && (
+                <p className="text-red-400 text-sm mt-1">{loginError}</p>
+              )}
             </div>
 
             {/* Forgot Password */}

@@ -5,22 +5,21 @@ import { IoEyeOutline, IoEye } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../Context/AuthProvider';
 import { adminDataContext } from '../Context/AdminProvider';
-import {toast} from 'react-toastify'
 import Loading from '../components/Loading';
 function Login() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {serverUrl}=useContext(authDataContext)
-  const [loading, setLoading] = useState(false); // NEW
-  const [error, setError] = useState(''); // NEW
+  const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
   const {adminData, getAdmin} = useContext(adminDataContext);
   const navigate = useNavigate();
   
   const Adminlogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setLoginError('');
     try {
       const ressult = await axios.post(serverUrl + '/api/auth/adminlogin',
          {email,
@@ -28,13 +27,12 @@ function Login() {
                  { withCredentials: true });
 
     console.log(ressult.data);
-    toast.success("Adminlogin Sucessfully ")
-    getAdmin()
-    navigate("/")
+    getAdmin();
+    navigate("/");
     } catch (err) {
       console.error(err);
-      toast.error("Adminlogin failed")
-      setError(err.response?.data?.message || 'Login failed');
+      const errorMsg = err.response?.data?.message || 'Invalid email or password';
+      setLoginError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -63,39 +61,53 @@ function Login() {
       {/* Form */}
       <form onSubmit={Adminlogin} className='w-[90%] max-w-[500px] px-8 py-10 bg-white/10 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 flex flex-col items-center gap-6 z-10'>
 
-        {/* Error Message */}
-        {error && (
-          <div className="w-full text-center text-red-300 bg-red-500/10 px-4 py-2 rounded-lg border border-red-400/50 text-sm">
-            {error}
-          </div>
-        )}
-
         {/* Email */}
-        <input
-          type="email"
-          placeholder="Email"
-          className='w-full px-5 py-3 rounded-lg bg-white/10 text-white placeholder-gray-300 border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400'
-          required
-          autoComplete="off"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        {/* Password */}
-        <div className='w-full relative'>
+        <div className='w-full'>
           <input
-            type={show ? "text" : "password"}
-            placeholder="Password"
-            className='w-full px-5 py-3 rounded-lg bg-white/10 text-white placeholder-gray-300 border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400'
+            type="email"
+            placeholder="Email"
+            className={`w-full px-5 py-3 rounded-lg bg-white/10 text-white placeholder-gray-300 focus:outline-none transition-all ${
+              loginError 
+                ? 'border-2 border-red-500 focus:ring-2 focus:ring-red-500' 
+                : 'border border-white/20 focus:ring-2 focus:ring-blue-400'
+            }`}
             required
             autoComplete="off"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (loginError) setLoginError('');
+            }}
           />
-          {show ? (
-            <IoEye className='absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer' onClick={() => setShow(false)} />
-          ) : (
-            <IoEyeOutline className='absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer' onClick={() => setShow(true)} />
+        </div>
+
+        {/* Password */}
+        <div className='w-full'>
+          <div className='relative'>
+            <input
+              type={show ? "text" : "password"}
+              placeholder="Password"
+              className={`w-full px-5 py-3 rounded-lg bg-white/10 text-white placeholder-gray-300 focus:outline-none transition-all ${
+                loginError 
+                  ? 'border-2 border-red-500 focus:ring-2 focus:ring-red-500' 
+                  : 'border border-white/20 focus:ring-2 focus:ring-blue-400'
+              }`}
+              required
+              autoComplete="off"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (loginError) setLoginError('');
+              }}
+            />
+            {show ? (
+              <IoEye className='absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer' onClick={() => setShow(false)} />
+            ) : (
+              <IoEyeOutline className='absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer' onClick={() => setShow(true)} />
+            )}
+          </div>
+          {loginError && (
+            <p className="text-red-400 text-sm mt-2">{loginError}</p>
           )}
         </div>
 

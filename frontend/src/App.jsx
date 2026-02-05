@@ -13,12 +13,9 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import PlaceOrder from './pages/PlaceOrder';
 import Order from './pages/Order';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import NotFound from './pages/NotFound';
 import Ai from './components/Ai';
 import FaqPage from './pages/faqPage';
-
 import PrivicyPolicy from './pages/PrivicyPolicy';
 
 function App() {
@@ -29,7 +26,6 @@ function App() {
 
   return (
     <>
-      <ToastContainer position="top-center" autoClose={2000} />
       {shouldShowNav && <Nav />}
       
       <Routes>

@@ -8,7 +8,6 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../utils/Firebase";
 import { userDataContext } from "../context/UserContext";
 import gsap from "gsap";
-import { toast } from 'react-toastify';
 
 function Registration() {
   const [show, setShow] = useState(false);
@@ -21,6 +20,7 @@ function Registration() {
     password: ""
   });
   const [errors, setErrors] = useState({});
+  const [registrationError, setRegistrationError] = useState('');
   const { getCurrentUser } = useContext(userDataContext);
   const navigate = useNavigate();
 
@@ -68,12 +68,15 @@ function Registration() {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
+    // Clear errors when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
         [name]: ""
       }));
+    }
+    if (registrationError) {
+      setRegistrationError('');
     }
   };
 
@@ -85,6 +88,7 @@ function Registration() {
     }
 
     setLoading(true);
+    setRegistrationError('');
     try {
       await axios.post(
         `${serverUrl}/api/auth/registration`,
@@ -93,12 +97,11 @@ function Registration() {
       );
       
       getCurrentUser();
-      toast.success("Account created successfully! Welcome to Riveto 🎉");
       navigate("/");
     } catch (error) {
       console.error("Registration failed:", error);
       const errorMessage = error.response?.data?.message || "Registration failed. Please try again.";
-      toast.error(errorMessage);
+      setRegistrationError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -106,6 +109,7 @@ function Registration() {
 
   const googleSignup = async () => {
     setGoogleLoading(true);
+    setRegistrationError('');
     try {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
@@ -121,11 +125,10 @@ function Registration() {
       );
       
       getCurrentUser();
-      toast.success("Welcome to Riveto! 🎉");
       navigate("/");
     } catch (error) {
       console.error("Google Signup Error:", error);
-      toast.error("Google signup failed. Please try again.");
+      setRegistrationError("Google signup failed. Please try again.");
     } finally {
       setGoogleLoading(false);
     }
@@ -190,7 +193,11 @@ function Registration() {
                   type="text"
                   name="name"
                   placeholder="Enter your full name"
-                  className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                  className={`w-full pl-10 pr-4 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all ${
+                    errors.name || registrationError 
+                      ? 'border-2 border-red-500 focus:ring-2 focus:ring-red-500' 
+                      : 'border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent'
+                  }`}
                   value={formData.name}
                   onChange={handleInputChange}
                 />
@@ -207,7 +214,11 @@ function Registration() {
                   type="email"
                   name="email"
                   placeholder="Enter your email"
-                  className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                  className={`w-full pl-10 pr-4 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all ${
+                    errors.email || registrationError 
+                      ? 'border-2 border-red-500 focus:ring-2 focus:ring-red-500' 
+                      : 'border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent'
+                  }`}
                   value={formData.email}
                   onChange={handleInputChange}
                 />
@@ -224,7 +235,11 @@ function Registration() {
                   type={show ? "text" : "password"}
                   name="password"
                   placeholder="Create a strong password"
-                  className="w-full pl-10 pr-12 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                  className={`w-full pl-10 pr-12 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all ${
+                    errors.password || registrationError 
+                      ? 'border-2 border-red-500 focus:ring-2 focus:ring-red-500' 
+                      : 'border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent'
+                  }`}
                   value={formData.password}
                   onChange={handleInputChange}
                 />
@@ -238,6 +253,9 @@ function Registration() {
                 </button>
               </div>
               {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
+              {registrationError && !errors.password && !errors.email && !errors.name && (
+                <p className="text-red-400 text-sm mt-1">{registrationError}</p>
+              )}
             </div>
 
             {/* Terms Agreement */}
