@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaPhone, FaEnvelope, FaMapMarkerAlt, FaHeart } from 'react-icons/fa';
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { BiSupport } from "react-icons/bi";
@@ -101,12 +102,18 @@ function Footer() {
             Support
           </h3>
           <ul className="space-y-3">
-            {['Contact Us', 'Shipping Info', 'Returns', 'Size Guide', 'FAQs', 'Privacy Policy'].map((item, index) => (
+            {[
+              { name: 'Contact Us', to: '/contact' },
+              { name: 'Size Guide', to: '/size-guide' },
+              { name: 'FAQs', to: '/faq' },
+              { name: 'Privacy Policy', to: '/privicypolicy' },
+              { name: 'Terms of Service', to: '/termsandservices' },
+            ].map((item, index) => (
               <li key={index}>
-                <a href="#" className="text-sm text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group">
+                <Link to={item.to} className="text-sm text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  {item}
-                </a>
+                  {item.name}
+                </Link>
               </li>
             ))}
           </ul>

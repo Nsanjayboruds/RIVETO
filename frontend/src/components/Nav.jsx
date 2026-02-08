@@ -92,17 +92,17 @@ function Nav() {
   };
 
   return (
-    <header className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 dark:bg-[#0f0f0f]/95 shadow-lg py-2' : 'bg-white/80 dark:bg-[#111] shadow-md py-3'} backdrop-blur-md border-b border-gray-200/70 dark:border-gray-800`}>
-      <div className="max-w-[1440px] mx-auto px-4 md:px-6 flex justify-between items-center">
+    <header className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-lg shadow-black/20 ' : 'shadow-md shadow-black/10'} backdrop-blur-md bg-white/60 dark:bg-gray-900/70 border-b border-white/20 dark:border-gray-800/40`}>
+      <div className="max-w-[1440px] mx-auto px-3 md:px-6 flex justify-between items-center h-15">
         {/* Logo */}
-        <div ref={logoRef} className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
+        <div ref={logoRef} className="flex items-center gap-5 cursor-pointer" onClick={() => navigate('/')}>
           <h1 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
             Riveto
           </h1>
         </div>
 
         {/* Desktop Navigation */}
-        <nav ref={navRef} className="hidden md:flex gap-6 text-sm font-medium cursor-pointer">
+        <nav ref={navRef} className="hidden md:flex gap-12 text-sm font-medium cursor-pointer">
           {['Home', 'Collection', 'About', 'Contact'].map((item) => (
             <button
               key={item}

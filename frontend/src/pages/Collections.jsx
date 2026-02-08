@@ -40,6 +40,128 @@ const CardSkeleton = () => {
   );
 };
 
+// Filter Content Component
+const FilterContent = ({
+  activeFilters,
+  clearAllFilters,
+  priceRange,
+  setPriceRange,
+  categories,
+  category,
+  toggleCategory,
+  subCategories,
+  subCategory,
+  toggleSubCategory,
+  ratings,
+  selectedRatings,
+  toggleRating,
+}) => {
+  return (
+    <>
+      {activeFilters > 0 && (
+        <button
+          onClick={clearAllFilters}
+          className='w-full mb-4 text-sm px-3 py-2 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded-lg transition-colors'
+        >
+          Clear all filters
+        </button>
+      )}
+
+      {/* Price Range Filter */}
+      <div className='mb-6'>
+        <h3 className='text-lg font-semibold text-white mb-3 flex items-center gap-2'>
+          <RiPriceTag3Line className='text-cyan-400' />
+          Price Range
+        </h3>
+        <div className='px-2'>
+          <input
+            type="range"
+            min="0"
+            max="2000"
+            value={priceRange[1]}
+            onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+            className='w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb'
+          />
+          <div className='flex justify-between mt-2'>
+            <span className='text-gray-400 text-sm'>${priceRange[0]}</span>
+            <span className='text-gray-400 text-sm'>${priceRange[1]}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Category Filter */}
+      <div className='mb-6'>
+        <h3 className='text-lg font-semibold text-white mb-3'>Category</h3>
+        <div className='space-y-2'>
+          {categories.map((cat, i) => (
+            <button
+              key={i}
+              onClick={() => toggleCategory(cat)}
+              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
+                category.includes(cat)
+                  ? 'bg-cyan-500 text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Sub-Category Filter */}
+      <div className='mb-6'>
+        <h3 className='text-lg font-semibold text-white mb-3'>Sub-Category</h3>
+        <div className='space-y-2'>
+          {subCategories.map((sub, i) => (
+            <button
+              key={i}
+              onClick={() => toggleSubCategory(sub)}
+              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
+                subCategory.includes(sub)
+                  ? 'bg-cyan-500 text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {sub}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Rating Filter */}
+      <div className='mb-6'>
+        <h3 className='text-lg font-semibold text-white mb-3'>Rating</h3>
+        <div className='space-y-2'>
+          {ratings.map((rating, i) => (
+            <button
+              key={i}
+              onClick={() => toggleRating(rating)}
+              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 ${
+                selectedRatings.includes(rating)
+                  ? 'bg-cyan-500 text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              <div className='flex items-center gap-1'>
+                {[...Array(5)].map((_, starIndex) => (
+                  <FaStar
+                    key={starIndex}
+                    className={`text-sm ${
+                      starIndex < rating ? 'text-yellow-400' : 'text-gray-600'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span>& up</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
 function Collections() {
   const [showFilter, setShowFilter] = useState(false);
   const { product, search, showSearch } = useContext(shopDataContext);
@@ -223,119 +345,33 @@ function Collections() {
     <div className='min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] pt-24 pb-20 overflow-x-hidden'>
       {/* Main Content */}
       <div className='max-w-7xl mx-auto px-4 lg:px-8 flex flex-col lg:flex-row gap-8'>
-        {/* Filter Sidebar */}
+        {/* Filter Sidebar - Desktop Only */}
         <div 
           ref={filterRef}
-          className={`lg:w-80 bg-gray-800/50 backdrop-blur-md rounded-2xl border border-gray-700 p-6 lg:sticky lg:top-24 lg:h-fit ${
-            showFilter ? "block" : "hidden lg:block"
-          }`}
+          className='hidden lg:block lg:w-80 bg-gray-800/50 backdrop-blur-md rounded-2xl border border-gray-700 p-6 sticky top-24 h-fit'
         >
           <div className='flex items-center justify-between mb-6'>
             <h2 className='text-xl font-bold text-white flex items-center gap-2'>
               <FaFilter className='text-cyan-400' />
               Filters {activeFilters > 0 && `(${activeFilters})`}
             </h2>
-            {activeFilters > 0 && (
-              <button
-                onClick={clearAllFilters}
-                className='text-sm text-cyan-400 hover:text-cyan-300 transition-colors'
-              >
-                Clear all
-              </button>
-            )}
           </div>
 
-          {/* Price Range Filter */}
-          <div className='mb-6'>
-            <h3 className='text-lg font-semibold text-white mb-3 flex items-center gap-2'>
-              <RiPriceTag3Line className='text-cyan-400' />
-              Price Range
-            </h3>
-            <div className='px-2'>
-              <input
-                type="range"
-                min="0"
-                max="2000"
-                value={priceRange[1]}
-                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                className='w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb'
-              />
-              <div className='flex justify-between mt-2'>
-                <span className='text-gray-400 text-sm'>${priceRange[0]}</span>
-                <span className='text-gray-400 text-sm'>${priceRange[1]}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Category Filter */}
-          <div className='mb-6'>
-            <h3 className='text-lg font-semibold text-white mb-3'>Category</h3>
-            <div className='space-y-2'>
-              {categories.map((cat, i) => (
-                <button
-                  key={i}
-                  onClick={() => toggleCategory(cat)}
-                  className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
-                    category.includes(cat)
-                      ? 'bg-cyan-500 text-white'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sub-Category Filter */}
-          <div className='mb-6'>
-            <h3 className='text-lg font-semibold text-white mb-3'>Sub-Category</h3>
-            <div className='space-y-2'>
-              {subCategories.map((sub, i) => (
-                <button
-                  key={i}
-                  onClick={() => toggleSubCategory(sub)}
-                  className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
-                    subCategory.includes(sub)
-                      ? 'bg-cyan-500 text-white'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  {sub}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Rating Filter */}
-          <div className='mb-6'>
-            <h3 className='text-lg font-semibold text-white mb-3'>Rating</h3>
-            <div className='space-y-2'>
-              {ratings.map((rating, i) => (
-                <button
-                  key={i}
-                  onClick={() => toggleRating(rating)}
-                  className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 ${
-                    selectedRatings.includes(rating)
-                      ? 'bg-cyan-500 text-white'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  <div className='flex items-center gap-1'>
-                    {[...Array(5)].map((_, starIndex) => (
-                      <FaStar
-                        key={starIndex}
-                        className={`text-sm ${
-                          starIndex < rating ? 'text-yellow-400' : 'text-gray-600'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span>& up</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          <FilterContent
+            activeFilters={activeFilters}
+            clearAllFilters={clearAllFilters}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            categories={categories}
+            category={category}
+            toggleCategory={toggleCategory}
+            subCategories={subCategories}
+            subCategory={subCategory}
+            toggleSubCategory={toggleSubCategory}
+            ratings={ratings}
+            selectedRatings={selectedRatings}
+            toggleRating={toggleRating}
+          />
         </div>
 
         {/* Products Section */}
@@ -438,11 +474,14 @@ function Collections() {
           onClick={() => setShowFilter(false)}
         >
           <div 
-            className='absolute top-0 left-0 h-full w-80 bg-gray-900 p-6 overflow-y-auto'
+            className='absolute top-0 left-0 h-full w-80 bg-gray-900 border-r border-gray-700 p-6 overflow-y-auto'
             onClick={(e) => e.stopPropagation()}
           >
             <div className='flex items-center justify-between mb-6'>
-              <h2 className='text-xl font-bold text-white'>Filters</h2>
+              <h2 className='text-xl font-bold text-white flex items-center gap-2'>
+                <FaFilter className='text-cyan-400' />
+                Filters {activeFilters > 0 && `(${activeFilters})`}
+              </h2>
               <button
                 onClick={() => setShowFilter(false)}
                 className='p-2 text-gray-400 hover:text-white'
@@ -450,7 +489,33 @@ function Collections() {
                 <FaTimes className='text-xl' />
               </button>
             </div>
-            {/* Mobile filter content would go here */}
+
+            {/* Mobile Filter Content */}
+            <FilterContent
+              activeFilters={activeFilters}
+              clearAllFilters={clearAllFilters}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              categories={categories}
+              category={category}
+              toggleCategory={toggleCategory}
+              subCategories={subCategories}
+              subCategory={subCategory}
+              toggleSubCategory={toggleSubCategory}
+              ratings={ratings}
+              selectedRatings={selectedRatings}
+              toggleRating={toggleRating}
+            />
+
+            {/* Close button for mobile */}
+            <div className='mt-8 pt-6 border-t border-gray-700'>
+              <button
+                onClick={() => setShowFilter(false)}
+                className='w-full px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors font-semibold'
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}

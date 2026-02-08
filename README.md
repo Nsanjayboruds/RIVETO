@@ -29,16 +29,8 @@ It features a robust admin panel for management, user tracking, advanced UI comp
 
 ## 🏗️ Architecture
 
-```mermaid
-graph TD
-    A[User] -->|HTTP| B[React App]
-    B -->|REST API| C[Express.js Server]
-    C -->|ODM| D[(MongoDB Database)]
-    C -->|API| E[Razorpay]
-    C -->|API| H[Cloudinary]
-    B & C --> F[Admin Panel]
-    B --> G[Tracking & Analytics]
-```
+<img width="3596" height="4077" alt="image" src="https://github.com/user-attachments/assets/65429204-b3b5-4b63-9bd1-f4249e68362f" />
+
 
 ---
 

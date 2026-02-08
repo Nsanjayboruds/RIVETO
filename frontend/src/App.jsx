@@ -17,6 +17,8 @@ import NotFound from './pages/NotFound';
 import Ai from './components/Ai';
 import FaqPage from './pages/faqPage';
 import PrivicyPolicy from './pages/PrivicyPolicy';
+import TermsAndServices from './pages/TermsAndServices';
+import SizeGuide from './pages/SizeGuide';
 
 function App() {
   const { userData } = useContext(userDataContext);
@@ -133,16 +135,17 @@ function App() {
             )
           }
         />
-        <Route
-          path="/faqPage"
-          element={
-            userData ? (
-              <FaqPage />
-            ) : (
-              <Navigate to="/login" state={{ from: location.pathname }} />
-            )
-          }
-        />
+       <Route
+  path="/faq"
+  element={
+    userData ? (
+      <FaqPage />
+    ) : (
+      <Navigate to="/login" state={{ from: location.pathname }} />
+    )
+  }
+/>
+
         <Route
           path="/order"
           element={
@@ -163,7 +166,20 @@ function App() {
             )
           }
         />
-     
+
+        {/* public routes */}
+     <Route
+          path="/termsandservices"
+          element={
+              <TermsAndServices />
+          }
+        />
+        <Route
+          path="/size-guide"
+          element={
+              <SizeGuide />
+          }
+        />
         
         <Route path='*' element={<NotFound/>}/>
       </Routes>
