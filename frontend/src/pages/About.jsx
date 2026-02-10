@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Title from '../components/Title';
 import NewsletterBox from '../components/NewLetterBox';
+import Footer from '../components/Footer';
 import Carousel from '../ui/Carousel';
 import { FaRocket, FaShieldAlt, FaUsers, FaAward, FaHeart, FaLightbulb } from 'react-icons/fa';
 import gsap from 'gsap';
@@ -198,26 +199,27 @@ function About() {
   }, []);
 
   return (
+    <>
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-950 via-[#0a0f1a] to-[#071525] pt-24 pb-20 overflow-x-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden z-0 pointer-events-none">
-        <div 
+        <div
           className="floating-orb absolute -top-24 -right-24 w-[500px] h-[500px] bg-gradient-to-br from-violet-600/10 via-purple-500/5 to-transparent rounded-full blur-3xl"
           style={{ transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)` }}
         ></div>
-        <div 
+        <div
           className="floating-orb absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-gradient-to-tr from-cyan-500/10 via-blue-500/5 to-transparent rounded-full blur-3xl"
           style={{ transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px)` }}
         ></div>
-        <div 
+        <div
           className="floating-orb absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-gradient-to-r from-emerald-500/8 via-teal-500/5 to-transparent rounded-full blur-3xl"
           style={{ transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)` }}
         ></div>
-        <div 
+        <div
           className="floating-orb absolute bottom-1/4 right-1/4 w-[250px] h-[250px] bg-gradient-to-l from-pink-500/8 via-rose-500/5 to-transparent rounded-full blur-3xl"
           style={{ transform: `translate(${-mousePosition.x * 0.3}px, ${-mousePosition.y * 0.3}px)` }}
         ></div>
-        
+
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%236366f1%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50"></div>
       </div>
@@ -258,14 +260,14 @@ function About() {
               <span className="text-white">Welcome to </span>
               <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent animate-pulse">Riveto</span>
             </h2>
-            
+
             <p className="text-lg text-gray-300 leading-relaxed">
-              Riveto is a modern, responsive e-commerce platform designed to deliver a seamless and intuitive shopping experience. 
+              Riveto is a modern, responsive e-commerce platform designed to deliver a seamless and intuitive shopping experience.
               We combine cutting-edge technology with exceptional design to create a shopping journey that's both enjoyable and efficient.
             </p>
 
-            <div 
-              ref={missionRef} 
+            <div
+              ref={missionRef}
               className="relative group cursor-pointer"
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 rounded-xl blur opacity-30 group-hover:opacity-60 transition-all duration-500"></div>
@@ -273,7 +275,7 @@ function About() {
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500"></div>
                 <h3 className="text-xl font-semibold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent mb-3">Our Mission</h3>
                 <p className="text-gray-200">
-                  To make fashion accessible, affordable, and effortless — blending quality, technology, and personal expression 
+                  To make fashion accessible, affordable, and effortless — blending quality, technology, and personal expression
                   into everyday shopping experiences that inspire confidence and joy.
                 </p>
               </div>
@@ -284,8 +286,8 @@ function About() {
         {/* Stats Section */}
         <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
           {stats.map((stat, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="group relative cursor-pointer"
             >
               <div className={`absolute -inset-0.5 bg-gradient-to-r ${stat.color} rounded-2xl blur opacity-0 group-hover:opacity-40 transition-all duration-500`}></div>
@@ -321,10 +323,10 @@ function About() {
                 <div className={`relative bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl border border-white/10 group-hover:border-white/20 transition-all duration-700 group-hover:-translate-y-3 group-hover:shadow-2xl ${feature.glow} overflow-hidden h-full`}>
                   {/* Animated gradient border */}
                   <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${feature.color} transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500`}></div>
-                  
+
                   {/* Glow effect on hover */}
                   <div className={`absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br ${feature.color} rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-all duration-700`}></div>
-                  
+
                   {/* Icon with animation */}
                   <div className={`relative w-16 h-16 mb-6 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-xl transition-all duration-500`}>
                     {feature.icon}
@@ -357,7 +359,7 @@ function About() {
           <div className="relative bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 overflow-hidden">
             {/* Animated background */}
             <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-cyan-500/5"></div>
-            
+
             <div className="relative text-center mb-10">
               <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-white via-cyan-200 to-violet-200 bg-clip-text text-transparent mb-4">
                 Our Core Values
@@ -366,7 +368,7 @@ function About() {
                 The principles that guide everything we do at Riveto
               </p>
             </div>
-            
+
             <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 { title: 'Innovation', desc: 'Continuously pushing boundaries to deliver cutting-edge shopping experiences', color: 'from-violet-500 to-purple-500' },
@@ -393,7 +395,11 @@ function About() {
       <div className="relative z-10">
         <NewsletterBox/>
       </div>
+
     </div>
+      {/* Footer */}
+      <Footer />
+      </>
   );
 }
 

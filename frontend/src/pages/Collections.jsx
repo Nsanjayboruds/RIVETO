@@ -4,6 +4,7 @@ import { RiPriceTag3Line, RiArrowUpDownLine } from "react-icons/ri";
 import Title from '../components/Title';
 import { shopDataContext } from '../context/ShopContext';
 import Card from '../components/Card';
+import Footer from '../components/Footer';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -209,33 +210,33 @@ function Collections() {
 
   const applyFilter = () => {
     setIsFiltering(true);
-    
+
     // Simulate filtering delay for better UX
     setTimeout(() => {
       let productCopy = product.slice();
-      
+
       // Search filter
       if (showSearch && search) {
         productCopy = productCopy.filter(item =>
           item.name.toLowerCase().includes(search.toLowerCase())
         );
       }
-      
+
       // Category filter
       if (category.length > 0) {
         productCopy = productCopy.filter(item => category.includes(item.category));
       }
-      
+
       // Subcategory filter
       if (subCategory.length > 0) {
         productCopy = productCopy.filter(item => subCategory.includes(item.subCategory));
       }
-      
+
       // Price filter
-      productCopy = productCopy.filter(item => 
+      productCopy = productCopy.filter(item =>
         item.price >= priceRange[0] && item.price <= priceRange[1]
       );
-      
+
       // Rating filter (simulated)
       if (selectedRatings.length > 0) {
         productCopy = productCopy.filter(item => {
@@ -243,21 +244,21 @@ function Collections() {
           return selectedRatings.some(rating => itemRating >= rating);
         });
       }
-      
+
       setFilterProduct(productCopy);
-      
+
       // Count active filters
-      const filterCount = category.length + subCategory.length + selectedRatings.length + 
+      const filterCount = category.length + subCategory.length + selectedRatings.length +
                         (priceRange[0] > 0 || priceRange[1] < 2000 ? 1 : 0);
       setActiveFilters(filterCount);
-      
+
       setIsFiltering(false);
     }, 500);
   };
 
   const sortProduct = () => {
     setIsFiltering(true);
-    
+
     setTimeout(() => {
       let sorted = [...filterProduct];
       switch (sortType) {
@@ -281,7 +282,7 @@ function Collections() {
 
   const clearAllFilters = () => {
     setIsFiltering(true);
-    
+
     setTimeout(() => {
       setCategory([]);
       setSubCategory([]);
@@ -341,12 +342,14 @@ function Collections() {
     }
   }, [filterProduct, isLoading, isFiltering]);
 
+
   return (
+    <>
     <div className='min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] pt-24 pb-20 overflow-x-hidden'>
       {/* Main Content */}
       <div className='max-w-7xl mx-auto px-4 lg:px-8 flex flex-col lg:flex-row gap-8'>
         {/* Filter Sidebar - Desktop Only */}
-        <div 
+        <div
           ref={filterRef}
           className='hidden lg:block lg:w-80 bg-gray-800/50 backdrop-blur-md rounded-2xl border border-gray-700 p-6 sticky top-24 h-fit'
         >
@@ -379,7 +382,7 @@ function Collections() {
           {/* Header */}
           <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8 p-6 bg-gray-800/50 rounded-2xl backdrop-blur-md border border-gray-700'>
             <Title text1={"ALL"} text2={"COLLECTIONS"} />
-            
+
             <div className='flex items-center gap-4'>
               {/* Mobile Filter Toggle */}
               <button
@@ -469,11 +472,11 @@ function Collections() {
 
       {/* Mobile Filter Overlay */}
       {showFilter && (
-        <div 
+        <div
           className='fixed inset-0 bg-black/70 z-50 lg:hidden'
           onClick={() => setShowFilter(false)}
         >
-          <div 
+          <div
             className='absolute top-0 left-0 h-full w-80 bg-gray-900 border-r border-gray-700 p-6 overflow-y-auto'
             onClick={(e) => e.stopPropagation()}
           >
@@ -520,6 +523,11 @@ function Collections() {
         </div>
       )}
     </div>
+
+      {/* Footer */}
+      <Footer />
+    </>
+
   );
 }
 

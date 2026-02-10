@@ -157,14 +157,17 @@ function Hero({ heroData, heroCount, setHeroCount }) {
         <div className="space-y-5 md:space-y-7 text-center relative z-10">
           <p 
             ref={text1Ref} 
-            className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight text-white`}
+            className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight bg-clip-text text-transparent`}
             style={{
-              background: `linear-gradient(135deg, ${currentTheme.primary.includes('blue') ? '#3b82f6, #06b6d4, #8b5cf6' : currentTheme.primary.includes('purple') ? '#8b5cf6, #ec4899, #f43f5e' : currentTheme.primary.includes('amber') ? '#f59e0b, #ef4444, #ec4899' : '#10b981, #06b6d4, #3b82f6'})`,
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              backgroundSize: '200% 200%',
-              animation: 'gradient-shift 4s ease infinite',
+              backgroundImage: currentTheme.primary.includes('blue')
+                ? 'linear-gradient(135deg, #3b82f6, #06b6d4, #8b5cf6)'
+                : currentTheme.primary.includes('purple')
+                ? 'linear-gradient(135deg, #8b5cf6, #ec4899, #f43f5e)'
+                : currentTheme.primary.includes('amber')
+                ? 'linear-gradient(135deg, #f59e0b, #ef4444, #ec4899)'
+                : 'linear-gradient(135deg, #10b981, #06b6d4, #3b82f6)',
+                backgroundSize: '200% 200%',
+                animation: 'gradient-shift 4s ease infinite',
             }}
           >
             {heroData.text1}

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Title from '../components/Title';
 import NewsletterBox from '../components/NewLetterBox';
+import Footer from '../components/Footer';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaLinkedin, FaTwitter, FaInstagram, FaPaperPlane, FaUser, FaComment } from 'react-icons/fa';
@@ -16,7 +17,7 @@ function Contact() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
-  
+
   const sectionRef = useRef(null);
   const formRef = useRef(null);
   const infoRef = useRef(null);
@@ -32,7 +33,7 @@ function Contact() {
       yoyo: true,
       ease: "sine.inOut"
     });
-    
+
     gsap.to(".floating-bg-2", {
       y: 25,
       x: -15,
@@ -41,7 +42,7 @@ function Contact() {
       yoyo: true,
       ease: "sine.inOut"
     });
-    
+
     gsap.to(".floating-bg-3", {
       y: -20,
       x: -25,
@@ -202,16 +203,17 @@ function Contact() {
   ];
 
   return (
+    <>
     <div className='w-full min-h-screen bg-gradient-to-br from-gray-950 via-[#0a1628] to-[#0c3a5e] pt-24 pb-20 overflow-x-hidden relative'>
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <div className="floating-bg-1 absolute -top-24 -right-24 w-[500px] h-[500px] bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-transparent rounded-full blur-3xl"></div>
         <div className="floating-bg-2 absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-gradient-to-tr from-purple-500/10 via-pink-500/5 to-transparent rounded-full blur-3xl"></div>
         <div className="floating-bg-3 absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-gradient-to-br from-emerald-500/8 via-teal-500/5 to-transparent rounded-full blur-3xl"></div>
-        
+
         {/* Subtle grid pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-        
+
         {/* Animated particles */}
         <div className="absolute top-20 right-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse opacity-60"></div>
         <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-ping opacity-40"></div>
@@ -235,8 +237,8 @@ function Contact() {
           <div className="space-y-8">
             <div className="contact-cards-grid grid grid-cols-1 md:grid-cols-2 gap-6">
               {contactInfo.map((item, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`contact-card group relative bg-gradient-to-br from-gray-800/90 to-gray-900/95 p-6 rounded-2xl border border-gray-700/50 backdrop-blur-sm cursor-pointer
                     transition-all duration-500 ease-out
                     hover:scale-[1.05] hover:-translate-y-3 ${item.borderGlow}
@@ -247,28 +249,28 @@ function Contact() {
                 >
                   {/* Animated gradient border effect */}
                   <div className={`absolute -inset-[1px] rounded-2xl bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm -z-10`}></div>
-                  
+
                   {/* Inner glow effect */}
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-[0.08] transition-all duration-700`}></div>
-                  
+
                   {/* Shimmer effect */}
                   <div className="absolute inset-0 rounded-2xl overflow-hidden">
                     <div className="absolute -inset-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 group-hover:animate-shimmer"></div>
                   </div>
-                  
+
                   {/* Icon with animated glow */}
-                  <div className={`relative w-14 h-14 mb-4 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white 
-                    shadow-lg transition-all duration-500 
+                  <div className={`relative w-14 h-14 mb-4 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white
+                    shadow-lg transition-all duration-500
                     group-hover:scale-115 group-hover:rotate-6 group-hover:shadow-2xl ${item.iconGlow}`}>
                     <div className="absolute inset-0 rounded-xl bg-white/0 group-hover:bg-white/20 transition-all duration-300"></div>
                     <div className="absolute -inset-1 rounded-xl bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-50 blur-md transition-all duration-500"></div>
                     <span className="relative z-10 group-hover:scale-110 transition-transform duration-300">{item.icon}</span>
                   </div>
-                  
+
                   <h3 className={`text-lg font-semibold text-white mb-2 transition-all duration-300 ${item.textGlow}`}>{item.title}</h3>
                   <p className="text-cyan-300/90 font-medium group-hover:text-white transition-all duration-300">{item.content}</p>
                   <p className="text-gray-400 text-sm mt-1 group-hover:text-gray-200 transition-all duration-300">{item.subContent}</p>
-                  
+
                   {/* Corner decorations */}
                   <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl ${item.color} opacity-0 group-hover:opacity-[0.07] rounded-tr-2xl rounded-bl-[100px] transition-all duration-700`}></div>
                   <div className={`absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr ${item.color} opacity-0 group-hover:opacity-[0.05] rounded-bl-2xl rounded-tr-[60px] transition-all duration-700 delay-100`}></div>
@@ -289,8 +291,8 @@ function Contact() {
                   <a
                     key={index}
                     href="#"
-                    className={`group relative w-14 h-14 bg-gradient-to-br from-gray-700/80 to-gray-800/90 rounded-xl flex items-center justify-center 
-                      transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 hover:rotate-6 
+                    className={`group relative w-14 h-14 bg-gradient-to-br from-gray-700/80 to-gray-800/90 rounded-xl flex items-center justify-center
+                      transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 hover:rotate-6
                       hover:shadow-2xl ${social.glowColor}
                       overflow-hidden border border-gray-600/50 hover:border-transparent
                       hover:ring-2 ${social.ringColor}`}
@@ -298,10 +300,10 @@ function Contact() {
                   >
                     {/* Gradient background on hover */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${social.color} opacity-0 group-hover:opacity-100 transition-all duration-400 scale-0 group-hover:scale-100`}></div>
-                    
+
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/25 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    
+
                     <span className="relative z-10 text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300 group-hover:drop-shadow-lg">
                       {social.icon}
                     </span>
@@ -316,26 +318,26 @@ function Contact() {
             <div className="group/form relative bg-gradient-to-br from-gray-800/90 to-gray-900/95 p-8 rounded-2xl border border-gray-700/50 backdrop-blur-sm
               hover:border-cyan-500/30 transition-all duration-700 hover:shadow-2xl hover:shadow-cyan-500/20 overflow-hidden
               hover:bg-gradient-to-br hover:from-gray-800/95 hover:to-cyan-900/10">
-              
+
               {/* Animated gradient border */}
               <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-0 group-hover/form:opacity-60 transition-opacity duration-700 blur-sm -z-10"></div>
-              
+
               {/* Form background decoration */}
               <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-cyan-500/15 via-blue-500/10 to-transparent rounded-bl-[120px] pointer-events-none transition-all duration-700 group-hover/form:from-cyan-400/20 group-hover/form:w-56 group-hover/form:h-56"></div>
               <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-purple-500/15 via-pink-500/10 to-transparent rounded-tr-[100px] pointer-events-none transition-all duration-700 group-hover/form:from-purple-400/20 group-hover/form:w-48 group-hover/form:h-48"></div>
-              
+
               {/* Floating particles */}
               <div className="absolute top-10 right-20 w-2 h-2 bg-cyan-400/60 rounded-full opacity-0 group-hover/form:opacity-100 group-hover/form:animate-ping transition-opacity duration-500"></div>
               <div className="absolute bottom-20 left-10 w-1.5 h-1.5 bg-purple-400/60 rounded-full opacity-0 group-hover/form:opacity-100 group-hover/form:animate-pulse transition-opacity duration-500 delay-200"></div>
-              
+
               <h3 className="relative text-2xl font-bold text-white mb-6 flex items-center gap-3 group-hover/form:text-cyan-50 transition-colors duration-300">
                 Send us a Message
                 <FaPaperPlane className="w-5 h-5 text-cyan-400 animate-bounce group-hover/form:text-cyan-300 group-hover/form:drop-shadow-lg group-hover/form:drop-shadow-cyan-400/50" />
               </h3>
-              
+
               {isSubmitted ? (
                 <div className="text-center py-8 animate-fadeIn">
-                  <div className="w-24 h-24 bg-gradient-to-br from-green-500/30 to-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4 
+                  <div className="w-24 h-24 bg-gradient-to-br from-green-500/30 to-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4
                     animate-pulse shadow-xl shadow-green-500/30 ring-2 ring-green-400/30">
                     <FaPaperPlane className="w-12 h-12 text-green-400 drop-shadow-lg" />
                   </div>
@@ -354,7 +356,7 @@ function Contact() {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Your Name"
-                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400 
+                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400
                         focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-500/30 focus:bg-gray-700/90 focus:shadow-lg focus:shadow-cyan-500/20
                         transition-all duration-400 hover:border-gray-500 hover:bg-gray-700/70 hover:shadow-md"
                       required
@@ -372,7 +374,7 @@ function Contact() {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="Your Email"
-                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400 
+                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400
                         focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/30 focus:bg-gray-700/90 focus:shadow-lg focus:shadow-blue-500/20
                         transition-all duration-400 hover:border-gray-500 hover:bg-gray-700/70 hover:shadow-md"
                       required
@@ -389,7 +391,7 @@ function Contact() {
                       onChange={handleInputChange}
                       placeholder="Your Message"
                       rows="5"
-                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400 
+                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400
                         focus:outline-none focus:border-purple-400 focus:ring-4 focus:ring-purple-500/30 focus:bg-gray-700/90 focus:shadow-lg focus:shadow-purple-500/20
                         transition-all duration-400 resize-none hover:border-gray-500 hover:bg-gray-700/70 hover:shadow-md"
                       required
@@ -398,19 +400,19 @@ function Contact() {
 
                   <button
                     type="submit"
-                    className="form-field group/btn w-full relative overflow-hidden bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 
-                      text-white font-semibold py-4 px-6 rounded-xl 
-                      transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/40 
+                    className="form-field group/btn w-full relative overflow-hidden bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600
+                      text-white font-semibold py-4 px-6 rounded-xl
+                      transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/40
                       flex items-center justify-center gap-3
                       hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500
                       active:scale-95 active:shadow-inner"
                   >
                     {/* Animated shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700"></div>
-                    
+
                     {/* Glow ring */}
                     <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 rounded-xl opacity-0 group-hover/btn:opacity-50 blur-md transition-opacity duration-500"></div>
-                    
+
                     <span className="relative z-10 flex items-center gap-2">
                       <FaPaperPlane className="group-hover/btn:translate-x-2 group-hover/btn:-translate-y-2 group-hover/btn:rotate-12 transition-all duration-500" />
                       Send Message
@@ -433,7 +435,7 @@ function Contact() {
           </div>
         </div>
 
-       
+
         {/* <div className="contact-section bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 overflow-hidden mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="p-8">
@@ -465,6 +467,10 @@ function Contact() {
         <NewsletterBox />
       </div>
     </div>
+
+      {/* Footer */}
+      <Footer />
+    </>
   );
 }
 

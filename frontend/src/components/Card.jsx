@@ -34,6 +34,8 @@ function Card({ name, image, id, price, showQuickActions = true, badge, badgeCol
       const defaultSize = 'M';
       addtoCart(id, defaultSize);
     }
+
+
   };
 
   const handleAddToWishlist = (e) => {
@@ -165,6 +167,13 @@ function Card({ name, image, id, price, showQuickActions = true, badge, badgeCol
             {badge}
           </div>
         )}
+        {/* Stock Indicator */}
+      <div className="absolute bottom-2 right-2">
+        <div className="flex items-center gap-1.5 text-xs text-green-400 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full">
+          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.6)]" />
+          <span>In Stock</span>
+        </div>
+      </div>
       </div>
 
       {/* Content */}
@@ -237,14 +246,6 @@ function Card({ name, image, id, price, showQuickActions = true, badge, badgeCol
           boxShadow: '0 0 30px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.1)'
         }}
       />
-
-      {/* Stock Indicator */}
-      <div className="absolute bottom-2 right-2">
-        <div className="flex items-center gap-1.5 text-xs text-green-400 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full">
-          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.6)]" />
-          <span>In Stock</span>
-        </div>
-      </div>
     </div>
   );
 }
