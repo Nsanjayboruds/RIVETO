@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import cookieParser from 'cookie-parser';
 dotenv.config();
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './Swagger.js'; // Note: The .js extension is required for ES modules!
