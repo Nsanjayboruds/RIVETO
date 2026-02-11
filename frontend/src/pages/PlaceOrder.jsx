@@ -6,7 +6,6 @@ import { authDataContext } from '../context/AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { 
-  FaCreditCard, 
   FaMoneyBillWave, 
   FaMapMarkerAlt, 
   FaUser, 
@@ -25,7 +24,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 function PlaceOrder() {
-  const [method, setMethod] = useState('razorpay');
+  const [method, setMethod] = useState('cod');
   const [isProcessing, setIsProcessing] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
@@ -95,48 +94,6 @@ function PlaceOrder() {
     }
   };
 
-  const initPay = (order) => {
-    const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-      amount: order.amount,
-      currency: order.currency,
-      name: "Riveto Store",
-      description: "Secure Payment for Your Order",
-      order_id: order.id,
-      handler: async (response) => {
-        setIsProcessing(true);
-        try {
-          const { data } = await axios.post(serverUrl + '/api/order/verifyrazorpay', response, { withCredentials: true });
-          if (data) {
-            setCartItem({});
-            navigate("/order");
-          }
-        } catch (error) {
-          console.error('Payment verification failed:', error);
-        } finally {
-          setIsProcessing(false);
-        }
-      },
-      prefill: {
-        name: `${formData.firstname} ${formData.lastname}`,
-        email: formData.email,
-        contact: formData.phone
-      },
-      theme: {
-        color: "#3399cc",
-        hide_topbar: false
-      },
-      modal: {
-        ondismiss: function() {
-          setIsProcessing(false);
-        }
-      }
-    };
-
-    const rzp = new window.Razorpay(options);
-    rzp.open();
-  };
-
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     
@@ -170,25 +127,10 @@ function PlaceOrder() {
         status: 'Placed'
       };
 
-      switch (method) {
-        case 'cod':
-          const result = await axios.post(`${serverUrl}/api/order/placeorder`, orderData, { withCredentials: true });
-          if (result.data) {
-            setCartItem({});
-            navigate("/order");
-          }
-          break;
-
-        case 'razorpay':
-          const resultRazorpay = await axios.post(serverUrl + "/api/order/razorpay", orderData, { withCredentials: true });
-          if (resultRazorpay.data) {
-            initPay(resultRazorpay.data);
-          }
-          break;
-
-        default:
-          console.warn('Unknown payment method');
-          break;
+      const result = await axios.post(`${serverUrl}/api/order/placeorder`, orderData, { withCredentials: true });
+      if (result.data) {
+        setCartItem({});
+        navigate("/order");
       }
 
     } catch (error) {
@@ -198,13 +140,6 @@ function PlaceOrder() {
   };
 
   const paymentMethods = [
-    {
-      id: 'razorpay',
-      name: 'Credit/Debit Card',
-      icon: FaCreditCard,
-      description: 'Pay securely with Razorpay',
-      color: 'from-blue-500 to-cyan-500'
-    },
     {
       id: 'cod',
       name: 'Cash on Delivery',

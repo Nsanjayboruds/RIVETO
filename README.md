@@ -252,6 +252,23 @@ Please review [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ---
 
+## 🌟 Our Amazing Contributors
+
+Thank you to all contributors who have helped make RIVETO better! 🚀
+
+<a href="https://github.com/Nsanjayboruds/RIVETO/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Nsanjayboruds/RIVETO" />
+</a>
+
+### 🏆 Special Recognition
+- 🎯 **First Contributor:** Madhav Majumdar ([@madhav2348](https://github.com/madhav2348)) - For being the first to join and contribute to RIVETO!
+- 💡 **Most Innovative:** Md Ashad ([@asadanwarr0](https://github.com/asadanwarr0)) - For enhancing the About, Contact, and Home sections.
+- 🎨 **UI/UX Champion:** Vedant ([@vedantbudhabaware](https://github.com/vedantbudhabaware)) - For fixing critical UI issues and optimizing the mobile experience.
+
+*Want to see your name here? Check out our [Contributing Guide](contribute.md)!*
+
+---
+
 ## 🚀 Deployment
 
 - **Docker Compose** and cloud deployment instructions coming soon!

@@ -22,6 +22,7 @@ import FaqPage from './pages/FaqPage';
 import PrivicyPolicy from './pages/PrivicyPolicy';
 import TermsAndServices from './pages/TermsAndServices';
 import SizeGuide from './pages/SizeGuide';
+import Contributors from './pages/Contributors';
 
 function App() {
   const { userData } = useContext(userDataContext);
@@ -33,7 +34,7 @@ function App() {
     <>
       <ToastContainer position="top-center" autoClose={2000} />
       {shouldShowNav && <Nav />}
-      
+
       <Routes>
         {/* Auth routes */}
         <Route
@@ -108,7 +109,7 @@ function App() {
             )
           }
         />
-       
+
         <Route
           path="/productdetail/:productId"
           element={
@@ -139,16 +140,16 @@ function App() {
             )
           }
         />
-       <Route
-  path="/faq"
-  element={
-    userData ? (
-      <FaqPage />
-    ) : (
-      <Navigate to="/login" state={{ from: location.pathname }} />
-    )
-  }
-/>
+        <Route
+          path="/faq"
+          element={
+            userData ? (
+              <FaqPage />
+            ) : (
+              <Navigate to="/login" state={{ from: location.pathname }} />
+            )
+          }
+        />
 
         <Route
           path="/order"
@@ -160,7 +161,7 @@ function App() {
             )
           }
         />
-           <Route
+        <Route
           path="/privicypolicy"
           element={
             userData ? (
@@ -172,22 +173,28 @@ function App() {
         />
 
         {/* public routes */}
-     <Route
+        <Route
           path="/termsandservices"
           element={
-              <TermsAndServices />
+            <TermsAndServices />
           }
         />
         <Route
           path="/size-guide"
           element={
-              <SizeGuide />
+            <SizeGuide />
           }
         />
-        
-        <Route path='*' element={<NotFound/>}/>
+        <Route
+          path="/contributors"
+          element={
+            <Contributors />
+          }
+        />
+
+        <Route path='*' element={<NotFound />} />
       </Routes>
-      <Ai/>
+      <Ai />
     </>
   );
 }

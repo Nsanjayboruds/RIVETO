@@ -4,7 +4,7 @@ import { IoSearchCircleOutline, IoSearchCircleSharp } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { IoMdHome } from "react-icons/io";
-import { HiOutlineCollection } from "react-icons/hi";
+import { HiOutlineCollection, HiOutlineUserGroup } from "react-icons/hi";
 import { RiContactsLine } from "react-icons/ri";
 import { BsMoon, BsSun, BsSearch } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
@@ -43,29 +43,29 @@ function Nav() {
   // Initial animations
   useEffect(() => {
     gsap.from(logoRef.current, { opacity: 0, x: -30, duration: 0.8, ease: 'power2.out' });
-    gsap.from(navRef.current?.children, { 
-      opacity: 0, 
-      y: -15, 
-      duration: 0.6, 
-      stagger: 0.1, 
-      delay: 0.3, 
-      ease: 'power2.out' 
+    gsap.from(navRef.current?.children, {
+      opacity: 0,
+      y: -15,
+      duration: 0.6,
+      stagger: 0.1,
+      delay: 0.3,
+      ease: 'power2.out'
     });
-    gsap.from(iconsRef.current?.children, { 
-      opacity: 0, 
-      y: -15, 
-      duration: 0.6, 
-      stagger: 0.1, 
-      delay: 0.5, 
-      ease: 'power2.out' 
+    gsap.from(iconsRef.current?.children, {
+      opacity: 0,
+      y: -15,
+      duration: 0.6,
+      stagger: 0.1,
+      delay: 0.5,
+      ease: 'power2.out'
     });
   }, []);
 
   // Profile dropdown animation
   useEffect(() => {
     if (showProfile && profileRef.current) {
-      gsap.fromTo(profileRef.current, 
-        { opacity: 0, y: -10, scale: 0.95 }, 
+      gsap.fromTo(profileRef.current,
+        { opacity: 0, y: -10, scale: 0.95 },
         { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'power1.out' }
       );
     }
@@ -74,8 +74,8 @@ function Nav() {
   // Search bar animation
   useEffect(() => {
     if (showSearch && searchRef.current) {
-      gsap.fromTo(searchRef.current, 
-        { opacity: 0, height: 0 }, 
+      gsap.fromTo(searchRef.current,
+        { opacity: 0, height: 0 },
         { opacity: 1, height: 'auto', duration: 0.4, ease: 'power2.out' }
       );
     }
@@ -103,7 +103,7 @@ function Nav() {
 
         {/* Desktop Navigation */}
         <nav ref={navRef} className="hidden md:flex gap-12 text-sm font-medium cursor-pointer">
-          {['Home', 'Collection', 'About', 'Contact'].map((item) => (
+          {['Home', 'Collection', 'Contributors', 'About', 'Contact'].map((item) => (
             <button
               key={item}
               onClick={() => navigate(`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`)}
@@ -118,10 +118,10 @@ function Nav() {
         {/* Icons Section */}
         <div ref={iconsRef} className="flex items-center gap-4 md:gap-5 relative">
           {/* Search Icon */}
-          <button 
-            onClick={() => { 
-              setShowSearch(!showSearch); 
-              if (!showSearch) navigate("/collection"); 
+          <button
+            onClick={() => {
+              setShowSearch(!showSearch);
+              if (!showSearch) navigate("/collection");
             }}
             className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             aria-label="Search"
@@ -134,8 +134,8 @@ function Nav() {
           </button>
 
           {/* Theme Toggle */}
-          <button 
-            onClick={toggleTheme} 
+          <button
+            onClick={toggleTheme}
             className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             aria-label="Toggle Theme"
           >
@@ -147,7 +147,7 @@ function Nav() {
           </button>
 
           {/* User Profile */}
-          <button 
+          <button
             onClick={() => setShowProfile(!showProfile)}
             className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             aria-label="User Profile"
@@ -162,7 +162,7 @@ function Nav() {
           </button>
 
           {/* Shopping Cart */}
-          <button 
+          <button
             onClick={() => navigate("/cart")}
             className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative"
             aria-label="Shopping Cart"
@@ -196,13 +196,13 @@ function Nav() {
 
       {/* Profile Dropdown */}
       {showProfile && (
-        <div 
-          ref={profileRef} 
+        <div
+          ref={profileRef}
           className="absolute top-full right-4 mt-2 w-56 bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-200 dark:border-gray-700 z-40 overflow-hidden"
         >
           <ul className="text-sm text-gray-700 dark:text-gray-200">
             {!userData ? (
-              <li 
+              <li
                 className="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors flex items-center gap-2"
                 onClick={() => { navigate("/login"); setShowProfile(false); }}
               >
@@ -210,7 +210,7 @@ function Nav() {
                 Login
               </li>
             ) : (
-              <li 
+              <li
                 className="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors flex items-center gap-2"
                 onClick={() => { handleLogout(); setShowProfile(false); }}
               >
@@ -218,14 +218,14 @@ function Nav() {
                 Logout
               </li>
             )}
-            <li 
+            <li
               className="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors flex items-center gap-2"
               onClick={() => { navigate("/order"); setShowProfile(false); }}
             >
               <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
               Orders
             </li>
-            <li 
+            <li
               className="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors flex items-center gap-2"
               onClick={() => { navigate("/about"); setShowProfile(false); }}
             >
@@ -241,19 +241,20 @@ function Nav() {
         {[
           { icon: IoMdHome, label: "Home", path: "/" },
           { icon: HiOutlineCollection, label: "Collection", path: "/collection" },
+          { icon: HiOutlineUserGroup, label: "Contributors", path: "/contributors" },
           { icon: RiContactsLine, label: "Contact", path: "/contact" },
         ].map((item, index) => (
-          <button 
+          <button
             key={index}
-            onClick={() => navigate(item.path)} 
+            onClick={() => navigate(item.path)}
             className="flex flex-col items-center justify-center w-16 h-16 rounded-xl transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             <item.icon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             <span className="text-xs mt-1 text-gray-600 dark:text-gray-400">{item.label}</span>
           </button>
         ))}
-        
-        <button 
+
+        <button
           className="relative flex flex-col items-center justify-center w-16 h-16 rounded-xl transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
           onClick={() => navigate("/cart")}
         >
