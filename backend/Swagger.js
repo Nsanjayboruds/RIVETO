@@ -140,7 +140,11 @@ const options = {
       },
     },
   },
+ 
   apis: ['./routes/*.js'], // Auto-discover docs from route files, // Keep this empty now since we defined paths directly above!
+
+  apis: [], // Keep this empty now since we defined paths directly above!
+
 };
 
 const swaggerSpec = swaggerJsdoc(options);

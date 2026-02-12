@@ -2,6 +2,7 @@ import express from 'express';
 import { registration, login, logOut, googleLogin, adminLogin } from '../controller/authcontroller.js';
 
 const authRoutes = express.Router();
+
 /**
  * @swagger
  * /api/auth/registration:
@@ -23,6 +24,7 @@ const authRoutes = express.Router();
  * 201:
  * description: User registered successfully
  */
+
 
 authRoutes.post("/registration", registration);
 authRoutes.post("/login", login);
