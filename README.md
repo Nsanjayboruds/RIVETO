@@ -10,7 +10,7 @@
 
 ## 🚀 Overview 
 
-**RIVETO** is a modern, fullstack web application built for scalability, advanced analytics, and seamless payment integration.  
+**RIVETO** is a modern, fullstack web application built for scalability, advanced analytics.  
 It features a robust admin panel for management, user tracking, advanced UI components, and secure file/image upload via Cloudinary.
 
 ---
@@ -20,7 +20,6 @@ It features a robust admin panel for management, user tracking, advanced UI comp
 - **Frontend:** React, Tailwind CSS  
 - **Backend:** Node.js, Express.js  
 - **Database:** MongoDB (Mongoose ODM)  
-- **Payments:** Razorpay Integration  
 - **Tracking:** Custom analytics & event tracking  
 - **UI:** Advanced, responsive design with Tailwind  
 - **Image Uploads:** [Cloudinary](https://cloudinary.com/) for secure and performant media management
@@ -37,7 +36,6 @@ It features a robust admin panel for management, user tracking, advanced UI comp
 ## ⚙️ Features
 
 - 📊 **Admin Panel:** Manage users, payments, analytics, and more
-- 💳 **Razorpay Integration:** Seamless and secure payment workflow
 - 📈 **Advanced Tracking:** User behavior, transactions, and event analytics
 - 🎨 **Modern UI:** Responsive, accessible, and beautiful interface (Tailwind)
 - 🖼️ **Cloudinary Image Upload:** Fast, secure, and optimized media storage
@@ -199,8 +197,6 @@ RIVETO/
 ```
 MONGODB_URI=
 JWT_SECRET=
-RAZORPAY_KEY_ID=
-RAZORPAY_KEY_SECRET=
 BASE_URL=http://localhost:5000
 
 CLOUDINARY_CLOUD_NAME=
@@ -225,14 +221,6 @@ REACT_APP_RAZORPAY_KEY=
 - Custom components for user and payment management
 
 ---
-
-## 💳 Payments
-
-- Razorpay checkout integrated for secure payments
-- Payment status tracking and webhooks
-
----
-
 ## 📈 Tracking
 
 - Custom event logging and analytics

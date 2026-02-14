@@ -1,0 +1,56 @@
+name: RIVETO CI Pipeline
+
+# 1. Workflow Triggers
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-verify:
+    name: Build & Lint Monorepo
+    runs-on: ubuntu-latest
+
+    steps:
+      # 2. Checkout the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 3. Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      # 4. Install Dependencies (Skipping Root until Lint PR is merged)
+      # - name: Install Root Dependencies
+      #   run: npm install
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm install
+
+      # 5. Run Linters (Commented out until PR #53 is merged)
+      # - name: Run ESLint & Prettier Checks
+      #   run: npm run lint
+
+      # 6. Build the Frontend
+      - name: Build Frontend (Vite/React)
+        working-directory: ./frontend
+        run: npm run build
+
+      # 7. Security Audit
+      - name: NPM Security Audit
+        run: npm audit --audit-level=high || true
+
+      # 8. Placeholder for future tests
+      - name: Run Tests (Test-Ready)
+        run: |
+          echo "Tests are not fully implemented yet."
+          # npm run test

@@ -24,8 +24,16 @@ const options = {
       },
     },
   },
+
   // MAINTAINER REQUIREMENT: Auto-discover docs from the route files
   apis: ['./routes/*.js'], 
+
+ 
+  apis: ['./routes/*.js'], // Auto-discover docs from route files, // Keep this empty now since we defined paths directly above!
+
+  apis: [], // Keep this empty now since we defined paths directly above!
+
+ fd6eda1b0693dfbcb6be36a92ca434cbbbd52b95
 };
 
 const specs = swaggerJsdoc(options);

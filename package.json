@@ -1,0 +1,26 @@
+{
+  "name": "riveto-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "lint": "npm exec --prefix frontend -- eslint . && npm exec --prefix backend -- eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,json,md}": [
+      "prettier --write"
+    ],
+    "frontend/**/*.{js,jsx}": [
+      "npm exec --prefix frontend -- eslint --fix"
+    ],
+    "backend/**/*.js": [
+      "npm exec --prefix backend -- eslint --fix"
+    ]
+  }
+}
