@@ -35,8 +35,6 @@ const authRoutes = express.Router();
  */
 
 
-
- fd6eda1b0693dfbcb6be36a92ca434cbbbd52b95
 authRoutes.post("/registration", registration);
 authRoutes.post("/login", login);
 authRoutes.get("/logout", logOut);
