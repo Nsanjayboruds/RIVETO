@@ -14,16 +14,24 @@ const authRoutes = express.Router();
  * application/json:
  * schema:
  * type: object
- * required: [name, email, password]
+ * required:
+ * - name
+ * - email
+ * - password
  * properties:
- * name: { type: string, example: "John Doe" }
- * email: { type: string, example: "john@example.com" }
- * password: { type: string, example: "StrongPass123!" }
+ * name:
+ * type: string
+ * example: "John Doe"
+ * email:
+ * type: string
+ * example: "john@example.com"
+ * password:
+ * type: string
+ * example: "StrongPass123!"
  * responses:
  * 201:
  * description: User registered successfully
  */
-
 authRoutes.post("/registration", registration);
 authRoutes.post("/login", login);
 authRoutes.get("/logout", logOut);
