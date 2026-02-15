@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
-import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser'; 
 dotenv.config();
 import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './Swagger.js'; // Note: The .js extension is required for ES modules!
+// Ensure this matches the default export from Swagger.js
+import swaggerSpecs from './Swagger.js'; 
 
 import express from "express";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
@@ -20,11 +20,13 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
-// Serve Swagger UI documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// --- 1. PUBLIC DOCUMENTATION (MUST BE AT TOP) ---
+// This sits above EVERYTHING to bypass all middleware/auth logic
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
+// --- 2. GLOBAL MIDDLEWARE ---
 app.use(cors({
   origin: ["https://riveto-frontend2.onrender.com", "https://riveto-admin4.onrender.com", "http://localhost:5173", "http://localhost:5174"],
   credentials: true
@@ -32,30 +34,26 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
-// Connect to MongoDB
+// --- 3. DATABASE & API ROUTES ---
 connectdb();
 
-// API routes
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
 
-// Root route (simple test)
-app.get("/", (req, res) => {
-  res.send("Backend is running!");
-});
-
-// Optional: Serve React frontend if build exists
+// --- 4. FRONTEND SERVING ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendBuildPath = path.join(__dirname, "frontend/build");
 
 if (fs.existsSync(frontendBuildPath)) {
   app.use(express.static(frontendBuildPath));
-
-  // Catch-all: Serve React for any non-API route
   app.get("*", (req, res) => {
     res.sendFile(path.join(frontendBuildPath, "index.html"));
   });
