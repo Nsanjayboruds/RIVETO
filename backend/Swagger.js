@@ -23,7 +23,7 @@ const options = {
         },
       },
     },
-    // --- DOCUMENTATION DEFINED HERE TO PREVENT INDENTATION ERRORS ---
+    // Keep existing hardcoded paths for now so Registration/Login don't disappear
     paths: {
       '/api/auth/registration': {
         post: {
@@ -74,8 +74,8 @@ const options = {
       }
     }
   },
-  // We turn off file scanning so it doesn't look for broken comments
-  apis: [], 
+  // FIX: Enable scanner to find docs in route files
+  apis: ['./routes/*.js'], 
 };
 
 const specs = swaggerJsdoc(options);
