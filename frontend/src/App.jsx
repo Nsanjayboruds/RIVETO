@@ -7,6 +7,7 @@ import Nav from './components/Nav';
 import { userDataContext } from './context/UserContext';
 import About from './pages/About';
 import Collections from './pages/Collections';
+import BestSellers from './pages/BestSellers';
 import Product from './pages/Product';
 import Contact from './pages/Contact';
 import ProductDetail from './pages/ProductDetail';
@@ -84,6 +85,16 @@ function App() {
           element={
             userData ? (
               <Collections />
+            ) : (
+              <Navigate to="/login" state={{ from: location.pathname }} />
+            )
+          }
+        />
+        <Route
+          path="/best-sellers"
+          element={
+            userData ? (
+              <BestSellers />
             ) : (
               <Navigate to="/login" state={{ from: location.pathname }} />
             )
