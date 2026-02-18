@@ -175,6 +175,12 @@ function App() {
         <Route
           path="/privicypolicy"
           element={
+            <Navigate to="/privacy-policy" replace />
+          }
+        />
+        <Route
+          path="/privacy-policy"
+          element={
             userData ? (
               <PrivicyPolicy />
             ) : (
