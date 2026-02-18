@@ -107,12 +107,19 @@ function Footer() {
             Quick Links
           </h3>
           <ul className="space-y-3">
-            {['Home', 'About Us', 'Products', 'Collections', 'New Arrivals', 'Best Sellers'].map((item, index) => (
+            {[
+              { name: 'Home', path: '/' },
+              { name: 'About Us', path: '/about' },
+              { name: 'Products', path: '/product' },
+              { name: 'Collections', path: '/collection' },
+              { name: 'New Arrivals', path: '/collection' },
+              { name: 'Best Sellers', path: '/best-sellers' }
+            ].map((item, index) => (
               <li key={index}>
-                <a href="#" className="text-sm text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group">
+                <Link to={item.path} className="text-sm text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  {item}
-                </a>
+                  {item.name}
+                </Link>
               </li>
             ))}
           </ul>
