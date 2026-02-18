@@ -136,7 +136,7 @@ function Footer() {
               { name: 'Contact Us', to: '/contact' },
               { name: 'Size Guide', to: '/size-guide' },
               { name: 'FAQs', to: '/faq' },
-              { name: 'Privacy Policy', to: '/privicypolicy' },
+              { name: 'Privacy Policy', to: '/privacy-policy' },
               { name: 'Terms of Service', to: '/termsandservices' },
             ].map((item, index) => (
               <li key={index}>
