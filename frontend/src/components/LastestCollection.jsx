@@ -8,7 +8,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import gsap from 'gsap';
 
 function LatestCollection() {
-  const { product } = useContext(shopDataContext);
+  const { product, compareList, toggleCompare } = useContext(shopDataContext);
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const videoRef = useRef(null);
@@ -27,11 +27,11 @@ function LatestCollection() {
     if (gridRef.current) {
       gsap.fromTo(gridRef.current.children,
         { opacity: 0, y: 30 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          stagger: 0.1, 
-          duration: 0.8, 
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.8,
           ease: 'power2.out',
           delay: 0.3
         }
@@ -63,15 +63,15 @@ function LatestCollection() {
     }
   };
 
-   const handleAddToCart = () => {
-      if (!size) {
-        toast.warning('Please select a size before adding to cart.');
-        return;
-      }
-      addtoCart(productData._id, size);
-      toast.success(`${productData.name} added to cart!`);
-    };
-    
+  const handleAddToCart = () => {
+    if (!size) {
+      toast.warning('Please select a size before adding to cart.');
+      return;
+    }
+    addtoCart(productData._id, size);
+    toast.success(`${productData.name} added to cart!`);
+  };
+
   // Handle fullscreen change events
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -112,6 +112,8 @@ function LatestCollection() {
               id={item._id}
               price={item.price}
               className="transform transition-all duration-500 hover:scale-105 hover:shadow-2xl"
+              onCompare={() => toggleCompare(item)}
+              isCompared={compareList?.some(p => p._id === item._id)}
             />
           ))
         ) : (
@@ -145,13 +147,13 @@ function LatestCollection() {
             <source src={mobvid} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          
+
           {/* Video Overlay Gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/50"></div>
-          
+
           {/* Video Controls */}
           <div className="absolute bottom-6 right-6 flex items-center gap-3 bg-black/40 backdrop-blur-sm rounded-full p-2">
-            <button 
+            <button
               onClick={toggleVideoPlayback}
               className="p-2 rounded-full hover:bg-white/20 transition-colors"
               aria-label={isVideoPlaying ? 'Pause' : 'Play'}
@@ -162,8 +164,8 @@ function LatestCollection() {
                 <FaPlay className="text-white text-lg" />
               )}
             </button>
-            
-            <button 
+
+            <button
               onClick={toggleFullscreen}
               className="p-2 rounded-full hover:bg-white/20 transition-colors"
               aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
@@ -175,7 +177,7 @@ function LatestCollection() {
               )}
             </button>
           </div>
-          
+
           {/* Video Content Text */}
           <div className="absolute bottom-6 left-6 text-white max-w-md">
             <h3 className="text-2xl md:text-3xl font-bold mb-2">Experience Innovation</h3>

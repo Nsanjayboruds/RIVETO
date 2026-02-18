@@ -9,7 +9,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 function BestSeller() {
-  const { product } = useContext(shopDataContext);
+  const { product, compareList, toggleCompare } = useContext(shopDataContext);
   const [bestseller, setBestseller] = useState([]);
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
@@ -75,11 +75,11 @@ function BestSeller() {
             </div>
             <Title text1="BEST" text2="SELLERS" />
           </div>
-          
+
           <p className="text-gray-400 mt-3 sm:mt-4 text-sm sm:text-base md:text-lg lg:text-xl max-w-xs sm:max-w-lg md:max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
             Discover our most loved products — tried, tested, and adored by thousands of customers worldwide.
           </p>
-          
+
           <div className="mt-4 sm:mt-6 flex items-center justify-center gap-2 text-xs sm:text-sm text-amber-400">
             <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-pulse"></div>
             <span>Trending now</span>
@@ -90,7 +90,7 @@ function BestSeller() {
         {bestseller.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
             {bestseller.map((item, index) => (
-              <div 
+              <div
                 key={item._id}
                 ref={el => cardsRef.current[index] = el}
                 className="transform transition-all duration-500 hover:-translate-y-2"
@@ -102,6 +102,8 @@ function BestSeller() {
                   image={item.image1}
                   badge="BESTSELLER"
                   badgeColor="from-red-500 to-orange-500"
+                  onCompare={() => toggleCompare(item)}
+                  isCompared={compareList?.some(p => p._id === item._id)}
                 />
               </div>
             ))}

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { FaChevronRight, FaChevronDown, FaFilter, FaTimes, FaSearch, FaStar } from "react-icons/fa";
 import { RiPriceTag3Line, RiArrowUpDownLine } from "react-icons/ri";
-import Title from '../components/Title';
+import { toast } from 'react-toastify';
 import { shopDataContext } from '../context/ShopContext';
 import Card from '../components/Card';
 import Footer from '../components/Footer';
@@ -98,11 +98,10 @@ const FilterContent = ({
             <button
               key={i}
               onClick={() => toggleCategory(cat)}
-              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
-                category.includes(cat)
-                  ? 'bg-cyan-500 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
+              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${category.includes(cat)
+                ? 'bg-cyan-500 text-white'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
             >
               {cat}
             </button>
@@ -118,11 +117,10 @@ const FilterContent = ({
             <button
               key={i}
               onClick={() => toggleSubCategory(sub)}
-              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
-                subCategory.includes(sub)
-                  ? 'bg-cyan-500 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
+              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${subCategory.includes(sub)
+                ? 'bg-cyan-500 text-white'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
             >
               {sub}
             </button>
@@ -138,19 +136,17 @@ const FilterContent = ({
             <button
               key={i}
               onClick={() => toggleRating(rating)}
-              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 ${
-                selectedRatings.includes(rating)
-                  ? 'bg-cyan-500 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
+              className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 ${selectedRatings.includes(rating)
+                ? 'bg-cyan-500 text-white'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
             >
               <div className='flex items-center gap-1'>
                 {[...Array(5)].map((_, starIndex) => (
                   <FaStar
                     key={starIndex}
-                    className={`text-sm ${
-                      starIndex < rating ? 'text-yellow-400' : 'text-gray-600'
-                    }`}
+                    className={`text-sm ${starIndex < rating ? 'text-yellow-400' : 'text-gray-600'
+                      }`}
                   />
                 ))}
               </div>
@@ -165,7 +161,7 @@ const FilterContent = ({
 
 function Collections() {
   const [showFilter, setShowFilter] = useState(false);
-  const { product, search, showSearch } = useContext(shopDataContext);
+  const { product, search, showSearch, compareList, toggleCompare } = useContext(shopDataContext);
   const [filterProduct, setFilterProduct] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
@@ -249,7 +245,7 @@ function Collections() {
 
       // Count active filters
       const filterCount = category.length + subCategory.length + selectedRatings.length +
-                        (priceRange[0] > 0 || priceRange[1] < 2000 ? 1 : 0);
+        (priceRange[0] > 0 || priceRange[1] < 2000 ? 1 : 0);
       setActiveFilters(filterCount);
 
       setIsFiltering(false);
@@ -345,155 +341,21 @@ function Collections() {
 
   return (
     <>
-    <div className='min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] pt-24 pb-20 overflow-x-hidden'>
-      {/* Main Content */}
-      <div className='max-w-7xl mx-auto px-4 lg:px-8 flex flex-col lg:flex-row gap-8'>
-        {/* Filter Sidebar - Desktop Only */}
-        <div
-          ref={filterRef}
-          className='hidden lg:block lg:w-80 bg-gray-800/50 backdrop-blur-md rounded-2xl border border-gray-700 p-6 sticky top-24 h-fit'
-        >
-          <div className='flex items-center justify-between mb-6'>
-            <h2 className='text-xl font-bold text-white flex items-center gap-2'>
-              <FaFilter className='text-cyan-400' />
-              Filters {activeFilters > 0 && `(${activeFilters})`}
-            </h2>
-          </div>
-
-          <FilterContent
-            activeFilters={activeFilters}
-            clearAllFilters={clearAllFilters}
-            priceRange={priceRange}
-            setPriceRange={setPriceRange}
-            categories={categories}
-            category={category}
-            toggleCategory={toggleCategory}
-            subCategories={subCategories}
-            subCategory={subCategory}
-            toggleSubCategory={toggleSubCategory}
-            ratings={ratings}
-            selectedRatings={selectedRatings}
-            toggleRating={toggleRating}
-          />
-        </div>
-
-        {/* Products Section */}
-        <div className='flex-1' ref={contentRef}>
-          {/* Header */}
-          <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8 p-6 bg-gray-800/50 rounded-2xl backdrop-blur-md border border-gray-700'>
-            <Title text1={"ALL"} text2={"COLLECTIONS"} />
-
-            <div className='flex items-center gap-4'>
-              {/* Mobile Filter Toggle */}
-              <button
-                onClick={() => setShowFilter(!showFilter)}
-                className='lg:hidden flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-lg text-white'
-              >
-                <FaFilter className='text-cyan-400' />
-                Filters {activeFilters > 0 && `(${activeFilters})`}
-              </button>
-
-              {/* Sort Dropdown */}
-              <div className='relative flex-1 min-w-0 sm:min-w-[160px]'>
-                <select
-                  value={sortType}
-                  onChange={(e) => setSortType(e.target.value)}
-                  className='w-full appearance-none bg-gray-700 text-white px-3 py-2 sm:px-4 rounded-lg pr-8 sm:pr-10 focus:outline-none focus:ring-2 focus:ring-cyan-500 border border-gray-600 text-sm'
-                >
-                  <option value="relevant">Sort by: Relevant</option>
-                  <option value="low-high">Sort by: Price Low to High</option>
-                  <option value="high-low">Sort by: Price High to Low</option>
-                  <option value="rating">Sort by: Rating</option>
-                </select>
-                <RiArrowUpDownLine className='absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-sm' />
-              </div>
-            </div>
-          </div>
-
-          {/* Loading State */}
-          {isLoading ? (
-            <div className="space-y-8">
-              <Loader />
-              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-                {[...Array(8)].map((_, index) => (
-                  <CardSkeleton key={index} />
-                ))}
-              </div>
-            </div>
-          ) : isFiltering ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-              <p className="text-cyan-200">Applying filters...</p>
-            </div>
-          ) : filterProduct.length > 0 ? (
-            <>
-              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-                {filterProduct.map((item, index) => (
-                  <div key={item._id} className='collection-item'>
-                    <Card
-                      id={item._id}
-                      name={item.name}
-                      price={item.price}
-                      image={item.image1}
-                      showQuickActions={true}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {/* Load More Button */}
-              {filterProduct.length > 0 && filterProduct.length % 12 === 0 && (
-                <div className='text-center mt-12'>
-                  <button className='px-8 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-semibold'>
-                    Load More Products
-                  </button>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className='text-center py-16 bg-gray-800/30 rounded-2xl'>
-              <div className='w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full flex items-center justify-center'>
-                <FaSearch className='text-gray-600 text-3xl' />
-              </div>
-              <h3 className='text-white text-xl font-semibold mb-2'>No products found</h3>
-              <p className='text-gray-400 mb-6'>
-                Try adjusting your filters to find what you're looking for.
-              </p>
-              <button
-                onClick={clearAllFilters}
-                className='px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors'
-              >
-                Clear All Filters
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile Filter Overlay */}
-      {showFilter && (
-        <div
-          className='fixed inset-0 bg-black/70 z-50 lg:hidden'
-          onClick={() => setShowFilter(false)}
-        >
+      <div className='min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] pt-24 pb-20 overflow-x-hidden'>
+        {/* Main Content */}
+        <div className='max-w-7xl mx-auto px-4 lg:px-8 flex flex-col lg:flex-row gap-8'>
+          {/* Filter Sidebar - Desktop Only */}
           <div
-            className='absolute top-0 left-0 h-full w-80 bg-gray-900 border-r border-gray-700 p-6 overflow-y-auto'
-            onClick={(e) => e.stopPropagation()}
+            ref={filterRef}
+            className='hidden lg:block lg:w-80 bg-gray-800/50 backdrop-blur-md rounded-2xl border border-gray-700 p-6 sticky top-24 h-fit'
           >
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-xl font-bold text-white flex items-center gap-2'>
                 <FaFilter className='text-cyan-400' />
                 Filters {activeFilters > 0 && `(${activeFilters})`}
               </h2>
-              <button
-                onClick={() => setShowFilter(false)}
-                className='p-2 text-gray-400 hover:text-white'
-              >
-                <FaTimes className='text-xl' />
-              </button>
             </div>
 
-            {/* Mobile Filter Content */}
             <FilterContent
               activeFilters={activeFilters}
               clearAllFilters={clearAllFilters}
@@ -509,20 +371,156 @@ function Collections() {
               selectedRatings={selectedRatings}
               toggleRating={toggleRating}
             />
+          </div>
 
-            {/* Close button for mobile */}
-            <div className='mt-8 pt-6 border-t border-gray-700'>
-              <button
-                onClick={() => setShowFilter(false)}
-                className='w-full px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors font-semibold'
-              >
-                Done
-              </button>
+          {/* Products Section */}
+          <div className='flex-1' ref={contentRef}>
+            {/* Header */}
+            <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8 p-6 bg-gray-800/50 rounded-2xl backdrop-blur-md border border-gray-700'>
+              <h1 className='text-3xl font-extrabold text-white tracking-tight'>ALL <span className='text-cyan-400'>COLLECTIONS</span></h1>
+
+              <div className='flex items-center gap-4'>
+                {/* Mobile Filter Toggle */}
+                <button
+                  onClick={() => setShowFilter(!showFilter)}
+                  className='lg:hidden flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-lg text-white'
+                >
+                  <FaFilter className='text-cyan-400' />
+                  Filters {activeFilters > 0 && `(${activeFilters})`}
+                </button>
+
+                {/* Sort Dropdown */}
+                <div className='relative flex-1 min-w-0 sm:min-w-[160px]'>
+                  <select
+                    value={sortType}
+                    onChange={(e) => setSortType(e.target.value)}
+                    className='w-full appearance-none bg-gray-700 text-white px-3 py-2 sm:px-4 rounded-lg pr-8 sm:pr-10 focus:outline-none focus:ring-2 focus:ring-cyan-500 border border-gray-600 text-sm'
+                  >
+                    <option value="relevant">Sort by: Relevant</option>
+                    <option value="low-high">Sort by: Price Low to High</option>
+                    <option value="high-low">Sort by: Price High to Low</option>
+                    <option value="rating">Sort by: Rating</option>
+                  </select>
+                  <RiArrowUpDownLine className='absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-sm' />
+                </div>
+              </div>
             </div>
+
+            {/* Loading State */}
+            {isLoading ? (
+              <div className="space-y-8">
+                <Loader />
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+                  {[...Array(8)].map((_, index) => (
+                    <CardSkeleton key={index} />
+                  ))}
+                </div>
+              </div>
+            ) : isFiltering ? (
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-cyan-200">Applying filters...</p>
+              </div>
+            ) : filterProduct.length > 0 ? (
+              <>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+                  {filterProduct.map((item, index) => (
+                    <div key={item._id} className='collection-item'>
+                      <Card
+                        id={item._id}
+                        name={item.name}
+                        price={item.price}
+                        image={item.image1}
+                        showQuickActions={true}
+                        onCompare={() => toggleCompare(item)}
+                        isCompared={compareList?.some(p => p._id === item._id)}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Load More Button */}
+                {filterProduct.length > 0 && filterProduct.length % 12 === 0 && (
+                  <div className='text-center mt-12'>
+                    <button className='px-8 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-semibold'>
+                      Load More Products
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className='text-center py-16 bg-gray-800/30 rounded-2xl'>
+                <div className='w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full flex items-center justify-center'>
+                  <FaSearch className='text-gray-600 text-3xl' />
+                </div>
+                <h3 className='text-white text-xl font-semibold mb-2'>No products found</h3>
+                <p className='text-gray-400 mb-6'>
+                  Try adjusting your filters to find what you're looking for.
+                </p>
+                <button
+                  onClick={clearAllFilters}
+                  className='px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors'
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Mobile Filter Overlay */}
+        {showFilter && (
+          <div
+            className='fixed inset-0 bg-black/70 z-50 lg:hidden'
+            onClick={() => setShowFilter(false)}
+          >
+            <div
+              className='absolute top-0 left-0 h-full w-80 bg-gray-900 border-r border-gray-700 p-6 overflow-y-auto'
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className='flex items-center justify-between mb-6'>
+                <h2 className='text-xl font-bold text-white flex items-center gap-2'>
+                  <FaFilter className='text-cyan-400' />
+                  Filters {activeFilters > 0 && `(${activeFilters})`}
+                </h2>
+                <button
+                  onClick={() => setShowFilter(false)}
+                  className='p-2 text-gray-400 hover:text-white'
+                >
+                  <FaTimes className='text-xl' />
+                </button>
+              </div>
+
+              {/* Mobile Filter Content */}
+              <FilterContent
+                activeFilters={activeFilters}
+                clearAllFilters={clearAllFilters}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                categories={categories}
+                category={category}
+                toggleCategory={toggleCategory}
+                subCategories={subCategories}
+                subCategory={subCategory}
+                toggleSubCategory={toggleSubCategory}
+                ratings={ratings}
+                selectedRatings={selectedRatings}
+                toggleRating={toggleRating}
+              />
+
+              {/* Close button for mobile */}
+              <div className='mt-8 pt-6 border-t border-gray-700'>
+                <button
+                  onClick={() => setShowFilter(false)}
+                  className='w-full px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors font-semibold'
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Footer */}
       <Footer />

@@ -108,15 +108,15 @@ function Footer() {
           </h3>
           <ul className="space-y-3">
             {[
-              { name: 'Home', path: '/' },
-              { name: 'About Us', path: '/about' },
-              { name: 'Products', path: '/product' },
-              { name: 'Collections', path: '/collection' },
-              { name: 'New Arrivals', path: '/collection' },
-              { name: 'Best Sellers', path: '/best-sellers' }
+              { name: 'Home', to: '/' },
+              { name: 'About Us', to: '/about' },
+              { name: 'Products', to: '/product' },
+              { name: 'Collections', to: '/collection' },
+              { name: 'New Arrivals', to: '/new-arrivals' },
+              { name: 'Best Sellers', to: '/product' }
             ].map((item, index) => (
               <li key={index}>
-                <Link to={item.path} className="text-sm text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group">
+                <Link to={item.to} className="text-sm text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   {item.name}
                 </Link>
@@ -192,26 +192,26 @@ function Footer() {
       {/* Newsletter Subscription */}
       <div className="border-t border-gray-800 py-8">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div>
               <h4 className="text-white font-semibold mb-2">Stay Updated</h4>
               <p className="text-sm text-gray-400">Subscribe to our newsletter for exclusive offers and updates</p>
             </div>
-            <div className="flex gap-3 relative z-10">
-  <input
-    type="email"
-    placeholder="Enter your email"
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent w-64"
-  />
-  <button 
-    onClick={handleSubscribe}
-    className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all duration-300"
-  >
-    Subscribe
-  </button>
-</div>
+            <div className="flex flex-col sm:flex-row gap-3 relative z-10 w-full lg:w-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent w-full sm:w-64"
+              />
+              <button 
+                onClick={handleSubscribe}
+                className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </div>
 
           </div>
         </div>
@@ -225,9 +225,9 @@ function Footer() {
           </p>
           
           <div className="flex items-center gap-6 text-xs text-gray-500">
-            <span>Terms of Service</span>
-            <span>Privacy Policy</span>
-            <span>Cookie Policy</span>
+            <Link to="/termsandservices" className="hover:text-cyan-400 transition-colors">Terms of Service</Link>
+            <Link to="/privicypolicy" className="hover:text-cyan-400 transition-colors">Privacy Policy</Link>
+            <Link to="/cookie-policy" className="hover:text-cyan-400 transition-colors">Cookie Policy</Link>
           </div>
           
           <div className="flex items-center gap-2 text-xs text-gray-500">

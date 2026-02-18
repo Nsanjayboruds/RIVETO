@@ -423,6 +423,8 @@ function ProductDetail() {
             category={productData.category}
             subCategory={productData.subCategory}
             currentProductId={productData._id}
+            tags={productData.tags || []}
+            price={productData.price || 0}
           />
         </div>
       </div>
