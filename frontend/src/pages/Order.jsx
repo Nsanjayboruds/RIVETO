@@ -148,17 +148,17 @@ function Order() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-cyan-200 text-lg">Loading your orders...</p>
+          <p className="text-cyan-700 dark:text-cyan-200 text-lg">Loading your orders...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div ref={sectionRef} className="min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] pt-24 pb-20 px-4">
+    <div ref={sectionRef} className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] pt-24 pb-20 px-4">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
@@ -169,7 +169,7 @@ function Order() {
         {/* Header */}
         <div className="text-center mb-8">
           <Title text1='MY' text2='ORDERS' />
-          <p className="text-cyan-100 mt-4">Track and manage all your purchases in one place</p>
+          <p className="text-cyan-700 dark:text-cyan-100 mt-4">Track and manage all your purchases in one place</p>
         </div>
 
         {/* Filter Tabs */}
@@ -183,7 +183,7 @@ function Order() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
                   filterStatus === filter.value
                     ? 'bg-cyan-500 text-white shadow-lg'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    : 'bg-slate-200 dark:bg-gray-800 text-slate-700 dark:text-gray-300 hover:bg-slate-300 dark:hover:bg-gray-700'
                 }`}
               >
                 <IconComponent className="w-4 h-4" />
@@ -194,11 +194,11 @@ function Order() {
         </div>
 
         {/* Orders Count */}
-        <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-2xl p-4 mb-8">
+        <div className="bg-gradient-to-r from-cyan-100 to-blue-100 dark:from-cyan-500/10 dark:to-blue-500/10 border border-cyan-300/50 dark:border-cyan-500/20 rounded-2xl p-4 mb-8">
           <div className="flex flex-wrap justify-between items-center">
             <div>
-              <h3 className="text-white font-semibold">Order Summary</h3>
-              <p className="text-cyan-100 text-sm">
+              <h3 className="text-slate-900 dark:text-white font-semibold">Order Summary</h3>
+              <p className="text-cyan-700 dark:text-cyan-100 text-sm">
                 {filteredOrders.length} order{filteredOrders.length !== 1 ? 's' : ''} found
               </p>
             </div>
@@ -213,12 +213,12 @@ function Order() {
         {/* Orders List */}
         <div className="space-y-6">
           {filteredOrders.length === 0 ? (
-            <div className="text-center py-16 bg-gray-800/30 rounded-2xl">
-              <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full flex items-center justify-center">
-                <FaShoppingBag className="text-gray-600 text-3xl" />
+            <div className="text-center py-16 bg-white/80 dark:bg-gray-800/30 rounded-2xl border border-slate-200 dark:border-gray-700/40">
+              <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-slate-200 to-slate-300 dark:from-gray-800 dark:to-gray-900 rounded-full flex items-center justify-center">
+                <FaShoppingBag className="text-slate-500 dark:text-gray-600 text-3xl" />
               </div>
-              <h3 className="text-white text-xl font-semibold mb-2">No orders found</h3>
-              <p className="text-gray-400">You haven't placed any orders yet.</p>
+              <h3 className="text-slate-900 dark:text-white text-xl font-semibold mb-2">No orders found</h3>
+              <p className="text-slate-600 dark:text-gray-400">You haven't placed any orders yet.</p>
               <button className="mt-6 px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl transition-colors">
                 Start Shopping
               </button>
@@ -232,7 +232,7 @@ function Order() {
               return (
                 <div
                   key={index}
-                  className="order-item bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-6 shadow-xl"
+                  className="order-item bg-gradient-to-br from-white to-slate-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-slate-200 dark:border-gray-700 p-6 shadow-xl"
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Product Info */}
@@ -240,12 +240,12 @@ function Order() {
                       <img
                         src={item.image1}
                         alt={item.name}
-                        className="w-20 h-20 object-cover rounded-xl"
+                        className="w-20 h-20 object-cover rounded-xl border border-slate-200 dark:border-gray-700"
                       />
                       <div>
-                        <h3 className="text-white font-semibold text-lg mb-1">{item.name}</h3>
+                        <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-1">{item.name}</h3>
                         <p className="text-cyan-400 font-bold text-xl">{currency}{item.price}</p>
-                        <p className="text-gray-400 text-sm">Quantity: {item.quantity || 1}</p>
+                        <p className="text-slate-500 dark:text-gray-400 text-sm">Quantity: {item.quantity || 1}</p>
                       </div>
                     </div>
 
@@ -257,11 +257,11 @@ function Order() {
                           {item.status || 'Processing'}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-gray-400">
                         <FaCalendarAlt className="w-4 h-4" />
                         <span>{formatDate(item.date)}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-gray-400">
                         {item.payment ? (
                           <GiReceiveMoney className="w-4 h-4 text-green-400" />
                         ) : (
@@ -269,7 +269,7 @@ function Order() {
                         )}
                         <span>{item.payment ? 'Paid' : 'Pending'} • {item.paymentMethod}</span>
                       </div>
-                      <p className="text-xs text-gray-500">Order ID: {item.orderId?.slice(-8)}</p>
+                      <p className="text-xs text-slate-500 dark:text-gray-500">Order ID: {item.orderId?.slice(-8)}</p>
                     </div>
 
                     {/* Status Tracker */}
@@ -287,13 +287,13 @@ function Order() {
                                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                                     isCompleted 
                                       ? `bg-gradient-to-r ${step.color} text-white` 
-                                      : 'bg-gray-700 text-gray-400'
+                                      : 'bg-slate-300 dark:bg-gray-700 text-slate-500 dark:text-gray-400'
                                   }`}>
                                     <StepIcon className="w-4 h-4" />
                                   </div>
                                   {idx < statusSteps.length - 1 && (
                                     <div className={`w-12 h-1 mt-2 ${
-                                      isCompleted ? `bg-gradient-to-r ${step.color}` : 'bg-gray-700'
+                                      isCompleted ? `bg-gradient-to-r ${step.color}` : 'bg-slate-300 dark:bg-gray-700'
                                     }`}></div>
                                   )}
                                 </div>
@@ -314,8 +314,8 @@ function Order() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-3 mt-6 pt-4 border-t border-gray-700">
-                    <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-xl text-sm transition-colors">
+                  <div className="flex gap-3 mt-6 pt-4 border-t border-slate-200 dark:border-gray-700">
+                    <button className="px-4 py-2 bg-slate-300 dark:bg-gray-700 hover:bg-slate-400 dark:hover:bg-gray-600 text-slate-800 dark:text-white rounded-xl text-sm transition-colors">
                       View Details
                     </button>
                     {!isCancelled && statusIndex === 4 && (

@@ -45,12 +45,12 @@ const faqs = [
 ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] pt-24 pb-1 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] pt-24 pb-1 text-slate-900 dark:text-white">
          <section className="py-16 md:py-24">
             <div className="mx-auto max-w-7xl px-4 md:px-8">
                 <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-                    <h2 className="text-4xl md:text-5xl font-bold text-white">Frequently asked questions</h2>
-                    <p className="mt-4 text-lg text-gray-400 md:mt-5 md:text-xl">Everything you need to know about the product and billing. </p>
+                    <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">Frequently asked questions</h2>
+                    <p className="mt-4 text-lg text-slate-600 dark:text-gray-400 md:mt-5 md:text-xl">Everything you need to know about the product and billing. </p>
                 </div>
  
                 <div className="mt-12 md:mt-16">
@@ -58,39 +58,39 @@ const faqs = [
                         {faqs.map((item, index) => (
                             <div key={index}>
                                 <div className="flex max-w-sm flex-col items-center text-center">
-                                    <div className="p-4 bg-gray-800/50 rounded-xl border border-gray-700">
+                                    <div className="p-4 bg-white/80 dark:bg-gray-800/50 rounded-xl border border-slate-200 dark:border-gray-700">
                                         <item.icon className="text-3xl text-cyan-400" />
                                     </div>
  
-                                    <dt className="mt-4 text-lg font-semibold text-white">{item.question}</dt>
-                                    <dd className="mt-2 text-base text-gray-300">{item.answer}</dd>
+                                    <dt className="mt-4 text-lg font-semibold text-slate-900 dark:text-white">{item.question}</dt>
+                                    <dd className="mt-2 text-base text-slate-700 dark:text-gray-300">{item.answer}</dd>
                                 </div>
                             </div>
                         ))}
                     </dl>
                 </div>
  
-                <div className="mt-12 flex flex-col items-center gap-6 rounded-2xl bg-gray-800/50 backdrop-blur-md border border-gray-700 px-6 py-8 text-center md:mt-16 md:gap-8 md:px-8 md:py-10">
+                          <div className="mt-12 flex flex-col items-center gap-6 rounded-2xl bg-white/85 dark:bg-gray-800/50 backdrop-blur-md border border-slate-200 dark:border-gray-700 px-6 py-8 text-center md:mt-16 md:gap-8 md:px-8 md:py-10">
                     <div className="flex items-end -space-x-4">
                         <img
                             src="https://www.untitledui.com/images/avatars/marco-kelly?fm=webp&q=80"
                             alt="Marco Kelly"
-                            className="w-12 h-12 rounded-full ring-2 ring-white"
+                            className="w-12 h-12 rounded-full ring-2 ring-slate-300 dark:ring-white"
                         />
                         <img
                             src="https://www.untitledui.com/images/avatars/amelie-laurent?fm=webp&q=80"
                             alt="Amelie Laurent"
-                            className="w-16 h-16 rounded-full ring-2 ring-white z-10"
+                            className="w-16 h-16 rounded-full ring-2 ring-slate-300 dark:ring-white z-10"
                         />
                         <img
                             src="https://www.untitledui.com/images/avatars/jaya-willis?fm=webp&q=80"
                             alt="Jaya Willis"
-                            className="w-12 h-12 rounded-full ring-2 ring-white"
+                            className="w-12 h-12 rounded-full ring-2 ring-slate-300 dark:ring-white"
                         />
                     </div>
                     <div>
-                        <h4 className="text-xl font-semibold text-white">Still have questions?</h4>
-                        <p className="mt-2 text-base md:text-lg text-gray-300">Can't find the answer you're looking for? Please chat to our friendly team.</p>
+                        <h4 className="text-xl font-semibold text-slate-900 dark:text-white">Still have questions?</h4>
+                        <p className="mt-2 text-base md:text-lg text-slate-700 dark:text-gray-300">Can't find the answer you're looking for? Please chat to our friendly team.</p>
                     </div>
                     <a 
                         href='https://github.com/Nsanjayboruds' 

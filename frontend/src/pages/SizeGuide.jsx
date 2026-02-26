@@ -194,11 +194,11 @@ function SizeTable({ chart }) {
       </h3>
 
       {/* Desktop table */}
-      <div className="hidden md:block overflow-x-auto rounded-xl border border-gray-700/50">
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700/50">
         <table className="w-full text-sm text-left" role="table">
           <caption className="sr-only">{chart.title} size chart</caption>
           <thead>
-            <tr className="bg-gray-800/80">
+            <tr className="bg-slate-200 dark:bg-gray-800/80">
               {chart.headers.map((h, i) => (
                 <th
                   key={i}
@@ -214,15 +214,15 @@ function SizeTable({ chart }) {
             {chart.rows.map((row, rIdx) => (
               <tr
                 key={rIdx}
-                className={`border-t border-gray-700/40 transition-colors ${
-                  rIdx % 2 === 0 ? "bg-gray-800/30" : "bg-gray-800/10"
+                className={`border-t border-slate-200 dark:border-gray-700/40 transition-colors ${
+                  rIdx % 2 === 0 ? "bg-white dark:bg-gray-800/30" : "bg-slate-50 dark:bg-gray-800/10"
                 } hover:bg-cyan-500/10`}
               >
                 {row.map((cell, cIdx) => (
                   <td
                     key={cIdx}
                     className={`px-5 py-3 whitespace-nowrap ${
-                      cIdx === 0 ? "font-semibold text-white" : "text-gray-300"
+                      cIdx === 0 ? "font-semibold text-slate-900 dark:text-white" : "text-slate-700 dark:text-gray-300"
                     }`}
                   >
                     {cell}
@@ -239,7 +239,7 @@ function SizeTable({ chart }) {
         {chart.rows.map((row, rIdx) => (
           <div
             key={rIdx}
-            className="rounded-xl border border-gray-700/50 bg-gray-800/30 p-4"
+            className="rounded-xl border border-slate-200 dark:border-gray-700/50 bg-white dark:bg-gray-800/30 p-4"
           >
             <p className="text-cyan-300 font-semibold text-base mb-2">
               {chart.headers[0]}: {row[0]}
@@ -247,8 +247,8 @@ function SizeTable({ chart }) {
             <div className="grid grid-cols-2 gap-2 text-sm">
               {chart.headers.slice(1).map((h, i) => (
                 <div key={i}>
-                  <span className="text-gray-500 text-xs">{h}</span>
-                  <p className="text-gray-200">{row[i + 1]}</p>
+                  <span className="text-slate-500 dark:text-gray-500 text-xs">{h}</span>
+                  <p className="text-slate-800 dark:text-gray-200">{row[i + 1]}</p>
                 </div>
               ))}
             </div>
@@ -267,7 +267,7 @@ function MeasurementTipCard({ tip }) {
   return (
     <button
       onClick={() => setOpen(!open)}
-      className="w-full text-left bg-gray-800/40 border border-gray-700/50 rounded-xl p-5 transition-all hover:border-cyan-500/40 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+      className="w-full text-left bg-white/85 dark:bg-gray-800/40 border border-slate-200 dark:border-gray-700/50 rounded-xl p-5 transition-all hover:border-cyan-500/40 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
       aria-expanded={open}
     >
       <div className="flex items-center justify-between">
@@ -275,16 +275,16 @@ function MeasurementTipCard({ tip }) {
           <div className="w-10 h-10 rounded-lg bg-cyan-500/15 flex items-center justify-center text-cyan-400">
             {tip.icon}
           </div>
-          <span className="font-medium text-white">{tip.label}</span>
+          <span className="font-medium text-slate-900 dark:text-white">{tip.label}</span>
         </div>
         {open ? (
           <FaChevronUp className="text-cyan-400 text-sm" />
         ) : (
-          <FaChevronDown className="text-gray-500 text-sm" />
+          <FaChevronDown className="text-slate-500 dark:text-gray-500 text-sm" />
         )}
       </div>
       {open && (
-        <p className="mt-3 text-sm text-gray-400 leading-relaxed pl-[52px]">
+        <p className="mt-3 text-sm text-slate-600 dark:text-gray-400 leading-relaxed pl-[52px]">
           {tip.description}
         </p>
       )}
@@ -298,7 +298,7 @@ const SizeGuide = () => {
   const [activeCategory, setActiveCategory] = useState("men");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] pt-24 pb-1 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] pt-24 pb-1 text-slate-900 dark:text-white">
       {/* Hero Section */}
       <section className="py-12 md:py-20">
         <div className="mx-auto max-w-5xl px-4 md:px-8 text-center">
@@ -309,7 +309,7 @@ const SizeGuide = () => {
           <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-4">
             Size Guide
           </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+          <p className="text-slate-600 dark:text-gray-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
             Use our comprehensive size charts to find clothing and accessories that fit you perfectly.
             All measurements are provided in both centimeters and inches.
           </p>
@@ -328,7 +328,7 @@ const SizeGuide = () => {
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
                 activeCategory === cat.key
                   ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-transparent shadow-lg shadow-cyan-500/20"
-                  : "bg-gray-800/50 text-gray-400 border-gray-700/50 hover:text-white hover:border-cyan-500/40"
+                  : "bg-white/85 dark:bg-gray-800/50 text-slate-600 dark:text-gray-400 border-slate-200 dark:border-gray-700/50 hover:text-slate-900 dark:hover:text-white hover:border-cyan-500/40"
               }`}
             >
               {cat.icon}
@@ -347,7 +347,7 @@ const SizeGuide = () => {
         {/* Fit Tip */}
         <div className="flex items-start gap-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-5 mb-16">
           <FaInfoCircle className="text-cyan-400 mt-1 flex-shrink-0 text-lg" />
-          <p className="text-sm text-gray-300 leading-relaxed">
+          <p className="text-sm text-slate-700 dark:text-gray-300 leading-relaxed">
             <span className="font-semibold text-cyan-300">Fit Tip:</span> If you're between two sizes, 
             we recommend sizing up for a more comfortable fit — especially for outerwear and structured items.
           </p>
@@ -360,7 +360,7 @@ const SizeGuide = () => {
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
             How to Measure
           </h2>
-          <p className="text-gray-400 max-w-xl mx-auto">
+          <p className="text-slate-600 dark:text-gray-400 max-w-xl mx-auto">
             Follow these steps to take accurate body measurements so you can find your perfect size every time.
           </p>
         </div>
@@ -372,14 +372,14 @@ const SizeGuide = () => {
         </div>
 
         {/* Pro Tips */}
-        <div className="bg-gray-800/40 border border-gray-700/50 rounded-2xl p-6 md:p-8">
-          <h3 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+        <div className="bg-white/85 dark:bg-gray-800/40 border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 md:p-8">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-5 flex items-center gap-2">
             <FaHandPointRight className="text-cyan-400" />
             Pro Tips for Accurate Measurements
           </h3>
           <ul className="grid gap-3 sm:grid-cols-2">
             {proTips.map((tip, idx) => (
-              <li key={idx} className="flex items-start gap-3 text-sm text-gray-300">
+              <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-gray-300">
                 <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">
                   {idx + 1}
                 </span>
@@ -392,8 +392,8 @@ const SizeGuide = () => {
 
       {/* Unit Conversion Quick Reference */}
       <section className="mx-auto max-w-5xl px-4 md:px-8 mb-20">
-        <div className="bg-gradient-to-r from-gray-800/60 to-gray-800/30 border border-gray-700/50 rounded-2xl p-6 md:p-8">
-          <h3 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+        <div className="bg-gradient-to-r from-white to-slate-100 dark:from-gray-800/60 dark:to-gray-800/30 border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 md:p-8">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-5 flex items-center gap-2">
             <FaExchangeAlt className="text-cyan-400" />
             Quick Conversion Reference
           </h3>
@@ -404,8 +404,8 @@ const SizeGuide = () => {
               { label: "1 foot", value: "30.48 cm" },
               { label: "1 meter", value: "39.37 inches" },
             ].map((item, idx) => (
-              <div key={idx} className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/40">
-                <p className="text-xs text-gray-500 mb-1">{item.label}</p>
+              <div key={idx} className="bg-slate-100 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200 dark:border-gray-700/40">
+                <p className="text-xs text-slate-500 dark:text-gray-500 mb-1">{item.label}</p>
                 <p className="text-lg font-semibold text-cyan-300">{item.value}</p>
               </div>
             ))}

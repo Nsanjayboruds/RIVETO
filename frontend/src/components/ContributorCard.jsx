@@ -8,7 +8,7 @@ const ContributorCard = ({ contributor }) => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="group relative p-6 rounded-3xl bg-white/5 dark:bg-gray-900/40 backdrop-blur-xl border border-white/10 dark:border-gray-800/50 hover:border-cyan-500/50 transition-all duration-500 overflow-hidden"
+            className="group relative p-6 rounded-3xl bg-white/85 dark:bg-gray-900/40 backdrop-blur-xl border border-slate-200 dark:border-gray-800/50 hover:border-cyan-500/50 transition-all duration-500 overflow-hidden"
         >
             {/* Background Glow */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
@@ -36,7 +36,7 @@ const ContributorCard = ({ contributor }) => {
                 </p>
 
                 {/* Stats */}
-                <div className="px-4 py-1.5 rounded-full bg-white/10 dark:bg-black/20 border border-white/10 dark:border-gray-800 text-xs font-medium text-gray-700 dark:text-gray-300">
+                <div className="px-4 py-1.5 rounded-full bg-slate-100 dark:bg-black/20 border border-slate-200 dark:border-gray-800 text-xs font-medium text-gray-700 dark:text-gray-300">
                     {contributor.contributions} Contributions
                 </div>
 

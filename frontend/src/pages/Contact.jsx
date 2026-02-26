@@ -204,7 +204,7 @@ function Contact() {
 
   return (
     <>
-    <div className='w-full min-h-screen bg-gradient-to-br from-gray-950 via-[#0a1628] to-[#0c3a5e] pt-24 pb-20 overflow-x-hidden relative'>
+    <div className='w-full min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-950 dark:via-[#0a1628] dark:to-[#0c3a5e] pt-24 pb-20 overflow-x-hidden relative'>
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <div className="floating-bg-1 absolute -top-24 -right-24 w-[500px] h-[500px] bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-transparent rounded-full blur-3xl"></div>
@@ -224,11 +224,11 @@ function Contact() {
         {/* Header */}
         <div className="contact-title text-center mb-16">
           <Title text1="GET IN" text2="TOUCH" />
-          <p className="text-lg text-cyan-100/80 mt-4 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-cyan-100/80 mt-4 max-w-2xl mx-auto leading-relaxed">
             We'd love to hear from you. Reach out to us through any of these channels.
           </p>
           <div className="flex justify-center mt-4">
-            <HiSparkles className="w-6 h-6 text-cyan-400 animate-pulse" />
+            <HiSparkles className="w-6 h-6 text-cyan-500 dark:text-cyan-400 animate-pulse" />
           </div>
         </div>
 
@@ -239,7 +239,7 @@ function Contact() {
               {contactInfo.map((item, index) => (
                 <div
                   key={index}
-                  className={`contact-card group relative bg-gradient-to-br from-gray-800/90 to-gray-900/95 p-6 rounded-2xl border border-gray-700/50 backdrop-blur-sm cursor-pointer
+                  className={`contact-card group relative bg-gradient-to-br from-white/95 to-slate-100/90 dark:from-gray-800/90 dark:to-gray-900/95 p-6 rounded-2xl border border-slate-200 dark:border-gray-700/50 backdrop-blur-sm cursor-pointer
                     transition-all duration-500 ease-out
                     hover:scale-[1.05] hover:-translate-y-3 ${item.borderGlow}
                     hover:shadow-2xl hover:shadow-black/30 ${item.hoverBg}
@@ -263,13 +263,13 @@ function Contact() {
                     shadow-lg transition-all duration-500
                     group-hover:scale-115 group-hover:rotate-6 group-hover:shadow-2xl ${item.iconGlow}`}>
                     <div className="absolute inset-0 rounded-xl bg-white/0 group-hover:bg-white/20 transition-all duration-300"></div>
-                    <div className="absolute -inset-1 rounded-xl bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-50 blur-md transition-all duration-500"></div>
+                    <div className={`absolute -inset-1 rounded-xl bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-50 blur-md transition-all duration-500`}></div>
                     <span className="relative z-10 group-hover:scale-110 transition-transform duration-300">{item.icon}</span>
                   </div>
 
-                  <h3 className={`text-lg font-semibold text-white mb-2 transition-all duration-300 ${item.textGlow}`}>{item.title}</h3>
-                  <p className="text-cyan-300/90 font-medium group-hover:text-white transition-all duration-300">{item.content}</p>
-                  <p className="text-gray-400 text-sm mt-1 group-hover:text-gray-200 transition-all duration-300">{item.subContent}</p>
+                  <h3 className={`text-lg font-semibold text-slate-900 dark:text-white mb-2 transition-all duration-300 ${item.textGlow}`}>{item.title}</h3>
+                  <p className="text-cyan-700 dark:text-cyan-300/90 font-medium group-hover:text-slate-900 dark:group-hover:text-white transition-all duration-300">{item.content}</p>
+                  <p className="text-slate-500 dark:text-gray-400 text-sm mt-1 group-hover:text-slate-700 dark:group-hover:text-gray-200 transition-all duration-300">{item.subContent}</p>
 
                   {/* Corner decorations */}
                   <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl ${item.color} opacity-0 group-hover:opacity-[0.07] rounded-tr-2xl rounded-bl-[100px] transition-all duration-700`}></div>
@@ -279,10 +279,10 @@ function Contact() {
             </div>
 
             {/* Social Media */}
-            <div className="contact-section group/social bg-gradient-to-br from-gray-800/90 to-gray-900/95 p-6 rounded-2xl border border-gray-700/50 backdrop-blur-sm
+            <div className="contact-section group/social bg-gradient-to-br from-white/95 to-slate-100/90 dark:from-gray-800/90 dark:to-gray-900/95 p-6 rounded-2xl border border-slate-200 dark:border-gray-700/50 backdrop-blur-sm
               hover:border-purple-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10
-              hover:bg-gradient-to-br hover:from-gray-800/95 hover:to-purple-900/20">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2 group-hover/social:text-purple-100 transition-colors duration-300">
+              hover:bg-gradient-to-br hover:from-slate-100/95 hover:to-purple-100/40 dark:hover:from-gray-800/95 dark:hover:to-purple-900/20">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2 group-hover/social:text-purple-700 dark:group-hover/social:text-purple-100 transition-colors duration-300">
                 Follow Us
                 <span className="inline-block w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></span>
               </h3>
@@ -291,10 +291,10 @@ function Contact() {
                   <a
                     key={index}
                     href="#"
-                    className={`group relative w-14 h-14 bg-gradient-to-br from-gray-700/80 to-gray-800/90 rounded-xl flex items-center justify-center
+                    className={`group relative w-14 h-14 bg-gradient-to-br from-slate-200/90 to-slate-300/70 dark:from-gray-700/80 dark:to-gray-800/90 rounded-xl flex items-center justify-center
                       transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 hover:rotate-6
                       hover:shadow-2xl ${social.glowColor}
-                      overflow-hidden border border-gray-600/50 hover:border-transparent
+                      overflow-hidden border border-slate-300/70 dark:border-gray-600/50 hover:border-transparent
                       hover:ring-2 ${social.ringColor}`}
                     aria-label={social.label}
                   >
@@ -304,7 +304,7 @@ function Contact() {
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/25 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                    <span className="relative z-10 text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300 group-hover:drop-shadow-lg">
+                    <span className="relative z-10 text-slate-600 dark:text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300 group-hover:drop-shadow-lg">
                       {social.icon}
                     </span>
                   </a>
@@ -315,9 +315,9 @@ function Contact() {
 
           {/* Contact Form */}
           <div className="contact-section">
-            <div className="group/form relative bg-gradient-to-br from-gray-800/90 to-gray-900/95 p-8 rounded-2xl border border-gray-700/50 backdrop-blur-sm
+            <div className="group/form relative bg-gradient-to-br from-white/95 to-slate-100/90 dark:from-gray-800/90 dark:to-gray-900/95 p-8 rounded-2xl border border-slate-200 dark:border-gray-700/50 backdrop-blur-sm
               hover:border-cyan-500/30 transition-all duration-700 hover:shadow-2xl hover:shadow-cyan-500/20 overflow-hidden
-              hover:bg-gradient-to-br hover:from-gray-800/95 hover:to-cyan-900/10">
+              hover:bg-gradient-to-br hover:from-slate-100/95 hover:to-cyan-100/40 dark:hover:from-gray-800/95 dark:hover:to-cyan-900/10">
 
               {/* Animated gradient border */}
               <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-0 group-hover/form:opacity-60 transition-opacity duration-700 blur-sm -z-10"></div>
@@ -330,7 +330,7 @@ function Contact() {
               <div className="absolute top-10 right-20 w-2 h-2 bg-cyan-400/60 rounded-full opacity-0 group-hover/form:opacity-100 group-hover/form:animate-ping transition-opacity duration-500"></div>
               <div className="absolute bottom-20 left-10 w-1.5 h-1.5 bg-purple-400/60 rounded-full opacity-0 group-hover/form:opacity-100 group-hover/form:animate-pulse transition-opacity duration-500 delay-200"></div>
 
-              <h3 className="relative text-2xl font-bold text-white mb-6 flex items-center gap-3 group-hover/form:text-cyan-50 transition-colors duration-300">
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 group-hover/form:text-cyan-700 dark:group-hover/form:text-cyan-50 transition-colors duration-300">
                 Send us a Message
                 <FaPaperPlane className="w-5 h-5 text-cyan-400 animate-bounce group-hover/form:text-cyan-300 group-hover/form:drop-shadow-lg group-hover/form:drop-shadow-cyan-400/50" />
               </h3>
@@ -341,13 +341,13 @@ function Contact() {
                     animate-pulse shadow-xl shadow-green-500/30 ring-2 ring-green-400/30">
                     <FaPaperPlane className="w-12 h-12 text-green-400 drop-shadow-lg" />
                   </div>
-                  <h4 className="text-2xl font-semibold text-white mb-2">Message Sent!</h4>
-                  <p className="text-gray-300">We'll get back to you within 24 hours.</p>
+                  <h4 className="text-2xl font-semibold text-slate-900 dark:text-white mb-2">Message Sent!</h4>
+                  <p className="text-slate-600 dark:text-gray-300">We'll get back to you within 24 hours.</p>
                 </div>
               ) : (
                 <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 relative">
                   <div className="form-field relative group/input">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-cyan-400 group-hover/input:text-gray-300 transition-all duration-300 group-focus-within/input:scale-110">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-gray-400 group-focus-within/input:text-cyan-500 dark:group-focus-within/input:text-cyan-400 group-hover/input:text-slate-700 dark:group-hover/input:text-gray-300 transition-all duration-300 group-focus-within/input:scale-110">
                       <FaUser className="w-5 h-5" />
                     </div>
                     <input
@@ -356,16 +356,16 @@ function Contact() {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Your Name"
-                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400
-                        focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-500/30 focus:bg-gray-700/90 focus:shadow-lg focus:shadow-cyan-500/20
-                        transition-all duration-400 hover:border-gray-500 hover:bg-gray-700/70 hover:shadow-md"
+                      className="w-full pl-12 pr-4 py-4 bg-white/90 dark:bg-gray-700/60 border-2 border-slate-300 dark:border-gray-600/50 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-gray-400
+                        focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 focus:ring-4 focus:ring-cyan-500/30 focus:bg-white dark:focus:bg-gray-700/90 focus:shadow-lg focus:shadow-cyan-500/20
+                        transition-all duration-400 hover:border-slate-400 dark:hover:border-gray-500 hover:bg-white dark:hover:bg-gray-700/70 hover:shadow-md"
                       required
                     />
                     <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-500/0 via-cyan-500/0 to-cyan-500/0 opacity-0 group-focus-within/input:opacity-10 transition-opacity duration-300 pointer-events-none"></div>
                   </div>
 
                   <div className="form-field relative group/input">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-blue-400 group-hover/input:text-gray-300 transition-all duration-300 group-focus-within/input:scale-110">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-gray-400 group-focus-within/input:text-blue-500 dark:group-focus-within/input:text-blue-400 group-hover/input:text-slate-700 dark:group-hover/input:text-gray-300 transition-all duration-300 group-focus-within/input:scale-110">
                       <FaEnvelope className="w-5 h-5" />
                     </div>
                     <input
@@ -374,15 +374,15 @@ function Contact() {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="Your Email"
-                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400
-                        focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/30 focus:bg-gray-700/90 focus:shadow-lg focus:shadow-blue-500/20
-                        transition-all duration-400 hover:border-gray-500 hover:bg-gray-700/70 hover:shadow-md"
+                      className="w-full pl-12 pr-4 py-4 bg-white/90 dark:bg-gray-700/60 border-2 border-slate-300 dark:border-gray-600/50 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-gray-400
+                        focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-500/30 focus:bg-white dark:focus:bg-gray-700/90 focus:shadow-lg focus:shadow-blue-500/20
+                        transition-all duration-400 hover:border-slate-400 dark:hover:border-gray-500 hover:bg-white dark:hover:bg-gray-700/70 hover:shadow-md"
                       required
                     />
                   </div>
 
                   <div className="form-field relative group/input">
-                    <div className="absolute left-4 top-4 text-gray-400 group-focus-within/input:text-purple-400 group-hover/input:text-gray-300 transition-all duration-300 group-focus-within/input:scale-110">
+                    <div className="absolute left-4 top-4 text-slate-500 dark:text-gray-400 group-focus-within/input:text-purple-500 dark:group-focus-within/input:text-purple-400 group-hover/input:text-slate-700 dark:group-hover/input:text-gray-300 transition-all duration-300 group-focus-within/input:scale-110">
                       <FaComment className="w-5 h-5" />
                     </div>
                     <textarea
@@ -391,9 +391,9 @@ function Contact() {
                       onChange={handleInputChange}
                       placeholder="Your Message"
                       rows="5"
-                      className="w-full pl-12 pr-4 py-4 bg-gray-700/60 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400
-                        focus:outline-none focus:border-purple-400 focus:ring-4 focus:ring-purple-500/30 focus:bg-gray-700/90 focus:shadow-lg focus:shadow-purple-500/20
-                        transition-all duration-400 resize-none hover:border-gray-500 hover:bg-gray-700/70 hover:shadow-md"
+                      className="w-full pl-12 pr-4 py-4 bg-white/90 dark:bg-gray-700/60 border-2 border-slate-300 dark:border-gray-600/50 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-gray-400
+                        focus:outline-none focus:border-purple-500 dark:focus:border-purple-400 focus:ring-4 focus:ring-purple-500/30 focus:bg-white dark:focus:bg-gray-700/90 focus:shadow-lg focus:shadow-purple-500/20
+                        transition-all duration-400 resize-none hover:border-slate-400 dark:hover:border-gray-500 hover:bg-white dark:hover:bg-gray-700/70 hover:shadow-md"
                       required
                     />
                   </div>
@@ -426,7 +426,7 @@ function Contact() {
 
         {/* CardSwap Component */}
         <div ref={cardRef} className="contact-section text-center mb-20">
-          <h3 className="text-2xl font-bold text-white mb-8 flex items-center justify-center gap-3">
+          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-8 flex items-center justify-center gap-3">
             Our Team in Action
             <span className="w-3 h-3 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full animate-pulse"></span>
           </h3>

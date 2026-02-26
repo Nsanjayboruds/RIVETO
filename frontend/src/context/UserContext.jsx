@@ -5,13 +5,13 @@ import { authDataContext } from './AuthContext';
 export const userDataContext = createContext();
 
 function UserContext({ children }) {
-  const [userData, setUserData] = useState(null); // null, not ""
+  const [userData, setUserData] = useState(null); 
   const { serverUrl } = useContext(authDataContext);
 
   const getCurrentUser = async () => {
     try {
       const result = await axios.get(`${serverUrl}/api/user/getCurrentUser`, {
-        withCredentials: true, // ✅ ensures cookie is sent
+        withCredentials: true,
       });
       setUserData(result.data);
       console.log("✅ Current user:", result.data);

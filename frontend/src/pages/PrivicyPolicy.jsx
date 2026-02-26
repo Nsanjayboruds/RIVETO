@@ -33,7 +33,7 @@ const sections = [
               <FaUserShield className="text-xl" />
               Personal Information
             </h4>
-            <ul className="space-y-2 text-gray-300">
+            <ul className="space-y-2 text-slate-700 dark:text-gray-300">
               <li className="flex items-start gap-2">
                 <FaCheckCircle className="text-green-400 mt-1 flex-shrink-0" />
                 <span>Name, email address, and contact information</span>
@@ -51,7 +51,7 @@ const sections = [
 
           <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-6">
             <h4 className="font-semibold text-lg text-purple-300 mb-3">Usage Data</h4>
-            <ul className="space-y-2 text-gray-300">
+            <ul className="space-y-2 text-slate-700 dark:text-gray-300">
               <li className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
                 <span>Browsing behavior and interaction patterns</span>
@@ -88,9 +88,9 @@ const sections = [
             "Prevent fraud and enhance security",
             "Analyze usage patterns and trends"
           ].map((item, i) => (
-            <div key={i} className="flex items-start gap-3 bg-gray-700/30 p-4 rounded-lg hover:bg-gray-700/50 transition-all duration-300">
+            <div key={i} className="flex items-start gap-3 bg-slate-100 dark:bg-gray-700/30 p-4 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700/50 transition-all duration-300">
               <FaCheckCircle className="text-green-400 mt-1 flex-shrink-0" />
-              <span className="text-gray-300">{item}</span>
+              <span className="text-slate-700 dark:text-gray-300">{item}</span>
             </div>
           ))}
         </div>
@@ -115,28 +115,28 @@ const sections = [
                 <FaShieldAlt />
                 <span className="font-semibold">SSL Encryption</span>
               </div>
-              <p className="text-gray-300 text-sm">All data transmitted is encrypted using industry-standard SSL/TLS protocols.</p>
+              <p className="text-slate-700 dark:text-gray-300 text-sm">All data transmitted is encrypted using industry-standard SSL/TLS protocols.</p>
             </div>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-green-300">
                 <FaLock />
                 <span className="font-semibold">Secure Storage</span>
               </div>
-              <p className="text-gray-300 text-sm">Your data is stored in secure, encrypted databases with restricted access.</p>
+              <p className="text-slate-700 dark:text-gray-300 text-sm">Your data is stored in secure, encrypted databases with restricted access.</p>
             </div>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-green-300">
                 <FaUserShield />
                 <span className="font-semibold">Access Control</span>
               </div>
-              <p className="text-gray-300 text-sm">Strict authentication and authorization protocols protect your account.</p>
+              <p className="text-slate-700 dark:text-gray-300 text-sm">Strict authentication and authorization protocols protect your account.</p>
             </div>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-green-300">
                 <FaCheckCircle />
                 <span className="font-semibold">Regular Audits</span>
               </div>
-              <p className="text-gray-300 text-sm">We conduct regular security audits and updates to maintain protection.</p>
+              <p className="text-slate-700 dark:text-gray-300 text-sm">We conduct regular security audits and updates to maintain protection.</p>
             </div>
           </div>
         </div>
@@ -160,26 +160,26 @@ const sections = [
               <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <div>
                 <p className="font-semibold text-orange-200">Essential Cookies</p>
-                <p className="text-gray-300 text-sm">Required for basic site functionality and security.</p>
+                <p className="text-slate-700 dark:text-gray-300 text-sm">Required for basic site functionality and security.</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <div>
                 <p className="font-semibold text-orange-200">Analytics Cookies</p>
-                <p className="text-gray-300 text-sm">Help us understand how visitors interact with our site.</p>
+                <p className="text-slate-700 dark:text-gray-300 text-sm">Help us understand how visitors interact with our site.</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <div>
                 <p className="font-semibold text-orange-200">Preference Cookies</p>
-                <p className="text-gray-300 text-sm">Remember your settings and preferences for a personalized experience.</p>
+                <p className="text-slate-700 dark:text-gray-300 text-sm">Remember your settings and preferences for a personalized experience.</p>
               </div>
             </div>
           </div>
         </div>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-slate-500 dark:text-gray-400">
           You can manage cookie preferences through your browser settings. Note that disabling certain 
           cookies may impact site functionality.
         </p>
@@ -216,7 +216,7 @@ const sections = [
           ].map((item, i) => (
             <div key={i} className={`bg-${item.color}-500/10 border border-${item.color}-500/30 rounded-lg p-4`}>
               <h5 className={`font-semibold text-${item.color}-300 mb-2`}>{item.title}</h5>
-              <p className="text-gray-300 text-sm">{item.description}</p>
+              <p className="text-slate-700 dark:text-gray-300 text-sm">{item.description}</p>
             </div>
           ))}
         </div>
@@ -241,16 +241,16 @@ const sections = [
             { icon: "🚫", title: "Object", desc: "Opt-out of certain data processing activities" },
             { icon: "⏸️", title: "Restriction", desc: "Limit how we process your information" }
           ].map((item, i) => (
-            <div key={i} className="bg-gray-700/30 rounded-lg p-5 hover:bg-gray-700/50 transition-all duration-300">
+            <div key={i} className="bg-slate-100 dark:bg-gray-700/30 rounded-lg p-5 hover:bg-slate-200 dark:hover:bg-gray-700/50 transition-all duration-300">
               <div className="text-3xl mb-2">{item.icon}</div>
               <h5 className="font-semibold text-cyan-300 mb-1">{item.title}</h5>
-              <p className="text-gray-300 text-sm">{item.desc}</p>
+              <p className="text-slate-700 dark:text-gray-300 text-sm">{item.desc}</p>
             </div>
           ))}
         </div>
-        <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-4 flex items-start gap-3">
+        <div className="bg-cyan-100 dark:bg-cyan-500/10 border border-cyan-300/60 dark:border-cyan-500/30 rounded-xl p-4 flex items-start gap-3">
           <FaExclamationCircle className="text-cyan-400 text-xl mt-1 flex-shrink-0" />
-          <p className="text-cyan-200">
+          <p className="text-cyan-700 dark:text-cyan-200">
             To exercise any of these rights, please contact us at{" "}
             <a href="mailto:nishantborude555@gmail.com" className="font-semibold underline hover:text-cyan-300">
               nishantborude555@gmail.com
@@ -273,21 +273,21 @@ const sections = [
         <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-500/30 rounded-xl p-6">
           <h4 className="font-semibold text-lg text-blue-300 mb-3">How We Notify You:</h4>
           <ul className="space-y-2">
-            <li className="flex items-center gap-2 text-gray-300">
+            <li className="flex items-center gap-2 text-slate-700 dark:text-gray-300">
               <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
               <span>Email notification for significant changes</span>
             </li>
-            <li className="flex items-center gap-2 text-gray-300">
+            <li className="flex items-center gap-2 text-slate-700 dark:text-gray-300">
               <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
               <span>Prominent notice on our website</span>
             </li>
-            <li className="flex items-center gap-2 text-gray-300">
+            <li className="flex items-center gap-2 text-slate-700 dark:text-gray-300">
               <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
               <span>Updated "Last Modified" date at the top of this page</span>
             </li>
           </ul>
         </div>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-slate-500 dark:text-gray-400">
           Continued use of our services after policy updates constitutes acceptance of the changes.
         </p>
       </div>
@@ -296,8 +296,8 @@ const sections = [
 ];
 
 const TableOfContents = ({ activeSection, onSectionClick }) => (
-  <div className="lg:sticky lg:top-28 bg-gray-800/50 backdrop-blur-md rounded-2xl border border-gray-700 p-6">
-    <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+  <div className="lg:sticky lg:top-28 bg-white/85 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-gray-700 p-6">
+    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
       <FaFile className="text-cyan-400" />
       Quick Navigation
     </h3>
@@ -309,7 +309,7 @@ const TableOfContents = ({ activeSection, onSectionClick }) => (
           className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 flex items-center gap-3 ${
             activeSection === section.id
               ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30"
-              : "text-gray-300 hover:bg-gray-700/50"
+              : "text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700/50"
           }`}
         >
           <span className={`text-sm ${activeSection === section.id ? "text-white" : "text-cyan-400"}`}>
@@ -330,25 +330,25 @@ const Section = ({ section, isActive }) => (
       isActive ? "scale-100 opacity-100" : "scale-95 opacity-90"
     }`}
   >
-    <div className={`bg-gray-800/30 rounded-2xl p-6 md:p-8 border transition-all duration-300 ${
-      isActive ? "border-cyan-500/50 shadow-lg shadow-cyan-500/10" : "border-gray-700"
+    <div className={`bg-white/85 dark:bg-gray-800/30 rounded-2xl p-6 md:p-8 border transition-all duration-300 ${
+      isActive ? "border-cyan-500/50 shadow-lg shadow-cyan-500/10" : "border-slate-200 dark:border-gray-700"
     }`}>
       <div className="flex items-center gap-4 mb-6">
         <div className={`p-4 rounded-xl transition-all duration-300 ${
           isActive 
             ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30" 
-            : "bg-gray-700/50 text-cyan-400"
+            : "bg-slate-200 dark:bg-gray-700/50 text-cyan-500 dark:text-cyan-400"
         }`}>
           {section.icon}
         </div>
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">{section.title}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">{section.title}</h2>
           <div className={`h-1 w-20 rounded-full mt-2 transition-all duration-300 ${
-            isActive ? "bg-cyan-400" : "bg-gray-600"
+            isActive ? "bg-cyan-400" : "bg-slate-400 dark:bg-gray-600"
           }`}></div>
         </div>
       </div>
-      <div className="text-gray-300 leading-relaxed text-base md:text-lg">
+      <div className="text-slate-700 dark:text-gray-300 leading-relaxed text-base md:text-lg">
         {section.content}
       </div>
     </div>
@@ -389,28 +389,28 @@ const PrivicyPolicy = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] pt-24 pb-1">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] pt-24 pb-1">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         {/* Hero Header */}
         <div className="mb-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 via-cyan-500/10 to-blue-500/10 blur-3xl"></div>
-          <div className="relative bg-gray-800/50 rounded-3xl backdrop-blur-md border border-gray-700 p-8 md:p-12">
+          <div className="relative bg-white/85 dark:bg-gray-800/50 rounded-3xl backdrop-blur-md border border-slate-200 dark:border-gray-700 p-8 md:p-12">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
                 <div className="inline-block px-4 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-green-300 text-sm font-medium mb-4">
                   Your Privacy Matters
                 </div>
-                <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 bg-gradient-to-r from-green-400 to-cyan-500 bg-clip-text text-transparent">
+                <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-green-500 to-cyan-600 dark:from-green-400 dark:to-cyan-500 bg-clip-text text-transparent">
                   Privacy Policy
                 </h1>
-                <p className="text-gray-400 text-lg">
+                <p className="text-slate-600 dark:text-gray-400 text-lg">
                   Last updated: <span className="text-cyan-400 font-semibold">February 4, 2026</span>
                 </p>
               </div>
               <div className="bg-gradient-to-br from-green-500/20 to-cyan-500/20 rounded-2xl p-6 border border-green-500/30">
                 <div className="text-center">
                   <FaShieldAlt className="text-5xl text-green-400 mx-auto mb-2" />
-                  <p className="text-gray-300 text-sm">Protected & Secure</p>
+                  <p className="text-slate-600 dark:text-gray-300 text-sm">Protected & Secure</p>
                 </div>
               </div>
             </div>
@@ -435,33 +435,33 @@ const PrivicyPolicy = () => {
             ))}
 
             {/* Contact Section */}
-            <section className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-2xl backdrop-blur-md border border-gray-700 p-8 md:p-12">
+            <section className="bg-gradient-to-br from-white to-slate-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl backdrop-blur-md border border-slate-200 dark:border-gray-700 p-8 md:p-12">
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-4 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl shadow-lg shadow-cyan-500/30">
                   <FaEnvelope className="text-3xl text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white">Questions About Privacy?</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Questions About Privacy?</h2>
                   <div className="h-1 w-20 bg-cyan-400 rounded-full mt-2"></div>
                 </div>
               </div>
               
-              <p className="text-gray-300 text-lg mb-6">
+              <p className="text-slate-700 dark:text-gray-300 text-lg mb-6">
                 If you have any questions or concerns about our Privacy Policy, please don't hesitate to reach out.
               </p>
               
               <div className="grid md:grid-cols-2 gap-4">
                 <a 
                   href="mailto:nishantborude555@gmail.com"
-                  className="group bg-gray-700/30 hover:bg-gray-700/50 rounded-xl p-6 border border-gray-600 hover:border-cyan-500/50 transition-all duration-300"
+                  className="group bg-slate-100 dark:bg-gray-700/30 hover:bg-slate-200 dark:hover:bg-gray-700/50 rounded-xl p-6 border border-slate-300 dark:border-gray-600 hover:border-cyan-500/50 transition-all duration-300"
                 >
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-cyan-500/20 rounded-lg group-hover:bg-cyan-500 transition-all duration-300">
                       <FaEnvelope className="text-2xl text-cyan-400 group-hover:text-white" />
                     </div>
                     <div>
-                      <p className="text-gray-400 text-sm">Email Us</p>
-                      <p className="text-white font-semibold">nishantborude555@gmail.com</p>
+                      <p className="text-slate-500 dark:text-gray-400 text-sm">Email Us</p>
+                      <p className="text-slate-900 dark:text-white font-semibold">nishantborude555@gmail.com</p>
                     </div>
                   </div>
                 </a>
@@ -470,15 +470,15 @@ const PrivicyPolicy = () => {
                   href="https://github.com/Nsanjayboruds"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group bg-gray-700/30 hover:bg-gray-700/50 rounded-xl p-6 border border-gray-600 hover:border-cyan-500/50 transition-all duration-300"
+                  className="group bg-slate-100 dark:bg-gray-700/30 hover:bg-slate-200 dark:hover:bg-gray-700/50 rounded-xl p-6 border border-slate-300 dark:border-gray-600 hover:border-cyan-500/50 transition-all duration-300"
                 >
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-cyan-500/20 rounded-lg group-hover:bg-cyan-500 transition-all duration-300">
                       <FaGithub className="text-2xl text-cyan-400 group-hover:text-white" />
                     </div>
                     <div>
-                      <p className="text-gray-400 text-sm">GitHub</p>
-                      <p className="text-white font-semibold">@Nsanjayboruds</p>
+                      <p className="text-slate-500 dark:text-gray-400 text-sm">GitHub</p>
+                      <p className="text-slate-900 dark:text-white font-semibold">@Nsanjayboruds</p>
                     </div>
                   </div>
                 </a>

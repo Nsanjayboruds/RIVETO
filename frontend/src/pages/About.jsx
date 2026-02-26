@@ -200,7 +200,7 @@ function About() {
 
   return (
     <>
-    <div className="w-full min-h-screen bg-gradient-to-br from-gray-950 via-[#0a0f1a] to-[#071525] pt-24 pb-20 overflow-x-hidden">
+    <div className="w-full min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-950 dark:via-[#0a0f1a] dark:to-[#071525] pt-24 pb-20 overflow-x-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden z-0 pointer-events-none">
         <div
@@ -229,7 +229,7 @@ function About() {
         <div className="inline-block">
           <Title text1="ABOUT" text2="RIVETO" />
         </div>
-        <p className="text-lg text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 mt-4 max-w-2xl mx-auto font-medium">
+        <p className="text-lg text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 dark:from-cyan-300 dark:via-blue-300 dark:to-purple-300 mt-4 max-w-2xl mx-auto font-medium">
           Redefining online shopping with innovation, quality, and exceptional service
         </p>
       </div>
@@ -241,7 +241,7 @@ function About() {
           {/* Carousel */}
           <div className="relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 via-cyan-500 to-emerald-500 rounded-3xl blur-lg opacity-30 group-hover:opacity-50 transition-all duration-700"></div>
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-gray-900/50 backdrop-blur-sm">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-gray-900/50 backdrop-blur-sm">
               <Carousel
                 baseWidth={400}
                 autoplay={true}
@@ -257,11 +257,11 @@ function About() {
           {/* Text Content */}
           <div ref={textRef} className="space-y-8">
             <h2 className="text-3xl lg:text-5xl font-bold">
-              <span className="text-white">Welcome to </span>
+              <span className="text-slate-900 dark:text-white">Welcome to </span>
               <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent animate-pulse">Riveto</span>
             </h2>
 
-            <p className="text-lg text-gray-300 leading-relaxed">
+            <p className="text-lg text-slate-700 dark:text-gray-300 leading-relaxed">
               Riveto is a modern, responsive e-commerce platform designed to deliver a seamless and intuitive shopping experience.
               We combine cutting-edge technology with exceptional design to create a shopping journey that's both enjoyable and efficient.
             </p>
@@ -271,10 +271,10 @@ function About() {
               className="relative group cursor-pointer"
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 rounded-xl blur opacity-30 group-hover:opacity-60 transition-all duration-500"></div>
-              <div className="relative bg-gray-900/90 backdrop-blur-xl border border-white/10 p-6 rounded-xl overflow-hidden">
+              <div className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-slate-200 dark:border-white/10 p-6 rounded-xl overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500"></div>
-                <h3 className="text-xl font-semibold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent mb-3">Our Mission</h3>
-                <p className="text-gray-200">
+                <h3 className="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-300 dark:to-blue-300 bg-clip-text text-transparent mb-3">Our Mission</h3>
+                <p className="text-slate-700 dark:text-gray-200">
                   To make fashion accessible, affordable, and effortless — blending quality, technology, and personal expression
                   into everyday shopping experiences that inspire confidence and joy.
                 </p>
@@ -291,12 +291,12 @@ function About() {
               className="group relative cursor-pointer"
             >
               <div className={`absolute -inset-0.5 bg-gradient-to-r ${stat.color} rounded-2xl blur opacity-0 group-hover:opacity-40 transition-all duration-500`}></div>
-              <div className="relative text-center p-6 bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/10 group-hover:border-white/20 transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl overflow-hidden">
+              <div className="relative text-center p-6 bg-white/85 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-white/10 group-hover:border-slate-300 dark:group-hover:border-white/20 transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl overflow-hidden">
                 <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 transition-all duration-500`}></div>
                 <div className={`text-4xl lg:text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300`}>
                   {stat.number}
                 </div>
-                <div className="text-gray-300 text-sm font-medium">{stat.label}</div>
+                <div className="text-slate-700 dark:text-gray-300 text-sm font-medium">{stat.label}</div>
                 <div className="text-3xl mt-3 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300">{stat.icon}</div>
               </div>
             </div>
@@ -307,7 +307,7 @@ function About() {
         <div className="mb-24">
           <div className="text-center mb-16">
             <Title text1="WHY" text2="CHOOSE US" />
-            <p className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-purple-300 mt-4 max-w-2xl mx-auto font-medium">
+            <p className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-purple-600 dark:from-cyan-300 dark:to-purple-300 mt-4 max-w-2xl mx-auto font-medium">
               Discover what makes Riveto the preferred choice for discerning shoppers worldwide
             </p>
           </div>
@@ -320,7 +320,7 @@ function About() {
                 className={`group relative cursor-pointer perspective-1000`}
               >
                 <div className={`absolute -inset-0.5 bg-gradient-to-r ${feature.color} rounded-2xl blur opacity-0 group-hover:opacity-40 transition-all duration-700`}></div>
-                <div className={`relative bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl border border-white/10 group-hover:border-white/20 transition-all duration-700 group-hover:-translate-y-3 group-hover:shadow-2xl ${feature.glow} overflow-hidden h-full`}>
+                <div className={`relative bg-white/85 dark:bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl border border-slate-200 dark:border-white/10 group-hover:border-slate-300 dark:group-hover:border-white/20 transition-all duration-700 group-hover:-translate-y-3 group-hover:shadow-2xl ${feature.glow} overflow-hidden h-full`}>
                   {/* Animated gradient border */}
                   <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${feature.color} transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500`}></div>
 
@@ -334,16 +334,16 @@ function About() {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-lg font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-slate-900 group-hover:to-slate-600 dark:group-hover:from-white dark:group-hover:to-gray-300 transition-all duration-300">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+                  <p className="text-slate-600 dark:text-gray-400 text-sm leading-relaxed group-hover:text-slate-700 dark:group-hover:text-gray-300 transition-colors duration-300">
                     {feature.text}
                   </p>
 
                   {/* Arrow indicator */}
-                  <div className="absolute bottom-6 right-6 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="absolute bottom-6 right-6 w-8 h-8 rounded-full bg-slate-200/60 dark:bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+                    <svg className="w-4 h-4 text-slate-700 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </div>
@@ -356,15 +356,15 @@ function About() {
         {/* Values Section */}
         <div ref={valuesRef} className="relative group mb-24">
           <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 via-cyan-500 to-emerald-500 rounded-3xl blur-lg opacity-20 group-hover:opacity-30 transition-all duration-700"></div>
-          <div className="relative bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 overflow-hidden">
+          <div className="relative bg-white/85 dark:bg-gray-900/80 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-3xl p-8 md:p-12 overflow-hidden">
             {/* Animated background */}
             <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-cyan-500/5"></div>
 
             <div className="relative text-center mb-10">
-              <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-white via-cyan-200 to-violet-200 bg-clip-text text-transparent mb-4">
+              <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-slate-900 via-cyan-700 to-violet-700 dark:from-white dark:via-cyan-200 dark:to-violet-200 bg-clip-text text-transparent mb-4">
                 Our Core Values
               </h2>
-              <p className="text-gray-300 max-w-2xl mx-auto">
+              <p className="text-slate-700 dark:text-gray-300 max-w-2xl mx-auto">
                 The principles that guide everything we do at Riveto
               </p>
             </div>
@@ -376,12 +376,12 @@ function About() {
                 { title: 'Integrity', desc: 'Building trust through transparency and honest business practices', color: 'from-emerald-500 to-teal-500' },
                 { title: 'Community', desc: 'Fostering connections and supporting the communities we serve', color: 'from-pink-500 to-rose-500' }
               ].map((value, index) => (
-                <div key={index} className="group/item relative p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-1 cursor-pointer">
+                <div key={index} className="group/item relative p-6 rounded-xl bg-white/70 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 transition-all duration-500 hover:-translate-y-1 cursor-pointer">
                   <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${value.color} rounded-l-xl transform scale-y-0 group-hover/item:scale-y-100 transition-transform duration-500 origin-top`}></div>
                   <h4 className={`font-bold text-lg mb-2 bg-gradient-to-r ${value.color} bg-clip-text text-transparent`}>
                     {value.title}
                   </h4>
-                  <p className="text-gray-400 text-sm group-hover/item:text-gray-300 transition-colors duration-300">
+                  <p className="text-slate-600 dark:text-gray-400 text-sm group-hover/item:text-slate-700 dark:group-hover/item:text-gray-300 transition-colors duration-300">
                     {value.desc}
                   </p>
                 </div>

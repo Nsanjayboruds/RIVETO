@@ -23,10 +23,16 @@ import FaqPage from './pages/FaqPage';
 import PrivicyPolicy from './pages/PrivicyPolicy';
 import TermsAndServices from './pages/TermsAndServices';
 import SizeGuide from './pages/SizeGuide';
+import CookiePolicy from './pages/CookiePolicy';
 import Contributors from './pages/Contributors';
+import NewArrivals from './pages/NewArrivals';
+import { shopDataContext } from './context/ShopContext';
+import ComparisonPanel from './components/ComparisonPanel';
+import { RiPriceTag3Line } from "react-icons/ri";
 
 function App() {
   const { userData } = useContext(userDataContext);
+  const { compareList, comparePanelOpen, toggleComparePanel, removeFromCompare } = useContext(shopDataContext);
   const location = useLocation();
   const hideNavRoutes = ['/login', '/signup'];
   const shouldShowNav = !hideNavRoutes.includes(location.pathname);
@@ -91,10 +97,10 @@ function App() {
           }
         />
         <Route
-          path="/best-sellers"
+          path="/new-arrivals"
           element={
             userData ? (
-              <BestSellers />
+              <NewArrivals />
             ) : (
               <Navigate to="/login" state={{ from: location.pathname }} />
             )
@@ -203,6 +209,12 @@ function App() {
           }
         />
         <Route
+          path="/cookie-policy"
+          element={
+            <CookiePolicy />
+          }
+        />
+        <Route
           path="/contributors"
           element={
             <Contributors />
@@ -212,6 +224,28 @@ function App() {
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Ai />
+
+      {/* Global Comparison Floating Button */}
+      {compareList.length > 0 && !comparePanelOpen && (
+        <div className="fixed bottom-6 right-6 z-[100]">
+          <button
+            onClick={() => toggleComparePanel(true)}
+            className="bg-cyan-500 hover:bg-cyan-400 text-white px-6 py-3 rounded-full shadow-lg shadow-cyan-500/30 flex items-center gap-2 transition-all hover:scale-105 border border-cyan-400/50 animate-bounce-short"
+          >
+            <RiPriceTag3Line className="text-xl" />
+            <span className="font-bold">Compare ({compareList.length})</span>
+          </button>
+        </div>
+      )}
+
+      {/* Global Comparison Panel */}
+      {comparePanelOpen && (
+        <ComparisonPanel
+          compareList={compareList}
+          onClose={() => toggleComparePanel(false)}
+          removeProduct={removeFromCompare}
+        />
+      )}
     </>
   );
 }

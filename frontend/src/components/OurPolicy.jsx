@@ -252,7 +252,7 @@ function OurPolicy() {
   };
 
   return (
-    <section ref={sectionRef} className="w-full min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#0d1117] to-[#0a0f1a] py-20 px-4 md:px-8 relative overflow-hidden">
+    <section ref={sectionRef} className="w-full min-h-screen bg-white dark:bg-gradient-to-br dark:from-[#0a0a0f] dark:via-[#0d1117] dark:to-[#0a0f1a] py-20 px-4 md:px-8 relative overflow-hidden transition-colors duration-300">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <div 
@@ -314,7 +314,7 @@ function OurPolicy() {
               ref={el => topStatsRef.current[i] = el}
               className="relative group"
             >
-              <div className="text-center py-4 px-6 rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 hover:border-cyan-500/30 transition-all duration-500 hover:-translate-y-1 cursor-default">
+              <div className="text-center py-4 px-6 rounded-2xl bg-white dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700/50 hover:border-cyan-500/30 transition-all duration-500 hover:-translate-y-1 cursor-default shadow-sm dark:shadow-none">
                 {/* Glow effect on hover */}
                 <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{ boxShadow: '0 0 30px rgba(6, 182, 212, 0.15)' }}

@@ -149,7 +149,7 @@ function NewsletterBox() {
   ];
 
   return (
-    <section ref={sectionRef} className="w-full min-h-screen px-4 py-16 md:py-24 flex items-center justify-center relative overflow-hidden">
+    <section ref={sectionRef} className="w-full min-h-screen bg-white dark:bg-transparent px-4 py-16 md:py-24 flex items-center justify-center relative overflow-hidden transition-colors duration-300">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <div className="nl-floating-1 absolute -top-24 -right-24 w-[450px] h-[450px] bg-gradient-to-br from-cyan-500/15 via-blue-500/10 to-transparent rounded-full blur-3xl"></div>
@@ -167,8 +167,8 @@ function NewsletterBox() {
 
       <div className="max-w-4xl w-full relative z-10">
         <div 
-          className={`bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-3xl overflow-hidden border border-gray-700/50 backdrop-blur-sm
-            shadow-2xl transition-all duration-700 ${isHovered ? 'shadow-cyan-500/20 border-gray-600/70 scale-[1.01]' : ''}`}
+          className={`bg-white dark:bg-gradient-to-br dark:from-gray-900/95 dark:to-gray-800/95 rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-700/50 backdrop-blur-sm
+            shadow-2xl transition-all duration-700 ${isHovered ? 'shadow-cyan-500/20 border-gray-300 dark:border-gray-600/70 scale-[1.01]' : ''}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -222,40 +222,40 @@ function NewsletterBox() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
               {/* Benefits Section */}
               <div className="space-y-6">
-                <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                   Why Subscribe?
                   <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
                 </h3>
                 
                 {features.map((feature, index) => (
-                  <div key={index} className="newsletter-feature group flex items-start gap-4 p-3 rounded-xl transition-all duration-300 hover:bg-white/5 cursor-pointer">
+                  <div key={index} className="newsletter-feature group flex items-start gap-4 p-3 rounded-xl transition-all duration-300 hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer">
                     <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center flex-shrink-0 text-white
                       shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${feature.shadowColor} group-hover:shadow-xl`}>
                       {feature.icon}
                     </div>
                     <div>
-                      <h4 className="text-white font-semibold group-hover:text-cyan-100 transition-colors duration-300">{feature.title}</h4>
-                      <p className="text-gray-400 text-sm mt-1 group-hover:text-gray-300 transition-colors duration-300">{feature.description}</p>
+                      <h4 className="text-gray-900 dark:text-white font-semibold group-hover:text-cyan-600 dark:group-hover:text-cyan-100 transition-colors duration-300">{feature.title}</h4>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{feature.description}</p>
                     </div>
                   </div>
                 ))}
 
                 {/* Stats */}
-                <div className="stats-grid grid grid-cols-3 gap-4 pt-6 border-t border-gray-700/50">
-                  <div className="stat-item text-center p-3 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/30
+                <div className="stats-grid grid grid-cols-3 gap-4 pt-6 border-t border-gray-200 dark:border-gray-700/50">
+                  <div className="stat-item text-center p-3 rounded-xl bg-gray-50 dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 border border-gray-200 dark:border-gray-700/30
                     transition-all duration-300 hover:scale-105 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/10 cursor-pointer group">
                     <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-blue-300 transition-all">10K+</div>
-                    <div className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">Subscribers</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">Subscribers</div>
                   </div>
-                  <div className="stat-item text-center p-3 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/30
+                  <div className="stat-item text-center p-3 rounded-xl bg-gray-50 dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 border border-gray-200 dark:border-gray-700/30
                     transition-all duration-300 hover:scale-105 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/10 cursor-pointer group">
                     <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-pink-300 transition-all">25%</div>
-                    <div className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">Exclusive Discount</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">Exclusive Discount</div>
                   </div>
-                  <div className="stat-item text-center p-3 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/30
+                  <div className="stat-item text-center p-3 rounded-xl bg-gray-50 dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 border border-gray-200 dark:border-gray-700/30
                     transition-all duration-300 hover:scale-105 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 cursor-pointer group">
                     <div className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent group-hover:from-amber-300 group-hover:to-orange-300 transition-all">24H</div>
-                    <div className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">Early Access</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">Early Access</div>
                   </div>
                 </div>
               </div>
@@ -268,23 +268,23 @@ function NewsletterBox() {
                       animate-pulse border border-green-500/30">
                       <FaCheckCircle className="w-10 h-10 text-green-400" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Welcome Aboard! 🎉</h3>
-                    <p className="text-gray-400 mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Welcome Aboard! 🎉</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">
                       Thank you for subscribing. Check your inbox for a special welcome gift.
                     </p>
                     <button
                       onClick={() => setIsSubscribed(false)}
-                      className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl 
-                        hover:from-gray-600 hover:to-gray-700 transition-all duration-300 
-                        hover:scale-105 hover:shadow-lg border border-gray-600/50"
+                      className="px-6 py-3 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 text-gray-900 dark:text-white rounded-xl 
+                        hover:from-gray-300 hover:to-gray-400 dark:hover:from-gray-600 dark:hover:to-gray-700 transition-all duration-300 
+                        hover:scale-105 hover:shadow-lg border border-gray-300 dark:border-gray-600/50"
                     >
                       Subscribe Another Email
                     </button>
                   </div>
                 ) : (
-                  <div ref={formRef} className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-6 rounded-2xl border border-gray-700/50
-                    transition-all duration-500 hover:border-gray-600/70 hover:shadow-xl hover:shadow-cyan-500/5">
-                    <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                  <div ref={formRef} className="bg-gray-50 dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 p-6 rounded-2xl border border-gray-200 dark:border-gray-700/50
+                    transition-all duration-500 hover:border-gray-300 dark:hover:border-gray-600/70 hover:shadow-xl hover:shadow-cyan-500/5">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                       Get Started Now
                       <FaPaperPlane className="w-4 h-4 text-cyan-400 animate-bounce" />
                     </h3>
@@ -297,9 +297,9 @@ function NewsletterBox() {
                           onFocus={() => setFocusedInput(true)}
                           onBlur={() => setFocusedInput(false)}
                           placeholder="Enter your email address"
-                          className="w-full px-5 py-4 bg-gray-800/80 border-2 border-gray-700/50 rounded-xl text-white placeholder-gray-500 
+                          className="w-full px-5 py-4 bg-white dark:bg-gray-800/80 border-2 border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 
                             focus:outline-none focus:ring-4 focus:ring-cyan-500/20 focus:border-cyan-500 
-                            transition-all duration-300 hover:border-gray-600 pr-12"
+                            transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600 pr-12"
                           required
                         />
                         <MdEmail className={`absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 transition-colors duration-300

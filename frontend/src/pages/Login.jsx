@@ -146,7 +146,7 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#0c4a6e] px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4 py-8 transition-colors duration-300">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
@@ -167,20 +167,20 @@ function Login() {
             </h1>
           </div>
           
-          <h2 className="text-3xl font-bold text-white mb-2">Welcome Back!</h2>
-          <p className="text-cyan-100">Sign in to continue your shopping journey</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back!</h2>
+          <p className="text-gray-600 dark:text-cyan-100">Sign in to continue your shopping journey</p>
         </div>
 
         {/* Card Container */}
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-8 shadow-2xl">
+        <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-2xl transition-colors duration-300">
           {/* Google Login Button */}
           <button
             onClick={googleLogin}
             disabled={googleLoading}
-            className="form-element w-full flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 border border-gray-600 rounded-xl py-3 px-4 text-white font-medium transition-all duration-300 hover:border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+            className="form-element w-full flex items-center justify-center gap-3 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-300 dark:border-gray-600 rounded-xl py-3 px-4 text-gray-700 dark:text-white font-medium transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
           >
             {googleLoading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-5 h-5 border-2 border-gray-600 dark:border-white border-t-transparent rounded-full animate-spin"></div>
             ) : (
               <FcGoogle className="w-5 h-5" />
             )}
@@ -189,9 +189,9 @@ function Login() {
 
           {/* Divider */}
           <div className="flex items-center mb-6">
-            <div className="flex-grow border-t border-gray-600"></div>
-            <span className="mx-4 text-gray-400 text-sm">OR</span>
-            <div className="flex-grow border-t border-gray-600"></div>
+            <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+            <span className="mx-4 text-gray-500 dark:text-gray-400 text-sm">OR</span>
+            <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
           </div>
 
           {/* Form */}

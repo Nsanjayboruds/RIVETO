@@ -148,9 +148,9 @@ function Home() {
   }, []);
 
   return (
-    <div className='overflow-x-hidden bg-gradient-to-b from-[#0a0a0f] via-[#0d0d15] to-[#0a0a0f] min-h-screen'>
-      {/* Animated Background Orbs */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div className='overflow-x-hidden bg-white dark:bg-gradient-to-b dark:from-[#0a0a0f] dark:via-[#0d0d15] dark:to-[#0a0a0f] min-h-screen transition-colors duration-300'>
+      {/* Animated Background Orbs - Visible only in dark mode */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden hidden dark:block">
         <div 
           className="absolute w-[800px] h-[800px] rounded-full blur-[150px] opacity-10"
           style={{
