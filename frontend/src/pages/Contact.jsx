@@ -119,22 +119,22 @@ function Contact() {
                 <div className="lg:border-r border-gray-200 dark:border-[#1f2a44] p-8">
                   <h3 className="text-xl font-semibold text-black dark:text-white mb-6">How can we help?</h3>
                   <div className="space-y-3">
-                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 hover:dark:text-white hover:border-blue-500/40 transition-all duration-200">
+                      <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 dark:hover:text-white hover:border-blue-500/40 transition-all duration-200">
                       Order Status & Tracking
                     </button>
-                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 hover:dark:text-white hover:border-blue-500/40 transition-all duration-200">
+                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 dark:hover:text-white hover:border-blue-500/40 transition-all duration-200">
                       Product Information
                     </button>
-                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 hover:dark:text-white hover:border-blue-500/40 transition-all duration-200">
+                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 dark:hover:text-white hover:border-blue-500/40 transition-all duration-200">
                       Returns & Exchanges
                     </button>
-                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 hover:dark:text-white hover:border-blue-500/40 transition-all duration-200">
+                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 dark:hover:text-white hover:border-blue-500/40 transition-all duration-200">
                       Account Management
                     </button>
-                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 hover:dark:text-white hover:border-blue-500/40 transition-all duration-200">
+                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 dark:hover:text-white hover:border-blue-500/40 transition-all duration-200">
                       Technical Support
                     </button>
-                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 hover:dark:text-white hover:border-blue-500/40 transition-all duration-200">
+                    <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#0f172a] hover:bg-gray-100 dark:hover:bg-[#1a2332] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-700 dark:text-gray-300 dark:hover:text-white hover:border-blue-500/40 transition-all duration-200">
                       General Inquiry
                     </button>
                   </div>

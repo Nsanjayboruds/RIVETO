@@ -214,7 +214,7 @@ function About() {
                 {capabilities.map((capability, index) => (
                   <div
                     key={index}
-                    className="capability-card bg-white dark:bg-[#101a2f] border border-gray-200 dark:border-[#1f2a44] p-6 rounded-lg transition-all duration-300 hover:-translate-y-1 dark:hover:border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)]"
+                    className="capability-card bg-white dark:bg-[#101a2f] border border-gray-200 dark:border-[#1f2a44] p-6 rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/40 dark:hover:border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)]"
                   >
                     <div className="flex items-start gap-4">
                       <div className="text-blue-400 mt-1">
