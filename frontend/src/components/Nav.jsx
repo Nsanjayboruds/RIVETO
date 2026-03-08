@@ -300,7 +300,7 @@ function Nav() {
       )}
 
       {/* Mobile Bottom Navigation */}
-        <div className="fixed bottom-0 left-0 w-full md:hidden h-16 bg-white dark:bg-[#121826] border-t border-gray-200 dark:border-gray-800 flex items-center justify-around z-40 shadow-lg">
+      <div className="fixed bottom-0 left-0 w-full md:hidden h-16 bg-white dark:bg-[#121826] border-t border-gray-200 dark:border-gray-800 flex items-center justify-around z-40 shadow-lg">
         {[
           { icon: IoMdHome, label: "Home", path: "/" },
           { icon: HiOutlineCollection, label: "Collection", path: "/collection" },

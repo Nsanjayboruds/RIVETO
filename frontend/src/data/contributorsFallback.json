@@ -2,15 +2,12 @@
   "contributors": [
     { "id": 1, "login": "madhav2348", "avatar_url": "https://github.com/madhav2348.png", "contributions": 124, "html_url": "https://github.com/madhav2348" },
     { "id": 2, "login": "asadanwarr0", "avatar_url": "https://github.com/asadanwarr0.png", "contributions": 98, "html_url": "https://github.com/asadanwarr0" },
-    { "id": 3, "login": "vedantbudhaware", "avatar_url": "https://github.com/vedantbudhaware.png", "contributions": 76, "html_url": "https://github.com/vedantbudhaware" },
-    { "id": 4, "login": "alice", "avatar_url": "https://github.com/alice.png", "contributions": 45, "html_url": "https://github.com/alice" },
-    { "id": 5, "login": "bob", "avatar_url": "https://github.com/bob.png", "contributions": 32, "html_url": "https://github.com/bob" },
-    { "id": 6, "login": "carol", "avatar_url": "https://github.com/carol.png", "contributions": 21, "html_url": "https://github.com/carol" }
+    { "id": 3, "login": "vedantbudhaware", "avatar_url": "https://github.com/vedantbudhaware.png", "contributions": 76, "html_url": "https://github.com/vedantbudhaware" }
   ],
   "stats": {
     "stars": 123,
     "forks": 45,
-    "totalContributors": 6,
+    "totalContributors": 3,
     "pullRequests": 78
   }
 }

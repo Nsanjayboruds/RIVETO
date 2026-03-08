@@ -43,18 +43,14 @@ const useGitHubContributors = (repoOwner = 'Nsanjayboruds', repoName = 'RIVETO')
             } catch (err) {
                 console.error("Error fetching GitHub data:", err);
                 // Use local fallback data so the page still renders nicely
-                try {
-                    setContributors(fallback.contributors || []);
-                    setStats(fallback.stats || {
-                        stars: 0,
-                        forks: 0,
-                        totalContributors: fallback.contributors ? fallback.contributors.length : 0,
-                        pullRequests: 0,
-                    });
-                    setError(null);
-                } catch (e) {
-                    setError("Failed to load contributor data. Please try again later.");
-                }
+                setContributors(fallback.contributors || []);
+                setStats(fallback.stats || {
+                    stars: 0,
+                    forks: 0,
+                    totalContributors: fallback.contributors ? fallback.contributors.length : 0,
+                    pullRequests: 0,
+                });
+                setError(null);
             } finally {
                 setLoading(false);
             }
