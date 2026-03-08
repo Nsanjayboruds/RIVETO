@@ -26,6 +26,7 @@ import SizeGuide from './pages/SizeGuide';
 import CookiePolicy from './pages/CookiePolicy';
 import Contributors from './pages/Contributors';
 import NewArrivals from './pages/NewArrivals';
+import BestSellers from './pages/BestSellers';
 import { shopDataContext } from './context/ShopContext';
 import ComparisonPanel from './components/ComparisonPanel';
 import { RiPriceTag3Line } from "react-icons/ri";
@@ -101,6 +102,16 @@ function App() {
           element={
             userData ? (
               <NewArrivals />
+            ) : (
+              <Navigate to="/login" state={{ from: location.pathname }} />
+            )
+          }
+        />
+        <Route
+          path="/best-sellers"
+          element={
+            userData ? (
+              <BestSellers />
             ) : (
               <Navigate to="/login" state={{ from: location.pathname }} />
             )
