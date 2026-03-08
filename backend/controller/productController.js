@@ -33,7 +33,7 @@ export const addProduct = async (req, res) => {
     return res.status(201).json(createdProduct);
 
   } catch (error) {
-    console.error("❌ Error in addProduct:", error); 
+    console.error("❌ Error in addProduct:", error);
     return res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
@@ -43,12 +43,36 @@ export default addProduct;
 
 export const listProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
-    return res.status(200).json(products);
+    const { page, limit, category } = req.query;
+
+    if (!page && !limit && !category) {
+      // Backward compatibility: respond with all products as an array
+      const products = await Product.find({});
+      return res.status(200).json(products);
+    }
+
+    // Pagination logic
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 12; // default 12 items per page
+    const skip = (pageNumber - 1) * limitNumber;
+
+    let query = {};
+    if (category) {
+      query.category = category;
+    }
+
+    const products = await Product.find(query).skip(skip).limit(limitNumber);
+    const total = await Product.countDocuments(query);
+
+    return res.status(200).json({
+      products,
+      total,
+      page: pageNumber,
+      pages: Math.ceil(total / limitNumber),
+    });
   } catch (error) {
     console.error("❌ Error in listProducts:", error);
     return res.status(500).json({ message: "Internal server error", error: error.message });
-    
   }
 }
 export const removeProduct = async (req, res) => {
@@ -59,6 +83,6 @@ export const removeProduct = async (req, res) => {
   } catch (error) {
     console.error("❌ Error in removeProduct:", error);
     return res.status(500).json({ message: "Internal server error", error: error.message });
-    
+
   }
 }

@@ -184,7 +184,7 @@ const FilterContent = ({
 
 function Collections() {
   const [showFilter, setShowFilter] = useState(false);
-  const { product, search, showSearch, compareList, toggleCompare } = useContext(shopDataContext);
+  const { product, search, showSearch, compareList, toggleCompare, getPaginatedProducts } = useContext(shopDataContext);
   const [filterProduct, setFilterProduct] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
@@ -194,6 +194,8 @@ function Collections() {
   const [activeFilters, setActiveFilters] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const contentRef = useRef(null);
   const filterRef = useRef(null);
@@ -227,10 +229,29 @@ function Collections() {
     }
   };
 
-  const applyFilter = () => {
+  const applyFilter = async () => {
     setIsFiltering(true);
 
-    // Simulate filtering delay for better UX
+    // Count active filters (ignoring just a single category if we want to use backend)
+    const filterCount = category.length + subCategory.length + selectedRatings.length +
+      (priceRange[0] > 0 || priceRange[1] < 2000 ? 1 : 0) + (showSearch && search ? 1 : 0);
+
+    setActiveFilters(filterCount);
+
+    if (filterCount === 0 || (category.length === 1 && filterCount === 1)) {
+      // Use backend pagination if no complex filters or only single category
+      const targetCategory = category.length === 1 ? category[0] : '';
+      const data = await getPaginatedProducts(1, 12, targetCategory);
+      if (data && data.products) {
+        setFilterProduct(data.products);
+        setPage(data.page);
+        setHasMore(data.page < data.pages);
+      }
+      setIsFiltering(false);
+      return;
+    }
+
+    // Fallback to local simulated filtering for complex combinations
     setTimeout(() => {
       let productCopy = product.slice();
 
@@ -265,14 +286,20 @@ function Collections() {
       }
 
       setFilterProduct(productCopy);
-
-      // Count active filters
-      const filterCount = category.length + subCategory.length + selectedRatings.length +
-        (priceRange[0] > 0 || priceRange[1] < 2000 ? 1 : 0);
-      setActiveFilters(filterCount);
-
+      setHasMore(false); // Disable "Load More" for local complex filters
       setIsFiltering(false);
     }, 500);
+  };
+
+  const loadMoreData = async () => {
+    const targetCategory = category.length === 1 ? category[0] : '';
+    const nextPage = page + 1;
+    const data = await getPaginatedProducts(nextPage, 12, targetCategory);
+    if (data && data.products) {
+      setFilterProduct(prev => [...prev, ...data.products]);
+      setPage(data.page);
+      setHasMore(data.page < data.pages);
+    }
   };
 
   const sortProduct = () => {
@@ -323,14 +350,23 @@ function Collections() {
   }, []);
 
   useEffect(() => {
-    // Initial loading simulation
-    const timer = setTimeout(() => {
+    // Initial loading implementation via paginated endpoint
+    const fetchInitial = async () => {
+      if (getPaginatedProducts) {
+        const data = await getPaginatedProducts(1, 12, '');
+        if (data && data.products) {
+          setFilterProduct(data.products);
+          setPage(data.page);
+          setHasMore(data.page < data.pages);
+        }
+      } else {
+        setFilterProduct(product);
+      }
       setIsLoading(false);
-      setFilterProduct(product);
-    }, 1500);
+    };
 
-    return () => clearTimeout(timer);
-  }, [product]);
+    fetchInitial();
+  }, [product, getPaginatedProducts]);
 
   useEffect(() => {
     sortProduct();
@@ -470,9 +506,9 @@ function Collections() {
                 </div>
 
                 {/* Load More Button */}
-                {filterProduct.length > 0 && filterProduct.length % 12 === 0 && (
+                {hasMore && (
                   <div className='text-center mt-12'>
-                    <button className='px-8 py-3 bg-slate-200 dark:bg-gray-700 hover:bg-slate-300 dark:hover:bg-gray-600 text-slate-800 dark:text-white rounded-lg transition-colors font-semibold'>
+                    <button onClick={loadMoreData} className='px-8 py-3 bg-slate-200 dark:bg-gray-700 hover:bg-slate-300 dark:hover:bg-gray-600 text-slate-800 dark:text-white rounded-lg transition-colors font-semibold'>
                       Load More Products
                     </button>
                   </div>

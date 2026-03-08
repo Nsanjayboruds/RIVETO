@@ -177,11 +177,28 @@ function ShopContext({ children }) {
     }
   }, [userData]);
 
+  // Fetch paginated products from server
+  const getPaginatedProducts = async (page = 1, limit = 12, category = '') => {
+    try {
+      let url = `${serverUrl}/api/product/list?page=${page}&limit=${limit}`;
+      if (category) {
+        url += `&category=${category}`;
+      }
+      const result = await axios.get(url);
+      console.log("Fetched paginated products:", result.data);
+      return result.data; // { products, total, page, pages }
+    } catch (error) {
+      console.error("Error fetching paginated products:", error);
+      return null;
+    }
+  };
+
   const value = {
     product,
     currency,
     delivery_fee,
     getProducts,
+    getPaginatedProducts,
     search,
     setSearch,
     showSearch,
