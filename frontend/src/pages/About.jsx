@@ -141,7 +141,7 @@ function About() {
 
               {/* Right: Visual */}
               <div className="relative">
-                <div className="rounded-2xl overflow-hidden shadow-xl border border-[#1f2a44]">
+                <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-[#1f2a44]">
                   <Carousel
                     baseWidth={500}
                     autoplay={true}
@@ -169,15 +169,15 @@ function About() {
                   99.9% uptime with enterprise-grade infrastructure ensuring your shopping experience is always available when you need it.
                 </p>
               </div>
-              <div className="bg-[#101a2f] border border-[#1f2a44] p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-white mb-3" style={{ fontFamily: 'Inter, sans-serif' }}>Fulfillment Network</h3>
-                <p className="text-sm text-gray-400 leading-relaxed" style={{ fontFamily: 'Inter, sans-serif' }}>
+              <div className="bg-white dark:bg-[#101a2f] border border-gray-200 dark:border-[#1f2a44] p-6 rounded-lg">
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-3" style={{ fontFamily: 'Inter, sans-serif' }}>Fulfillment Network</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" style={{ fontFamily: 'Inter, sans-serif' }}>
                   Strategic warehouse locations and vetted logistics partners enable fast, reliable delivery across all regions.
                 </p>
               </div>
-              <div className="bg-[#101a2f] border border-[#1f2a44] p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-white mb-3" style={{ fontFamily: 'Inter, sans-serif' }}>Customer Protection</h3>
-                <p className="text-sm text-gray-400 leading-relaxed" style={{ fontFamily: 'Inter, sans-serif' }}>
+              <div className="bg-white dark:bg-[#101a2f] border border-gray-200 dark:border-[#1f2a44] p-6 rounded-lg">
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-3" style={{ fontFamily: 'Inter, sans-serif' }}>Customer Protection</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" style={{ fontFamily: 'Inter, sans-serif' }}>
                   Comprehensive buyer protection policies, secure payment processing, and transparent return procedures.
                 </p>
               </div>
