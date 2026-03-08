@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaPhone, FaEnvelope, FaMapMarkerAlt, FaHeart, FaCheckCircle, FaTimes } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaPhone, FaEnvelope, FaMapMarkerAlt, FaHeart, FaTimes } from 'react-icons/fa';
+import { HiOutlineUserGroup } from 'react-icons/hi';
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { BiSupport } from "react-icons/bi";
 import gsap from 'gsap';
@@ -64,7 +65,7 @@ function Footer() {
       <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl hidden dark:block"></div>
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto py-16 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 relative z-10">
+      <div className="max-w-7xl mx-auto py-16 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 relative z-10">
         
         {/* Brand Info */}
         <div className="footer-section">
@@ -99,6 +100,23 @@ function Footer() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Contributors - dedicated section */}
+        <div className="footer-section">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+            <HiOutlineUserGroup className="text-cyan-400" />
+            Contributors
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Meet the people who help build Riveto.</p>
+          <ul className="space-y-3">
+            <li>
+              <Link to="/contributors" className="text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group">
+                <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                View Contributors
+              </Link>
+            </li>
+          </ul>
         </div>
 
         {/* Quick Links */}

@@ -4,7 +4,7 @@ import { IoSearchCircleOutline, IoSearchCircleSharp } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineShoppingCart, MdLogout } from "react-icons/md";
 import { IoMdHome } from "react-icons/io";
-import { HiOutlineCollection, HiOutlineUserGroup } from "react-icons/hi";
+import { HiOutlineCollection } from "react-icons/hi";
 import { RiContactsLine } from "react-icons/ri";
 import { BsMoon, BsSun, BsSearch, BsBoxSeam } from "react-icons/bs";
 import { FiInfo, FiUser, FiLogIn } from "react-icons/fi";
@@ -105,7 +105,7 @@ function Nav() {
 
         {/* Desktop Navigation */}
         <nav ref={navRef} className="hidden md:flex gap-12 text-sm font-medium cursor-pointer">
-          {['Home', 'Collection', 'Contributors', 'About', 'Contact'].map((item) => {
+          {['Home', 'Collection', 'About', 'Contact'].map((item) => {
             const path = item.toLowerCase() === 'home' ? '/' : `/${item.toLowerCase()}`;
             const isActive = location.pathname === path;
             return (
@@ -304,7 +304,6 @@ function Nav() {
         {[
           { icon: IoMdHome, label: "Home", path: "/" },
           { icon: HiOutlineCollection, label: "Collection", path: "/collection" },
-          { icon: HiOutlineUserGroup, label: "Contributors", path: "/contributors" },
           { icon: RiContactsLine, label: "Contact", path: "/contact" },
         ].map((item, index) => {
           const isActive = location.pathname === item.path;
