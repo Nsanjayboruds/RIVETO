@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import fallback from '../data/contributorsFallback.json';
 
 const useGitHubContributors = (repoOwner = 'Nsanjayboruds', repoName = 'RIVETO') => {
     const [contributors, setContributors] = useState([]);
@@ -41,7 +42,19 @@ const useGitHubContributors = (repoOwner = 'Nsanjayboruds', repoName = 'RIVETO')
                 setError(null);
             } catch (err) {
                 console.error("Error fetching GitHub data:", err);
-                setError("Failed to load contributor data. Please try again later.");
+                // Use local fallback data so the page still renders nicely
+                try {
+                    setContributors(fallback.contributors || []);
+                    setStats(fallback.stats || {
+                        stars: 0,
+                        forks: 0,
+                        totalContributors: fallback.contributors ? fallback.contributors.length : 0,
+                        pullRequests: 0,
+                    });
+                    setError(null);
+                } catch (e) {
+                    setError("Failed to load contributor data. Please try again later.");
+                }
             } finally {
                 setLoading(false);
             }

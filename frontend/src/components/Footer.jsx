@@ -101,6 +101,23 @@ function Footer() {
           </div>
         </div>
 
+        {/* Contributors - dedicated section */}
+        <div className="footer-section">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+            <FaCheckCircle className="text-cyan-400" />
+            Contributors
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Meet the people who help build Riveto.</p>
+          <ul className="space-y-3">
+            <li>
+              <Link to="/contributors" className="text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group">
+                <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                View Contributors
+              </Link>
+            </li>
+          </ul>
+        </div>
+
         {/* Quick Links */}
         <div className="footer-section">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
