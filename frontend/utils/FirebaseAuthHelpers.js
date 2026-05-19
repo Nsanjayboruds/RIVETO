@@ -1,4 +1,8 @@
 export const getFirebaseAuthErrorMessage = (error) => {
+  if (!error || typeof error !== "object") {
+    return "Authentication failed. Please try again.";
+  }
+
   switch (error.code) {
     case "auth/popup-closed-by-user":
       return "Google sign-in popup was closed.";
