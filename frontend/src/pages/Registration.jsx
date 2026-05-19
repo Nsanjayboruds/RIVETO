@@ -120,7 +120,7 @@ function Registration() {
 
   const googleSignup = async () => {
     if (!isFirebaseConfigValid) {
-      toast.error("Firebase configuration is incomplete. Cannot sign up.");
+      console.warn("Firebase configuration is incomplete. Google sign up is unavailable.");
       return;
     }
 
