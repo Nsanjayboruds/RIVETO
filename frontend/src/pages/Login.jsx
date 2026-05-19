@@ -4,7 +4,8 @@ import { IoEyeOutline, IoEye, IoMail, IoLockClosed } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../utils/Firebase";
+import { auth, provider, isFirebaseConfigValid } from "../../utils/Firebase";
+import { getFirebaseAuthErrorMessage } from "../../utils/FirebaseAuthHelpers";
 import { authDataContext } from "../context/AuthContext";
 import { userDataContext } from "../context/UserContext";
 import { shopDataContext } from "../context/ShopContext";
@@ -180,10 +181,16 @@ function Login() {
   };
 
   const googleLogin = async () => {
+    if (!isFirebaseConfigValid) {
+      toast.error("Firebase configuration is incomplete. Cannot sign in.");
+      return;
+    }
+
     setGoogleLoading(true);
     try {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
+      console.log("Google OAuth Success:", user);
       
       await axios.post(
         `${serverUrl}/api/auth/googlelogin`,
@@ -200,8 +207,15 @@ function Login() {
         getCurrentUser();
         navigate("/");
       }, 500);
-    } catch (err) {
-      toast.error("Google login failed. Please try again.");
+    } catch (error) {
+      console.group("Google OAuth Debug");
+      console.log("Error Code:", error.code);
+      console.log("Error Message:", error.message);
+      console.log("Full Error:", error);
+      console.groupEnd();
+
+      const message = getFirebaseAuthErrorMessage(error);
+      toast.error(message);
     } finally {
       setGoogleLoading(false);
     }
@@ -311,15 +325,20 @@ function Login() {
           <button
             ref={googleBtnRef}
             onClick={googleLogin}
-            disabled={googleLoading}
+            disabled={googleLoading || !isFirebaseConfigValid}
             className="w-full flex items-center justify-center gap-3 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-xl py-4 px-6 font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {googleLoading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Connecting...
+              </>
             ) : (
-              <FcGoogle className="w-6 h-6" />
+              <>
+                <FcGoogle className="w-6 h-6" />
+                Continue with Google
+              </>
             )}
-            Continue with Google
           </button>
 
           {/* Collapsible Email Form with Staged Entry */}

@@ -5,7 +5,8 @@ import { FcGoogle } from "react-icons/fc";
 import { authDataContext } from "../context/AuthContext";
 import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../utils/Firebase";
+import { auth, provider, isFirebaseConfigValid } from "../../utils/Firebase";
+import { getFirebaseAuthErrorMessage } from "../../utils/FirebaseAuthHelpers";
 import { userDataContext } from "../context/UserContext";
 import gsap from "gsap";
 import { toast } from 'react-toastify';
@@ -118,10 +119,16 @@ function Registration() {
   };
 
   const googleSignup = async () => {
+    if (!isFirebaseConfigValid) {
+      toast.error("Firebase configuration is incomplete. Cannot sign up.");
+      return;
+    }
+
     setGoogleLoading(true);
     try {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
+      console.log("Google OAuth Success:", user);
       
       await axios.post(
         serverUrl + "/api/auth/googlelogin",
@@ -137,8 +144,14 @@ function Registration() {
       toast.success("Welcome to Riveto! 🎉");
       navigate("/");
     } catch (error) {
-      console.error("Google Signup Error:", error);
-      toast.error("Google signup failed. Please try again.");
+      console.group("Google OAuth Debug");
+      console.log("Error Code:", error.code);
+      console.log("Error Message:", error.message);
+      console.log("Full Error:", error);
+      console.groupEnd();
+
+      const message = getFirebaseAuthErrorMessage(error);
+      toast.error(message);
     } finally {
       setGoogleLoading(false);
     }
@@ -174,15 +187,20 @@ function Registration() {
           {/* Google Signup Button */}
           <button
             onClick={googleSignup}
-            disabled={googleLoading}
+            disabled={googleLoading || !isFirebaseConfigValid}
             className="form-element w-full flex items-center justify-center gap-3 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-300 dark:border-gray-600 rounded-xl py-3 px-4 text-gray-700 dark:text-white font-medium transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
           >
             {googleLoading ? (
-              <div className="w-5 h-5 border-2 border-gray-600 dark:border-white border-t-transparent rounded-full animate-spin"></div>
+              <>
+                <div className="w-5 h-5 border-2 border-gray-600 dark:border-white border-t-transparent rounded-full animate-spin"></div>
+                Connecting...
+              </>
             ) : (
-              <FcGoogle className="w-5 h-5" />
+              <>
+                <FcGoogle className="w-5 h-5" />
+                Continue with Google
+              </>
             )}
-            Continue with Google
           </button>
 
           {/* Divider */}
