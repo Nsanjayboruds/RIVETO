@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import useCountUpOnVisible from '../hooks/useCountUpOnVisible';
 import NewsletterBox from '../components/NewLetterBox';
 import Footer from '../components/Footer';
 import Carousel from '../ui/Carousel';
@@ -63,6 +64,16 @@ function About() {
     { number: '98%', label: 'SLA' },
     { number: '24/7', label: 'Support' },
   ];
+
+  const animatedStats = useCountUpOnVisible(
+    stats.map((stat) => stat.number),
+    statsRef,
+    {
+      duration: 1000,
+      threshold: 0.2,
+      rootMargin: '0px 0px -25% 0px',
+    }
+  );
 
   const trustBadges = [
     {
@@ -267,7 +278,7 @@ function About() {
                   className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1"
                   style={{ fontFamily: 'Poppins, sans-serif' }}
                 >
-                  {stat.number}
+                  {animatedStats[index]}
                 </div>
                 <div
                   className="text-sm text-gray-400 uppercase tracking-wide"
