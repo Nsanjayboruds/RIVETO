@@ -180,20 +180,20 @@ const TableOfContents = ({ activeSection, onSectionClick }) => (
       Quick Navigation
     </h3>
     <nav className="space-y-2">
-      {sections.map((section, index) => (
+      {sections.map((item, _index) => (
         <button
-          key={section.id}
-          onClick={() => onSectionClick(section.id)}
-          className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 flex items-center gap-3 ${activeSection === section.id
-              ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30"
+          key={item.id}
+          onClick={() => onSectionClick(item.id)}
+          className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 flex items-center gap-3 ${activeSection === item.id
+              ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30"`
               : "text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700/50"
             }`}
         >
-          <span className={`text-sm ${activeSection === section.id ? "text-white" : "text-cyan-400"}`}>
-            {section.icon}
+          <span className={`text-sm ${activeSection === item.id ? "text-white" : "text-cyan-400"}`}>
+            {item.icon}
           </span>
-          <span className="text-sm font-medium">{section.title}</span>
-          {activeSection === section.id && <FaArrowRight className="ml-auto text-sm" />}
+          <span className="text-sm font-medium">{item.title}</span>
+          {activeSection === item.id && <FaArrowRight className="ml-auto text-sm" />}
         </button>
       ))}
     </nav>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { motion, useMotionValue, useTransform } from "motion/react";
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 // replace icons with your own if needed
 import { FiCircle, FiCode, FiFileText, FiLayers, FiLayout } from "react-icons/fi";
 

@@ -280,7 +280,7 @@ function Order() {
                             {statusSteps.map((step, idx) => {
                               const StepIcon = step.icon;
                               const isCompleted = idx <= statusIndex;
-                              const isCurrent = idx === statusIndex;
+                              const _isCurrent = idx === statusIndex;
 
                               return (
                                 <div key={idx} className="flex flex-col items-center">

@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property */
+ 
 import {
   forwardRef,
   useImperativeHandle,
@@ -339,7 +339,7 @@ const DirLight = ({
     cam.right = 24;
     cam.far = 64;
     dir.current.shadow.bias = -0.004;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
   return (
     <directionalLight

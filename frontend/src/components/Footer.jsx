@@ -13,7 +13,7 @@ function Footer() {
   const footerRef = useRef(null);
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [, setIsSubscribed] = useState(false);
 
   useEffect(() => {
     // Animate footer elements on scroll

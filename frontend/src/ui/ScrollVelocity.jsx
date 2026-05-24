@@ -1,6 +1,5 @@
 import { useRef, useLayoutEffect, useState } from "react";
 import {
-  motion,
   useScroll,
   useSpring,
   useTransform,

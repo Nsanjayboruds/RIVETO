@@ -25,7 +25,7 @@ const useGitHubContributors = (repoOwner = 'Nsanjayboruds', repoName = 'RIVETO')
                 const repoRes = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}`);
                 
                 // Fetch PR count (simplified, just the first page is usually enough for a counter or estimate)
-                const prRes = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/pulls?state=all&per_page=1`);
+             await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/pulls?state=all&per_page=1`);
                 // Use Link header or just a placeholder if not easily parsed. 
                 // For now, let's use the contributors count + some heuristic or fetch if needed.
                 // Better way to get total PRs: search API

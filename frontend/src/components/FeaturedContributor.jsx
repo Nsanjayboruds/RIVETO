@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 
 const FeaturedContributor = ({ contributor, role, description, badge, rank = 1 }) => {
     // Podium heights based on rank

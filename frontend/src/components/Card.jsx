@@ -11,11 +11,11 @@ function Card({ name, image, id, price, showQuickActions = true, badge, badgeCol
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isAddingToCart] = useState(false);
   const cardRef = useRef(null);
 
   // Removed 3D tilt effect for corporate stability
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (_e) => {
     // No transform changes - stability over motion
   };
 

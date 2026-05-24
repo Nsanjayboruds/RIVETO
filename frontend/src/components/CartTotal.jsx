@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { shopDataContext } from '../context/ShopContext';
 import Title from './Title';
 import { FaShippingFast, FaPercentage, FaGift } from 'react-icons/fa';

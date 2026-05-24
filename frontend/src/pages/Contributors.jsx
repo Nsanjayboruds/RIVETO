@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 import useGitHubContributors from '../hooks/useGitHubContributors';
 import FeaturedContributor from '../components/FeaturedContributor';
 import ContributorCard from '../components/ContributorCard';
@@ -21,7 +21,7 @@ const Contributors = () => {
     const [sortBy, setSortBy] = useState('contributions'); // 'contributions' or 'name'
 
     // Separate top 3 by contributions and special mentions
-    const { topThree, specialContributors, regularContributors } = useMemo(() => {
+    const { topThree, regularContributors } = useMemo(() => {
         const sorted = [...contributors].sort((a, b) => b.contributions - a.contributions);
 
         // Get top 3 by contributions
@@ -40,7 +40,6 @@ const Contributors = () => {
 
         return {
             topThree: top3,
-            specialContributors: special,
             regularContributors: regular
         };
     }, [contributors]);

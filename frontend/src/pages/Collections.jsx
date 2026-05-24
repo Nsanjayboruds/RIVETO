@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState, useRef, useCallback } from 'rea
 import { useFocusTrap, useEscapeKey } from '../hooks/useDialogA11y';
 import { FaChevronRight, FaChevronDown, FaFilter, FaTimes, FaSearch, FaStar } from "react-icons/fa";
 import { RiPriceTag3Line, RiArrowUpDownLine } from "react-icons/ri";
-import { toast } from 'react-toastify';
 import { shopDataContext } from '../context/ShopContext';
 import Card from '../components/Card';
 import Footer from '../components/Footer';
