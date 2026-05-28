@@ -92,9 +92,9 @@ function Footer() {
                 name: 'Facebook',
               },
               {
-                icon: <FaTwitter className="w-4 h-4" />,
+                icon: <FaTwitter className="w-4 h-4" aria-hidden="true" />,
                 color: 'hover:bg-cyan-500',
-                name: 'Twitter',
+                name: 'X',
               },
               {
                 icon: <FaInstagram className="w-4 h-4" />,
