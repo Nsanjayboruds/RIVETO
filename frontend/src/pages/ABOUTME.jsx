@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import ProfileCard from '../components/ProfileCard';
+import { useEffect, useRef } from 'react';
 import avatar from '../assets/avatar.jpg';
 import {
   FaGithub,
@@ -32,6 +31,12 @@ function ABOUTME() {
   const sectionRef = useRef(null);
   const skillsRef = useRef(null);
   const projectsRef = useRef(null);
+  const skills = {
+    frontend: [],
+    backend: [],
+    database: [],
+    tools: [],
+  };
 
   useEffect(() => {
     // Animations
@@ -146,7 +151,6 @@ function ABOUTME() {
       },
     ],
   };
-
   const projects = [
     {
       title: 'E-Commerce Platform',

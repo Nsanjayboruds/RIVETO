@@ -1,6 +1,3 @@
-import React from 'react';
-import LastestCollection from '../components/LastestCollection';
-import BestSeller from '../components/BestSeller';
 
 function Product() {
   return (

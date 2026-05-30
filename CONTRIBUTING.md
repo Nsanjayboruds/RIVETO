@@ -100,8 +100,7 @@ Create an issue describing the change, why it’s needed, and possible approache
 
 ## Code of Conduct
 
-This project follows the Contributor Covenant. By participating, you agree to uphold it. If a CODE_OF_CONDUCT.md file is missing, please open an issue.
-
+[Code_of_conduct Guide](CODE_OF_CONDUCT.md)
 ## Getting help
 
 If you’re unsure where to start, check issues labeled “good first issue” or “help wanted”. You can also ask questions on an issue for guidance.

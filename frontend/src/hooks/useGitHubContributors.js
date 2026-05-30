@@ -32,7 +32,7 @@ const useGitHubContributors = (
         );
 
         // Fetch PR count (simplified, just the first page is usually enough for a counter or estimate)
-        const prRes = await axios.get(
+        const _prRes = await axios.get(
           `https://api.github.com/repos/${repoOwner}/${repoName}/pulls?state=all&per_page=1`
         );
         // Use Link header or just a placeholder if not easily parsed.

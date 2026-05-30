@@ -1,12 +1,10 @@
 # RIVETO
 
-![License](https://img.shields.io/github/license/Nsanjayboruds/RIVETO)
-![Issues](https://img.shields.io/github/issues/Nsanjayboruds/RIVETO)
-![Stars](https://img.shields.io/github/stars/Nsanjayboruds/RIVETO)
-
+[![License](https://img.shields.io/github/license/Nsanjayboruds/RIVETO)](LICENSE)
+[![Issues](https://img.shields.io/github/issues/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/issues)
+[![Stars](https://img.shields.io/github/stars/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/stargazers)
 ---
 
----
 
 ## 🚀 Overview
 
@@ -150,14 +148,17 @@ const handleUpload = async (event) => {
 };
 ```
 
----
+
 
 ## 🧪 Testing
 
-Testing scripts are currently not configured for this project.
-Future releases may include automated frontend and backend testing support.
+Run lint checks:
 
----
+```bash
+npm run lint
+```
+
+
 
 ## 📂 Project Structure
 
@@ -225,18 +226,49 @@ REACT_APP_RAZORPAY_KEY=
 - Admin dashboard for real-time tracking
 
 ---
+## 🤝 Feedback and Community
+
+We welcome bug reports, feature requests, and community feedback.
+
+### 🐛 Report Issues
+
+If you find a bug or security issue, please open an issue on GitHub with:
+
+* Steps to reproduce
+* Expected behavior
+* Screenshots/logs if applicable
+
+GitHub Issues:
+https://github.com/Nsanjayboruds/RIVETO/issues
+
+### 💡 Feature Requests
+
+Have an idea for improving RIVETO?
+Open a feature request issue and describe your suggestion.
+
+### 💬 Discussions
+
+Use GitHub Discussions for:
+
+* Questions
+* Community help
+* Project ideas
+* Feedback
+
+GitHub Discussions:
+https://github.com/Nsanjayboruds/RIVETO/discussions
+
 
 ## 📝 Contribution Guidelines
 
-befor start contribution star the repo
-
+Before contributing, please star the repository ⭐
 1. Fork the project
 2. Create your feature branch (`git checkout -b feature/YourFeature`)
 3. Commit your changes (`git commit -m 'Add feature'`)
 4. Push to the branch (`git push origin feature/YourFeature`)
 5. Open a Pull Request
 
-Please review [CONTRIBUTION.MD](CONTRIBUTION.MD) for details.
+Please review [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ---
 

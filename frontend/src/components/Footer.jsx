@@ -1,22 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { toast } from 'react-toastify';
 import {
   FaFacebookF,
-  FaTwitter,
   FaInstagram,
   FaLinkedinIn,
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
   FaHeart,
-  FaCheckCircle,
-  FaTimes,
+  FaXTwitter,
 } from 'react-icons/fa';
 import { RiCustomerService2Fill } from 'react-icons/ri';
 import { BiSupport } from 'react-icons/bi';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { toast } from 'react-toastify';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +22,7 @@ function Footer() {
   const footerRef = useRef(null);
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [_isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
     // Animate footer elements on scroll
@@ -74,11 +72,11 @@ function Footer() {
       className="w-full bg-slate-100 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-950 text-gray-700 dark:text-gray-300 border-t border-gray-200 dark:border-gray-800 relative overflow-hidden transition-colors duration-300"
     >
       {/* Background Pattern - Faint in light mode */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CiAgPHBhdGggZD0iTTAgMGg2MHY2MEgweiIgZmlsbD0ibm9uZSIvPgogIDxwYXRoIGQ9Ik0zMCAzMG0tMjggMGEyOCwyOCAwIDEsMSA1NiwwYTI4LDI4IDAgMSwxIC01NiwwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMC41IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==')] opacity-20"></div>
+      <div className="absolute inset-0 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CiAgPHBhdGggZD0iTTAgMGg2MHY2MEgweiIgZmlsbD0ibm9uZSIvPgogIDxwYXRoIGQ9Ik0zMCAzMG0tMjggMGEyOCwyOCAwIDEsMSA1NiwwYTI4LDI4IDAgMSwxIC01NiwwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMC41IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==')] opacity-20"></div>
 
       {/* Decorative Elements - Hidden in light mode or adjusted */}
-      <div className="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl hidden dark:block"></div>
-      <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl hidden dark:block"></div>
+      <div className="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl hidden dark:block pointer-events-none"></div>
+      <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl hidden dark:block pointer-events-none"></div>
 
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto py-16 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 relative z-10">
@@ -107,9 +105,9 @@ function Footer() {
                 name: 'Facebook',
               },
               {
-                icon: <FaTwitter className="w-4 h-4" />,
-                color: 'hover:bg-cyan-500',
-                name: 'Twitter',
+                icon: <FaXTwitter className="w-4 h-4" />,
+                color: 'hover:bg-black dark:hover:bg-white',
+                name: 'X',
               },
               {
                 icon: <FaInstagram className="w-4 h-4" />,
@@ -147,6 +145,7 @@ function Footer() {
             {[
               { name: 'Home', to: '/' },
               { name: 'About Us', to: '/about' },
+              { name: 'Contributors', to: '/contributors' },
               { name: 'Products', to: '/product' },
               { name: 'Collections', to: '/collection' },
               { name: 'New Arrivals', to: '/new-arrivals' },
@@ -155,7 +154,7 @@ function Footer() {
               <li key={index}>
                 <Link
                   to={item.to}
-                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group"
+                  className="relative z-20 text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2 group"
                 >
                   <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   {item.name}

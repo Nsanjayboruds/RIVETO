@@ -12,7 +12,7 @@ export const genToken1 = async (email) => {
       expiresIn: "7d",
     });
     return token;
-  } catch (error) {
+  } catch (_error) {
     console.log("token error");
   }
 };

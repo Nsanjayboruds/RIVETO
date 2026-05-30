@@ -14,7 +14,7 @@ function Login() {
   const { serverUrl } = useContext(authDataContext);
   const [loading, setLoading] = useState(false); // NEW
   const [error, setError] = useState(""); // NEW
-  const { adminData, getAdmin } = useContext(adminDataContext);
+  const { adminData: _adminData, getAdmin } = useContext(adminDataContext);
   const navigate = useNavigate();
 
   const Adminlogin = async (e) => {

@@ -1,3 +1,4 @@
+
 import {
   forwardRef,
   useImperativeHandle,
@@ -8,8 +9,7 @@ import {
 
 import * as THREE from 'three';
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { PerspectiveCamera } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 import { degToRad } from 'three/src/math/MathUtils.js';
 
 import './Beams.css';
@@ -61,7 +61,7 @@ function extendMaterial(BaseMaterial, cfg) {
   return mat;
 }
 
-const CanvasWrapper = ({ children }) => (
+const _CanvasWrapper = ({ children }) => (
   <Canvas dpr={[1, 2]} frameloop="always" className="beams-container">
     {children}
   </Canvas>
@@ -321,7 +321,7 @@ const PlaneNoise = forwardRef((props, ref) => (
 ));
 PlaneNoise.displayName = 'PlaneNoise';
 
-const DirLight = ({ position, color }) => {
+export const DirLight = ({ position, color }) => {
   const dir = useRef(null);
   useEffect(() => {
     if (!dir.current) return;

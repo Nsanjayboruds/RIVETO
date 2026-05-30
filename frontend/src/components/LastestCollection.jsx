@@ -1,10 +1,8 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import { shopDataContext } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
-import Card from './Card';
-import Title from './Title';
+
 import mobvid from '../assets/4 Mobile.mp4';
-import { FaPlay, FaPause, FaExpand, FaCompress } from 'react-icons/fa';
 
 import gsap from 'gsap';
 

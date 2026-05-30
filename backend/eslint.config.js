@@ -1,19 +1,22 @@
+import js from "@eslint/js";
+import globals from "globals";
+
 export default [
+  { ignores: ["node_modules"] },
   {
     files: ["**/*.js"],
     languageOptions: {
       ecmaVersion: "latest",
+      globals: globals.node,
       sourceType: "module",
-      globals: {
-        Buffer: "readonly",
-        console: "readonly",
-        process: "readonly",
-        setTimeout: "readonly",
-      },
     },
     rules: {
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      ...js.configs.recommended.rules,
+      "no-console": "off",
       "no-undef": "error",
+      "no-unused-vars": ["error", {
+        "caughtErrorsIgnorePattern": "^_"
+      }],
     },
   },
 ];

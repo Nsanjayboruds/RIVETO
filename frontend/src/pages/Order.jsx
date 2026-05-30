@@ -1,24 +1,8 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import Title from '../components/Title';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { shopDataContext } from '../context/ShopContext';
 import { authDataContext } from '../context/AuthContext';
 import axios from 'axios';
-import {
-  FaBox,
-  FaShoppingBag,
-  FaShippingFast,
-  FaCheckCircle,
-  FaClock,
-  FaMoneyBillWave,
-  FaCreditCard,
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaPhone,
-  FaEnvelope,
-  FaUndo,
-  FaStar,
-} from 'react-icons/fa';
-import { GiReceiveMoney } from 'react-icons/gi';
+import { FaBox, FaShoppingBag, FaShippingFast, FaCheckCircle, FaClock, FaMapMarkerAlt, FaUndo } from 'react-icons/fa';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -209,7 +193,7 @@ function Order() {
         {/* Filter Tabs */}
         <div className="flex flex-wrap gap-2 mb-8 justify-center">
           {statusFilters.map((filter) => {
-            const IconComponent = filter.icon;
+            const _IconComponent = filter.icon;
             return (
               <button
                 key={filter.value}
@@ -290,7 +274,7 @@ function Order() {
             </div>
           ) : (
             filteredOrders.map((item, index) => {
-              const StatusIcon = getStatusIcon(item.status);
+              const _StatusIcon = getStatusIcon(item.status);
               const statusIndex = getNormalizedStatusIndex(item.status);
               const isCancelled = item.status?.toLowerCase().includes('cancel');
 
@@ -359,9 +343,9 @@ function Order() {
                         <div className="space-y-3">
                           <div className="flex items-center justify-between">
                             {statusSteps.map((step, idx) => {
-                              const StepIcon = step.icon;
+                              const _StepIcon = step.icon;
                               const isCompleted = idx <= statusIndex;
-                              const isCurrent = idx === statusIndex;
+                              const _isCurrent = idx === statusIndex;
 
                               return (
                                 <div

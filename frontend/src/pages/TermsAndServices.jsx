@@ -1,19 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer';
-import {
-  FaShieldAlt,
-  FaUserCheck,
-  FaLock,
-  FaMoneyBillWave,
-  FaCopyright,
-  FaExclamationTriangle,
-  FaEdit,
-  FaEnvelope,
-  FaGithub,
-  FaCheckCircle,
-  FaArrowRight,
-  FaFileContract,
-} from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+
 
 const sections = [
   {
@@ -198,14 +184,14 @@ const sections = [
   },
 ];
 
-const TableOfContents = ({ activeSection, onSectionClick }) => (
+const _TableOfContents = ({ activeSection, onSectionClick }) => (
   <div className="lg:sticky lg:top-28 bg-white/85 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-gray-700 p-6">
     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
       <FaFileContract className="text-cyan-400" />
       Quick Navigation
     </h3>
     <nav className="space-y-2">
-      {sections.map((section, index) => (
+      {sections.map((section, _index) => (
         <button
           key={section.id}
           onClick={() => onSectionClick(section.id)}
@@ -230,7 +216,7 @@ const TableOfContents = ({ activeSection, onSectionClick }) => (
   </div>
 );
 
-const Section = ({ section, isActive }) => (
+const _Section = ({ section, isActive }) => (
   <section
     id={section.id}
     className={`scroll-mt-28 transform transition-all duration-500 ${

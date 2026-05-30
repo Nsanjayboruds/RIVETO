@@ -1,53 +1,14 @@
 import express from "express";
-import {
-  login,
-  registration,
-  logOut,
-  googleLogin,
-  verifyOTP,
-  adminLogin,
-} from "../controller/authcontroller.js";
+import { sendOTP, login, logOut, googleLogin, verifyOTP, adminLogin } from "../controller/authcontroller.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { registerSchema, loginSchema } from "../validators/authSchemas.js";
 
+
 const authRoutes = express.Router();
 
-/**
- * @swagger
- * /api/auth/registration:
- *   post:
- *     summary: Register a new user
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [name, email, password]
- *             properties:
- *               name:
- *                 type: string
- *                 example: "John Doe"
- *               email:
- *                 type: string
- *                 example: "john@example.com"
- *               password:
- *                 type: string
- *                 example: "StrongPass123!"
- *     responses:
- *       201:
- *         description: User registered successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "User registered successfully"
- */
-authRoutes.post("/registration", validateRequest(registerSchema), registration);
+
+authRoutes.post('/send-otp', validateRequest(registerSchema), sendOTP);
+authRoutes.post("/verify-otp", verifyOTP);
 
 /**
  * @swagger
@@ -118,6 +79,5 @@ authRoutes.post("/googlelogin", googleLogin);
  *         description: OK
  */
 authRoutes.post("/adminlogin", adminLogin);
-authRoutes.post("/verify-otp", verifyOTP);
 
 export default authRoutes;

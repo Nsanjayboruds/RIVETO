@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 
 // Create and export the context
 export const authDataContext = createContext();
