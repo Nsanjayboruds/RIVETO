@@ -31,12 +31,7 @@ function ABOUTME() {
   const sectionRef = useRef(null);
   const skillsRef = useRef(null);
   const projectsRef = useRef(null);
-  const skills = {
-    frontend: [],
-    backend: [],
-    database: [],
-    tools: [],
-  };
+
 
   useEffect(() => {
     // Animations

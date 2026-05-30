@@ -1,6 +1,5 @@
 import express from "express";
 import { validateCoupon, createCoupon } from "../controller/couponController.js";
-import authUser from "../middleware/isAuth.js"; // if they have it, though usually promo codes don't strictly require auth unless you want to limit to logged-in users. We will use it just in case, but let's look at `orderRoute.js` to see if they use it.
 
 const couponRouter = express.Router();
 
