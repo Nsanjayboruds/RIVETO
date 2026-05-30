@@ -1,13 +1,7 @@
-import React, { useContext, useState, useRef, useMemo } from 'react';
+import { useContext, useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shopDataContext } from '../context/ShopContext';
-import {
-  FaHeart,
-  FaShoppingCart,
-  FaStar,
-  FaCheck,
-  FaExchangeAlt,
-} from 'react-icons/fa';
+
 import { toast } from 'react-toastify';
 import gsap from 'gsap';
 
@@ -23,16 +17,27 @@ function Card({
   isCompared,
   isFeatured = false,
 }) {
-  const { currency, addToWishlist } = useContext(shopDataContext);
+  const {
+    currency,
+    addToWishlist,
+    removeFromWishlist,
+    wishlist,
+  } = useContext(shopDataContext);
+
   const navigate = useNavigate();
+
+  const isWishlisted =
+    wishlist?.some((item) => item._id === id) || false;
+
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isAddingToCart, _setIsAddingToCart] = useState(false);
+
   const cardRef = useRef(null);
 
   // Removed 3D tilt effect for corporate stability
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (_e) => {
     // No transform changes - stability over motion
   };
 
@@ -64,7 +69,6 @@ function Card({
   const handleAddToWishlist = (e) => {
     e.stopPropagation();
 
-    // Heart animation
     gsap.to(e.currentTarget, {
       scale: 1.5,
       duration: 0.2,
@@ -73,15 +77,24 @@ function Card({
       ease: 'back.out(2)',
     });
 
-    addToWishlist(id);
-    toast.success('Added to wishlist! 💖', {
-      position: 'bottom-right',
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
+    const exists = wishlist?.some((item) => item._id === id);
+
+    if (exists) {
+      removeFromWishlist(id);
+
+      toast.info('Removed from wishlist');
+    } else {
+      addToWishlist(id);
+
+      toast.success('Added to wishlist! 💖', {
+        position: 'bottom-right',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
   };
 
   const handleCompare = (e) => {
@@ -122,6 +135,7 @@ function Card({
         typeof id === 'string'
           ? id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
           : id;
+
       const pseudoRandom = (offset) =>
         ((seed * 9301 + offset * 49297) % 233280) / 233280;
       return {
@@ -184,7 +198,7 @@ function Card({
             setImageError(true);
             e.target.src = '/fallback.jpg';
           }}
-          className={`w-full object-cover transition-all duration-500 group-hover:scale-104 ${
+          className={`w-full object-cover transition-all duration-500 group-hover:scale-105 ${
             isFeatured ? 'h-80' : 'h-64'
           } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
         />
@@ -214,14 +228,23 @@ function Card({
           <button
             type="button"
             onClick={handleAddToWishlist}
-            className={`absolute top-4 right-4 w-11 h-11 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-rose-400 shadow-md ${
-              isHovered
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 -translate-y-2'
-            }`}
-            aria-label={`Add ${name} to wishlist`}
+            className={`absolute top-4 right-4 w-11 h-11 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 border shadow-md
+            ${
+              isWishlisted
+                ? 'bg-rose-100 dark:bg-rose-900/40 border-rose-400'
+                : 'bg-white/90 dark:bg-gray-800/90 border-gray-200 dark:border-gray-700 hover:bg-rose-50 dark:hover:bg-rose-900/30 hover:border-rose-400'
+            }
+                  ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}
+`}
+            aria-label="Add to wishlist"
           >
-            <FaHeart className="text-gray-700 dark:text-gray-300 text-sm hover:text-rose-500 transition-colors" />
+            <FaHeart
+              className={`text-sm transition-colors ${
+                isWishlisted
+                  ? 'text-rose-500'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-rose-500'
+              }`}
+            />
           </button>
         )}
 
@@ -275,13 +298,20 @@ function Card({
         <div className="flex items-center gap-3 mb-3 text-sm text-gray-600 dark:text-gray-400">
           <div className="flex items-center gap-1">
             <FaStar className="text-yellow-400 text-xs" />
+
             <span className="font-medium text-gray-900 dark:text-white">
               {rating}
             </span>
           </div>
+
           <span className="text-gray-400">•</span>
-          <span className="text-xs">{reviewCount} reviews</span>
+
+          <span className="text-xs">
+            {reviewCount} reviews
+          </span>
+
           <span className="text-gray-400">•</span>
+
           <span className="text-xs font-medium text-green-600 dark:text-green-400">
             {dispatchHours}h dispatch
           </span>
@@ -294,11 +324,13 @@ function Card({
               {currency}
               {price.toLocaleString()}
             </p>
+
             <p className="text-gray-400 dark:text-gray-500 text-sm line-through">
               {currency}
               {originalPrice}
             </p>
           </div>
+
           <div className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-red-50 dark:bg-red-900/20 rounded-md">
             <span className="text-red-600 dark:text-red-400 text-xs font-semibold">
               Save {currency}

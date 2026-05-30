@@ -1,13 +1,7 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import Title from './Title';
-import Card from './Card';
+import { useContext, useEffect, useState, useRef } from 'react';
+
 import { shopDataContext } from '../context/ShopContext';
-import {
-  FaFire,
-  FaArrowRight,
-  FaChevronLeft,
-  FaChevronRight,
-} from 'react-icons/fa';
+
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

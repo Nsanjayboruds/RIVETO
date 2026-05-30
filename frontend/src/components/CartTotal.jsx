@@ -1,8 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { shopDataContext } from '../context/ShopContext';
-import Title from './Title';
-import { FaShippingFast, FaPercentage, FaGift } from 'react-icons/fa';
-import { RiCoupon2Line, RiArrowRightSLine } from 'react-icons/ri';
 import gsap from 'gsap';
 
 function CartTotal() {
@@ -48,7 +45,7 @@ function CartTotal() {
         <Title text1={'ORDER'} text2={'SUMMARY'} />
       </div>
 
-      <div className="cart-totals-container bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-6 shadow-xl">
+      <div className="cart-totals-container bg-linear-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-6 shadow-xl">
         {/* Discount Code Section */}
         <div className="mb-6">
           <button
@@ -175,7 +172,7 @@ function CartTotal() {
             </div>
             <div className="w-full bg-gray-700 rounded-full h-2">
               <div
-                className="bg-gradient-to-r from-cyan-500 to-blue-600 h-2 rounded-full transition-all duration-1000"
+                className="bg-linear-to-r from-cyan-500 to-blue-600 h-2 rounded-full transition-all duration-1000"
                 style={{ width: `${Math.min((subtotal / 50) * 100, 100)}%` }}
               ></div>
             </div>

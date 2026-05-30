@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { authDataContext } from './AuthContext';
 import axios from 'axios';
@@ -14,7 +14,6 @@ function ShopContext({ children }) {
   const [showSearch, setShowSearch] = useState(false);
   const [cartItem, setCartItem] = useState({});
   const [compareList, setCompareList] = useState([]);
-  const [wishlistItem, setWishlistItem] = useState([]);
   const [comparePanelOpen, setComparePanelOpen] = useState(false);
   const [discountData, setDiscountData] = useState({ code: '', percentage: 0, maxAmount: 50 });
   const addToWishlist = (itemId) => {
@@ -26,9 +25,70 @@ function ShopContext({ children }) {
   };
   const { serverUrl } = useContext(authDataContext);
   const { userData } = useContext(userDataContext); //
+  const [wishlist, setWishlist] = useState([]);
 
   const currency = '₹';
   const delivery_fee = 40;
+ //wishlist functions
+ const fetchWishlist = async () => {
+
+  try {
+
+    const response = await axios.get(
+      `${serverUrl}/api/wishlist`,
+      {
+        withCredentials: true
+      }
+    );
+
+    if (response.data.success) {
+      setWishlist(response.data.wishlist);
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+const addToWishlist = async (productId) => {
+  try {
+    const response = await axios.post(
+      `${serverUrl}/api/wishlist/add`,
+      { productId },
+      { withCredentials: true }
+    );
+
+    if (response.data.success) {
+      if (response.data.wishlist) {
+        setWishlist(response.data.wishlist);
+      } else {
+        fetchWishlist();
+      }
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const removeFromWishlist = async (productId) => {
+  try {
+    const response = await axios.post(
+      `${serverUrl}/api/wishlist/remove`,
+      { productId },
+      { withCredentials: true }
+    );
+
+    if (response.data.success) {
+      if (response.data.wishlist) {
+        setWishlist(response.data.wishlist);
+      } else {
+        fetchWishlist();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   // Fetch products from server
   const getProducts = async (page = 1, limit = 20) => {
@@ -145,7 +205,9 @@ function ShopContext({ children }) {
           if (itemInfo && cartItem[items][item] > 0) {
             totalAmount += itemInfo.price * cartItem[items][item];
           }
-        } catch (error) {}
+        } catch (_error) {
+          void _error;
+        }
       }
     }
     return totalAmount;
@@ -217,7 +279,11 @@ function ShopContext({ children }) {
       getUserCart();
     }
   }, [userData]);
-
+ useEffect(() => {
+  if (userData) {
+    fetchWishlist();
+  }
+}, [userData]);
   const value = {
     product,
     pagination,

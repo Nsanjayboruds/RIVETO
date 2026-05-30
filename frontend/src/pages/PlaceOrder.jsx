@@ -1,23 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
-import Title from '../components/Title';
-import CartTotal from '../components/CartTotal';
+import { useContext, useState, useEffect } from 'react';
 import { shopDataContext } from '../context/ShopContext';
 import { authDataContext } from '../context/AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import {
-  FaMoneyBillWave,
-  FaMapMarkerAlt,
-  FaUser,
-  FaEnvelope,
-  FaPhone,
-  FaCity,
-  FaGlobe,
-  FaLock,
-  FaShippingFast,
-  FaCheckCircle,
-} from 'react-icons/fa';
-import { RiSecurePaymentLine, RiCoupon2Line } from 'react-icons/ri';
+import { FaMoneyBillWave } from 'react-icons/fa';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -427,7 +413,7 @@ function PlaceOrder() {
 
                 <div className="space-y-4">
                   {paymentMethods.map((payment) => {
-                    const IconComponent = payment.icon;
+                    const _IconComponent = payment.icon;
                     return (
                       <div
                         key={payment.id}

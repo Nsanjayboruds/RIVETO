@@ -1,17 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer';
-import {
-  FaCookie,
-  FaShieldAlt,
-  FaCog,
-  FaUserCog,
-  FaCheckCircle,
-  FaArrowRight,
-  FaInfoCircle,
-  FaChartLine,
-  FaLock,
-  FaExclamationTriangle,
-} from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+
 
 const sections = [
   {

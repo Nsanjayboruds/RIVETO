@@ -1,18 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import ProfileCard from '../components/ProfileCard';
+import { useEffect, useRef } from 'react';
 import avatar from '../assets/avatar.jpg';
-import {
-  FaGithub,
-  FaLinkedin,
-  FaTwitter,
-  FaEnvelope,
-  FaDownload,
-  FaCode,
-  FaServer,
-  FaDatabase,
-  FaCloud,
-  FaMobile,
-} from 'react-icons/fa';
 // import { SiJavascript, SiReact, SiNodedotjs, SiPython, SiMongodb, SiPostgresql, SiAmazonaws, SiDocker } from 'react-icons/si';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,6 +10,12 @@ function ABOUTME() {
   const sectionRef = useRef(null);
   const skillsRef = useRef(null);
   const projectsRef = useRef(null);
+  const skills = {
+    frontend: [],
+    backend: [],
+    database: [],
+    tools: [],
+  };
 
   useEffect(() => {
     // Animations
@@ -60,31 +53,6 @@ function ABOUTME() {
       }
     );
   }, []);
-
-  //   const skills = {
-  //     frontend: [
-  //       { name: "JavaScript", icon: <SiJavascript className="text-yellow-400" />, level: 90 },
-  //       { name: "React", icon: <SiReact className="text-cyan-400" />, level: 95 },
-  //       { name: "HTML/CSS", icon: <FaCode className="text-orange-400" />, level: 92 },
-  //       { name: "Responsive Design", icon: <FaMobile className="text-pink-400" />, level: 88 }
-  //     ],
-  //     backend: [
-  //       { name: "Node.js", icon: <SiNodedotjs className="text-green-500" />, level: 90 },
-  //       { name: "Python", icon: <SiPython className="text-blue-400" />, level: 85 },
-  //       { name: "REST APIs", icon: <FaServer className="text-purple-400" />, level: 93 },
-  //       { name: "Microservices", icon: <FaCloud className="text-indigo-400" />, level: 87 }
-  //     ],
-  //     database: [
-  //       { name: "MongoDB", icon: <SiMongodb className="text-green-600" />, level: 88 },
-  //       { name: "PostgreSQL", icon: <SiPostgresql className="text-blue-600" />, level: 84 },
-  //       { name: "Database Design", icon: <FaDatabase className="text-amber-400" />, level: 89 }
-  //     ],
-  //     tools: [
-  //       { name: "AWS", icon: <SiAmazonaws className="text-orange-500" />, level: 82 },
-  //       { name: "Docker", icon: <SiDocker className="text-blue-400" />, level: 79 },
-  //       { name: "Git/GitHub", icon: <FaGithub className="text-gray-800" />, level: 94 }
-  //     ]
-  //   };
 
   const projects = [
     {

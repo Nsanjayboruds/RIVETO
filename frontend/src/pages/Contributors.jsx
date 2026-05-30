@@ -1,26 +1,10 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
+
+import { useState, useMemo } from 'react';
 import useGitHubContributors from '../hooks/useGitHubContributors';
-import FeaturedContributor from '../components/FeaturedContributor';
-import ContributorCard from '../components/ContributorCard';
-import Footer from '../components/Footer';
-import {
-  BsSearch,
-  BsArrowUpRight,
-  BsGithub,
-  BsStar,
-  BsGit,
-} from 'react-icons/bs';
+
+import { BsStar, BsGit } from 'react-icons/bs';
 import { HiOutlineUserGroup } from 'react-icons/hi';
-import {
-  FaTrophy,
-  FaMedal,
-  FaAward,
-  FaCrown,
-  FaPalette,
-  FaLightbulb,
-  FaRocket,
-} from 'react-icons/fa';
 
 // Special mentions (hardcoded specific contributors)
 const specialMentions = {
@@ -35,7 +19,7 @@ const Contributors = () => {
   const [sortBy, setSortBy] = useState('contributions'); // 'contributions' or 'name'
 
   // Separate top 3 by contributions and special mentions
-  const { topThree, specialContributors, regularContributors } = useMemo(() => {
+  const { topThree, _specialContributors, regularContributors } = useMemo(() => {
     const sorted = [...contributors].sort(
       (a, b) => b.contributions - a.contributions
     );

@@ -1,22 +1,16 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { shopDataContext } from '../context/ShopContext';
-import RelatedProduct from '../components/RelatedProduct';
 import { toast } from 'react-toastify';
 import { authDataContext } from '../context/AuthContext';
+import { userDataContext } from '../context/UserContext';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  FaShoppingCart,
-  FaHeart,
-  FaShare,
-  FaStar,
-  FaChevronLeft,
-  FaChevronRight,
-} from 'react-icons/fa';
+
 
 function ProductDetail() {
   const { serverUrl } = useContext(authDataContext);
+  const { userData } = useContext(userDataContext);
   const { productId } = useParams();
 
   const {
@@ -26,9 +20,14 @@ function ProductDetail() {
     currency,
     addtoCart,
     addToWishlist,
+    removeFromWishlist,
+    wishlist
   } = useContext(shopDataContext);
 
   const [productData, setProductData] = useState(null);
+  const isWishlisted = productData
+    ? wishlist?.some(item => item._id === productData._id)
+    : false;
   const [selectedImage, setSelectedImage] = useState('');
   const [size, setSize] = useState('');
   const [activeTab, setActiveTab] = useState('description');
@@ -39,6 +38,12 @@ function ProductDetail() {
   const [reviews, setReviews] = useState([]);
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
+  const [isEditingReview, setIsEditingReview] = useState(false);
+
+  const userReview = useMemo(() => {
+    if (!userData?._id) return null;
+    return reviews.find((r) => r.userId === userData._id) || null;
+  }, [reviews, userData]);
 
   const handleSizeKeyDown = (event, sizes) => {
     const currentIndex = sizes.indexOf(size);
@@ -85,14 +90,14 @@ function ProductDetail() {
     document.getElementById(`tab-${tabIds[nextIndex]}`)?.focus();
   };
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const response = await axios.get(`${serverUrl}/api/review/${productId}`);
       setReviews(response.data);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error('Failed to load reviews');
     }
-  };
+  }, [serverUrl, productId]);
 
   useEffect(() => {
     const found = (product || []).find((item) => item._id === productId);
@@ -102,7 +107,7 @@ function ProductDetail() {
     }
 
     fetchReviews();
-  }, [productId, product]);
+  }, [productId, product, fetchReviews]);
 
   const handleAddToCart = () => {
     if (!size) {
@@ -115,10 +120,17 @@ function ProductDetail() {
   };
 
   const handleAddToWishlist = () => {
-    addToWishlist(productData._id);
-    toast.success('Added to wishlist!');
-  };
+  if (!productData?._id) return;
 
+  if (isWishlisted) {
+    removeFromWishlist(productData._id);
+    toast.info('Removed from wishlist');
+  } else {
+    addToWishlist(productData._id);
+    toast.success('Added to wishlist 💖');
+  }
+};
+  // share
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -128,8 +140,8 @@ function ProductDetail() {
           url: window.location.href,
         });
         toast.success('Product shared successfully!');
-      } catch (error) {
-        console.log(error);
+      } catch {
+        // User cancelled the share dialog — no action needed
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
@@ -138,30 +150,44 @@ function ProductDetail() {
   };
 
   const handleSubmitReview = async () => {
-    if (!reviewComment) {
+    if (!reviewComment.trim()) {
       toast.warning('Please write a review');
       return;
     }
 
     try {
-      await axios.post(
+      const response = await axios.post(
         `${serverUrl}/api/review/add`,
         {
           productId,
           rating: reviewRating,
-          comment: reviewComment,
+          comment: reviewComment.trim(),
         },
         { withCredentials: true }
       );
 
-      toast.success('Review added successfully');
+      toast.success(response.data.message);
       setReviewComment('');
       setReviewRating(5);
+      setIsEditingReview(false);
       fetchReviews();
     } catch (error) {
-      console.log(error);
-      toast.error('Failed to add review');
+      const msg = error.response?.data?.message || 'Failed to submit review';
+      toast.error(msg);
     }
+  };
+
+  const handleEditReview = () => {
+    if (!userReview) return;
+    setReviewRating(userReview.rating);
+    setReviewComment(userReview.comment);
+    setIsEditingReview(true);
+  };
+
+  const handleCancelEdit = () => {
+    setReviewComment('');
+    setReviewRating(5);
+    setIsEditingReview(false);
   };
 
   const nextImage = () => {
@@ -436,14 +462,16 @@ function ProductDetail() {
 
             <div className="flex gap-3">
               <button
-                type="button"
-                onClick={handleAddToWishlist}
-                className="flex-1 bg-gray-800 text-white py-3 rounded-lg flex items-center justify-center gap-2"
-                aria-label="Add to wishlist"
-              >
-                <FaHeart aria-hidden="true" />
-                Wishlist
-              </button>
+  onClick={handleAddToWishlist}
+  className={`flex-1 py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-200
+    ${isWishlisted
+      ? 'bg-rose-600 text-white'
+      : 'bg-gray-800 text-white hover:bg-gray-700'
+    }`}
+>
+  <FaHeart className={isWishlisted ? 'text-white' : ''} />
+  {isWishlisted ? 'Wishlisted' : 'Wishlist'}
+</button>
               <button
                 type="button"
                 onClick={handleShare}
@@ -519,63 +547,104 @@ function ProductDetail() {
                 aria-labelledby="tab-reviews"
                 className="space-y-6"
               >
-                <div className="bg-slate-100 dark:bg-gray-800/50 p-6 rounded-xl border border-slate-200 dark:border-gray-700/60">
-                  <h3 className="text-xl font-semibold mb-4 text-slate-900 dark:text-white">
-                    Write a Review
-                  </h3>
-
-                  <div
-                    className="flex gap-2 mb-4"
-                    role="radiogroup"
-                    aria-label="Review rating"
-                  >
-                    {[1, 2, 3, 4, 5].map((star) => (
+                {userReview && !isEditingReview ? (
+                  <div className="bg-slate-100 dark:bg-gray-800/50 p-6 rounded-xl border border-cyan-400/40">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
+                        Your Review
+                      </h3>
                       <button
-                        key={star}
                         type="button"
-                        role="radio"
-                        aria-checked={star === reviewRating}
-                        aria-label={`${star} star${star === 1 ? '' : 's'}`}
-                        onClick={() => setReviewRating(star)}
-                        className="p-0 bg-transparent border-0"
+                        onClick={handleEditReview}
+                        className="text-cyan-400 hover:text-cyan-300 text-sm font-medium"
                       >
-                        <FaStar
-                          className={`text-2xl ${
-                            star <= reviewRating
-                              ? 'text-yellow-400'
-                              : 'text-gray-400'
-                          }`}
-                          aria-hidden="true"
-                        />
+                        Edit Review
                       </button>
-                    ))}
+                    </div>
+                    <div className="flex gap-1 mb-2" aria-hidden="true">
+                      {[...Array(userReview.rating)].map((_, i) => (
+                        <FaStar key={i} className="text-yellow-400" />
+                      ))}
+                    </div>
+                    <p className="text-slate-700 dark:text-gray-300">
+                      {userReview.comment}
+                    </p>
+                    <p className="text-slate-500 dark:text-gray-400 text-sm mt-3">
+                      {new Date(userReview.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
+                ) : (
+                  <div className="bg-slate-100 dark:bg-gray-800/50 p-6 rounded-xl border border-slate-200 dark:border-gray-700/60">
+                    <h3 className="text-xl font-semibold mb-4 text-slate-900 dark:text-white">
+                      {isEditingReview ? 'Edit Your Review' : 'Write a Review'}
+                    </h3>
 
-                  <label htmlFor="review-comment" className="sr-only">
-                    Review comment
-                  </label>
-                  <textarea
-                    id="review-comment"
-                    value={reviewComment}
-                    onChange={(e) => setReviewComment(e.target.value)}
-                    placeholder="Write your review..."
-                    rows="4"
-                    className="w-full p-4 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-slate-900 dark:text-white outline-none"
-                  />
+                    <div
+                      className="flex gap-2 mb-4"
+                      role="radiogroup"
+                      aria-label="Review rating"
+                    >
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          role="radio"
+                          aria-checked={star === reviewRating}
+                          aria-label={`${star} star${star === 1 ? '' : 's'}`}
+                          onClick={() => setReviewRating(star)}
+                          className="p-0 bg-transparent border-0"
+                        >
+                          <FaStar
+                            className={`text-2xl ${
+                              star <= reviewRating
+                                ? 'text-yellow-400'
+                                : 'text-gray-400'
+                            }`}
+                            aria-hidden="true"
+                          />
+                        </button>
+                      ))}
+                    </div>
 
-                  <button
-                    type="button"
-                    onClick={handleSubmitReview}
-                    className="mt-4 bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg"
-                  >
-                    Submit Review
-                  </button>
-                </div>
+                    <label htmlFor="review-comment" className="sr-only">
+                      Review comment
+                    </label>
+                    <textarea
+                      id="review-comment"
+                      value={reviewComment}
+                      onChange={(e) => setReviewComment(e.target.value)}
+                      placeholder="Write your review..."
+                      rows="4"
+                      className="w-full p-4 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-slate-900 dark:text-white outline-none"
+                    />
+
+                    <div className="flex gap-3 mt-4">
+                      <button
+                        type="button"
+                        onClick={handleSubmitReview}
+                        className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg"
+                      >
+                        {isEditingReview ? 'Update Review' : 'Submit Review'}
+                      </button>
+                      {isEditingReview && (
+                        <button
+                          type="button"
+                          onClick={handleCancelEdit}
+                          className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {reviews.length > 0 ? (
-                  reviews.map((review, index) => (
+                  reviews
+                    .filter((review) => !userReview || review._id !== userReview._id)
+                    .map((review) => (
                     <div
-                      key={index}
+                      key={review._id}
                       className="bg-slate-100 dark:bg-gray-800/50 p-6 rounded-xl border border-slate-200 dark:border-gray-700/60"
                     >
                       <div className="flex items-center gap-4 mb-4">
@@ -597,9 +666,11 @@ function ProductDetail() {
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500" role="status">
-                    No reviews yet.
-                  </p>
+                  !userReview && (
+                    <p className="text-gray-500" role="status">
+                      No reviews yet.
+                    </p>
+                  )
                 )}
               </div>
             )}

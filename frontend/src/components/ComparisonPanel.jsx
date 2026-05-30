@@ -1,14 +1,5 @@
 import React, { useMemo, useRef, useCallback } from 'react';
 import { useFocusTrap, useEscapeKey } from '../hooks/useDialogA11y';
-import {
-  FaTimes,
-  FaCheck,
-  FaStar,
-  FaTrophy,
-  FaPercent,
-  FaInfoCircle,
-} from 'react-icons/fa';
-import { RiPriceTag3Line } from 'react-icons/ri';
 import gsap from 'gsap';
 
 const ComparisonPanel = ({
@@ -32,7 +23,7 @@ const ComparisonPanel = ({
   }, []);
 
   // Helper to generate deterministic stats (copied from Card.jsx logic to ensure consistency)
-  const getProductStats = (id, price) => {
+  const getProductStats = (id, _price) => {
     const seed =
       typeof id === 'string'
         ? id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)

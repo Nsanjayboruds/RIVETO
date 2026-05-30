@@ -10,8 +10,8 @@ import adminAuth from "../middleware/adminAuth.js";
 
 const orderRoutes = express.Router();
 
-orderRoutes.post("placeorder", isAuth, placeOrder);
-orderRoutes.post("userorder", isAuth, userOrders);
+orderRoutes.post("/placeorder", isAuth, placeOrder);
+orderRoutes.post("/userorder", isAuth, userOrders);
 
 orderRoutes.post("/list", adminAuth, allOrders);
 orderRoutes.post("/status", adminAuth, updateStatus);

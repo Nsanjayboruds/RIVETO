@@ -1,6 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { FaCircle, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { BsHandbag } from 'react-icons/bs';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 
@@ -11,7 +9,7 @@ function Hero({ heroData, heroCount, setHeroCount }) {
   const dotsRef = useRef([]);
   const containerRef = useRef(null);
   const ctaRef = useRef(null);
-  const particlesRef = useRef(null);
+  const _particlesRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // Mouse parallax effect
@@ -124,10 +122,10 @@ function Hero({ heroData, heroCount, setHeroCount }) {
     { primary: 'from-emerald-500 via-teal-400 to-cyan-500', accent: 'emerald' },
   ];
 
-  const currentTheme = colorThemes[heroCount];
+  const _currentTheme = colorThemes[heroCount];
 
   // Precompute particles once to avoid re-randomizing on each render
-  const particles = useMemo(() => {
+  const _particles = useMemo(() => {
     const colors = ['#3b82f6', '#8b5cf6', '#06b6d4', '#ec4899'];
     return [...Array(20)].map((_, i) => ({
       id: i,

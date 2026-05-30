@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "lint": "npm exec --prefix frontend -- eslint . && npm exec --prefix backend -- eslint .",
+    "lint": "npm run --prefix frontend lint && npm run --prefix backend lint && npm run --prefix admin lint",
     "format": "prettier --write ."
   },
   "devDependencies": {

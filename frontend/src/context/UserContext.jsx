@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { authDataContext } from './AuthContext';
 
@@ -14,8 +14,8 @@ function UserContext({ children }) {
         withCredentials: true,
       });
       setUserData(result.data);
-      console.log('✅ Current user:', result.data);
-    } catch (error) {
+      console.log('✅ Current user:', result.data);}
+     catch (error) {
       setUserData(null);
       if (error.response && error.response.status === 401) {
         console.log('🚫 Unauthorized: No user logged in');
@@ -23,6 +23,17 @@ function UserContext({ children }) {
         console.error('❌ Error fetching current user:', error);
       }
     }
+// catch (error) {
+
+//   console.log('⚠ Using temporary demo user');
+
+//   setUserData({
+//     _id: "temp123",
+//     name: "Demo User",
+//     email: "demo@test.com",
+//   });
+
+// }
   };
 
   useEffect(() => {

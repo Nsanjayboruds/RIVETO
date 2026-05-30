@@ -1,21 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shopDataContext } from '../context/ShopContext';
-import {
-  RiDeleteBin6Line,
-  RiAddLine,
-  RiSubtractLine,
-  RiShoppingBag3Line,
-} from 'react-icons/ri';
-import {
-  FaArrowLeft,
-  FaShoppingBasket,
-  FaLock,
-  FaTruck,
-  FaShieldAlt,
-} from 'react-icons/fa';
-import { MdLocalOffer } from 'react-icons/md';
-import CartTotal from '../components/CartTotal';
+
+
 import { toast } from 'react-toastify';
 
 function Cart() {
@@ -182,7 +169,7 @@ function Cart() {
                     >
                       <div className="flex flex-col md:flex-row gap-5">
                         {/* Product Image */}
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                           <img
                             src={productData.image1 || '/fallback.jpg'}
                             onError={(e) => (e.target.src = '/fallback.jpg')}
@@ -296,7 +283,7 @@ function Cart() {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              <div className="bg-gradient-to-br from-white to-slate-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-slate-200 dark:border-gray-700 p-6">
+              <div className="bg-linear-to-br from-white to-slate-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-slate-200 dark:border-gray-700 p-6">
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                   <RiShoppingBag3Line className="w-5 h-5 text-cyan-400" />
                   Order Summary
@@ -341,7 +328,7 @@ function Cart() {
                 </h4>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-sm">
-                    <div className="w-8 h-8 bg-green-500/10 border border-green-500/30 rounded flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 bg-green-500/10 border border-green-500/30 rounded flex items-center justify-center shrink-0">
                       <FaLock className="w-3.5 h-3.5 text-green-400" />
                     </div>
                     <span className="text-gray-300">
@@ -349,13 +336,13 @@ function Cart() {
                     </span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/30 rounded flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/30 rounded flex items-center justify-center shrink-0">
                       <FaShieldAlt className="w-3.5 h-3.5 text-blue-400" />
                     </div>
                     <span className="text-gray-300">Buyer protection</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <div className="w-8 h-8 bg-purple-500/10 border border-purple-500/30 rounded flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 bg-purple-500/10 border border-purple-500/30 rounded flex items-center justify-center shrink-0">
                       <MdLocalOffer className="w-3.5 h-3.5 text-purple-400" />
                     </div>
                     <span className="text-gray-300">Best price guarantee</span>
