@@ -35,7 +35,14 @@ function PlaceOrder() {
     getCartAmount,
     delivery_fee,
     product: products,
+    discountData,
+    currency,
   } = useContext(shopDataContext);
+
+  const subtotal = getCartAmount();
+  const shippingFee = subtotal > 0 ? delivery_fee : 0;
+  const discountAmount = discountData?.percentage > 0 ? Math.min((subtotal * discountData.percentage) / 100, discountData.maxAmount) : 0;
+  const finalAmount = subtotal > 0 ? subtotal + shippingFee - discountAmount : 0;
   const { serverUrl, userData } = useContext(authDataContext);
 
   const [formData, setFormData] = useState({
@@ -134,7 +141,7 @@ function PlaceOrder() {
       const orderData = {
         address: formData,
         items: orderItems,
-        amount: getCartAmount() + delivery_fee,
+        amount: finalAmount,
         paymentMethod: method,
         status: 'Placed',
       };
@@ -485,7 +492,7 @@ function PlaceOrder() {
                     Processing...
                   </div>
                 ) : (
-                  `Place Order • ${getCartAmount() + delivery_fee}`
+                  `Place Order • ${currency}${finalAmount.toFixed(2)}`
                 )}
               </button>
 

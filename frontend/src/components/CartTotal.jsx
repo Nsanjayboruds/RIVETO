@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { shopDataContext } from '../context/ShopContext';
 import Title from './Title';
 import { FaShippingFast, FaPercentage, FaGift } from 'react-icons/fa';
@@ -6,16 +6,15 @@ import { RiCoupon2Line, RiArrowRightSLine } from 'react-icons/ri';
 import gsap from 'gsap';
 
 function CartTotal() {
-  const { currency, delivery_fee, getCartAmount } = useContext(shopDataContext);
+  const { currency, delivery_fee, getCartAmount, discountData, applyCoupon, removeCoupon } = useContext(shopDataContext);
   const [discountCode, setDiscountCode] = useState('');
-  const [hasDiscount, setHasDiscount] = useState(false);
-  const [discountAmount, setDiscountAmount] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const subtotal = getCartAmount();
   const shippingFee = subtotal > 0 ? delivery_fee : 0;
-  const discount = hasDiscount ? Math.min(subtotal * 0.1, 50) : 0; // 10% discount, max $50
-  const total = subtotal > 0 ? subtotal + shippingFee - discount : 0;
+  const hasDiscount = discountData.percentage > 0;
+  const discountAmount = hasDiscount ? Math.min((subtotal * discountData.percentage) / 100, discountData.maxAmount) : 0;
+  const total = subtotal > 0 ? subtotal + shippingFee - discountAmount : 0;
 
   useEffect(() => {
     // Animation for the totals container
@@ -26,24 +25,20 @@ function CartTotal() {
     );
   }, []);
 
-  const applyDiscount = () => {
-    if (discountCode.toUpperCase() === 'SAVE10') {
-      setHasDiscount(true);
-      setDiscountAmount(Math.min(subtotal * 0.1, 50));
+  const handleApplyDiscount = async () => {
+    if (!discountCode.trim()) return;
+    const success = await applyCoupon(discountCode);
+    if (success) {
       gsap.fromTo(
         '.discount-applied',
         { scale: 0.8, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' }
       );
-    } else {
-      setHasDiscount(false);
-      setDiscountAmount(0);
     }
   };
 
-  const removeDiscount = () => {
-    setHasDiscount(false);
-    setDiscountAmount(0);
+  const handleRemoveDiscount = () => {
+    removeCoupon();
     setDiscountCode('');
   };
 
@@ -80,7 +75,7 @@ function CartTotal() {
                   className="flex-1 px-4 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <button
-                  onClick={applyDiscount}
+                  onClick={handleApplyDiscount}
                   className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors font-medium"
                 >
                   Apply
@@ -90,10 +85,10 @@ function CartTotal() {
                 <div className="discount-applied mt-3 p-3 bg-green-500/10 border border-green-500/20 rounded-lg flex items-center justify-between">
                   <div className="flex items-center gap-2 text-green-400">
                     <FaPercentage className="w-4 h-4" />
-                    <span>10% discount applied!</span>
+                    <span>{discountData.percentage}% discount applied!</span>
                   </div>
                   <button
-                    onClick={removeDiscount}
+                    onClick={handleRemoveDiscount}
                     className="text-red-400 hover:text-red-300 text-sm"
                   >
                     Remove
@@ -140,7 +135,7 @@ function CartTotal() {
                 <div className="w-8 h-8 bg-red-500/10 rounded-lg flex items-center justify-center">
                   <RiCoupon2Line className="w-4 h-4 text-red-400" />
                 </div>
-                <span className="text-gray-300">Discount (10%)</span>
+                <span className="text-gray-300">Discount ({discountData.percentage}%)</span>
               </div>
               <span className="text-green-400 font-semibold">
                 -{currency}

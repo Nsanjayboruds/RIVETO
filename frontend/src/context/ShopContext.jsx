@@ -16,6 +16,7 @@ function ShopContext({ children }) {
   const [compareList, setCompareList] = useState([]);
   const [wishlistItem, setWishlistItem] = useState([]);
   const [comparePanelOpen, setComparePanelOpen] = useState(false);
+  const [discountData, setDiscountData] = useState({ code: '', percentage: 0, maxAmount: 50 });
   const addToWishlist = (itemId) => {
     setWishlistItem((prev) =>
       prev.includes(itemId)
@@ -185,6 +186,29 @@ function ShopContext({ children }) {
     setComparePanelOpen(state !== undefined ? state : !comparePanelOpen);
   };
 
+  const applyCoupon = async (code) => {
+    try {
+      const response = await axios.post(`${serverUrl}/api/coupon/validate`, { code });
+      if (response.data.success) {
+        setDiscountData({
+          code: response.data.coupon.code,
+          percentage: response.data.coupon.discountPercentage,
+          maxAmount: response.data.coupon.maxDiscountAmount,
+        });
+        toast.success(response.data.message);
+        return true;
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to apply coupon');
+      return false;
+    }
+  };
+
+  const removeCoupon = () => {
+    setDiscountData({ code: '', percentage: 0, maxAmount: 50 });
+    toast.info('Coupon removed');
+  };
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -218,6 +242,9 @@ function ShopContext({ children }) {
     toggleComparePanel,
     wishlistItem,
     addToWishlist,
+    discountData,
+    applyCoupon,
+    removeCoupon,
   };
 
   return (
