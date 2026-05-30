@@ -16,7 +16,11 @@ function ShopContext({ children }) {
   const [compareList, setCompareList] = useState([]);
   const [wishlistItem, setWishlistItem] = useState([]);
   const [comparePanelOpen, setComparePanelOpen] = useState(false);
-  const [discountData, setDiscountData] = useState({ code: '', percentage: 0, maxAmount: 50 });
+  const [discountData, setDiscountData] = useState({
+    code: '',
+    percentage: 0,
+    maxAmount: 50,
+  });
   const addToWishlist = (itemId) => {
     setWishlistItem((prev) =>
       prev.includes(itemId)
@@ -145,7 +149,9 @@ function ShopContext({ children }) {
           if (itemInfo && cartItem[items][item] > 0) {
             totalAmount += itemInfo.price * cartItem[items][item];
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error('Error calculating cart amount:', error);
+        }
       }
     }
     return totalAmount;
@@ -188,7 +194,9 @@ function ShopContext({ children }) {
 
   const applyCoupon = async (code) => {
     try {
-      const response = await axios.post(`${serverUrl}/api/coupon/validate`, { code });
+      const response = await axios.post(`${serverUrl}/api/coupon/validate`, {
+        code,
+      });
       if (response.data.success) {
         setDiscountData({
           code: response.data.coupon.code,

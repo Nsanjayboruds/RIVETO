@@ -1,7 +1,7 @@
 import React from 'react';
 import ScrollStack, { ScrollStackItem } from './ScrollStack';
 
-function ScrollStack() {
+function ScrollStackDemo() {
   return (
     <div>
       <ScrollStack>
@@ -22,4 +22,4 @@ function ScrollStack() {
   );
 }
 
-export default ScrollStack;
+export default ScrollStackDemo;

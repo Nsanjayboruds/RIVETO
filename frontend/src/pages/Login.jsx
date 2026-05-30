@@ -17,8 +17,8 @@ gsap.registerPlugin(ScrollTrigger);
 function Login() {
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: 'test@example.com',
+    password: 'password123',
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
