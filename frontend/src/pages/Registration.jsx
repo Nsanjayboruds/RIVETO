@@ -1,15 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  IoEyeOutline,
-  IoEye,
-  IoLockClosed,
-  IoMail,
-  IoPerson,
-} from 'react-icons/io5';
-import { FcGoogle } from 'react-icons/fc';
-import { authDataContext } from '../context/AuthContext';
-import axios from 'axios';
+
+import apiConfig from '../utils/apiConfig';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../utils/Firebase';
 import { userDataContext } from '../context/UserContext';
@@ -23,7 +15,6 @@ function Registration() {
   const [otp, setOtp] = useState('');
   const [otpLoading, setOtpLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const { serverUrl } = useContext(authDataContext);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -78,8 +69,8 @@ function Registration() {
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
     }
 
     setErrors(newErrors);
@@ -99,56 +90,46 @@ function Registration() {
         [name]: '',
       }));
     }
-  }; 
+  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
-    try {
-      await axios.post(`${serverUrl}/api/auth/registration`, formData, {
-        withCredentials: true,
-      });
 
-      toast.success('OTP send successfully 🎉');
-      setStep("2");
-    } catch (error) {
-      console.error('Registration failed:', error);
-      const errorMessage =
-        error.response?.data?.message ||
-        'Registration failed. Please try again.';
-      toast.error(errorMessage);
+    try {
+      await apiConfig.post('/auth/send-otp', formData);
+
+      toast.success('OTP sent successfully 🎉');
+      setStep('2');
+    } catch {
+      // API errors are shown by the global interceptor.
     } finally {
       setLoading(false);
     }
   };
 
   const verifyOtp = async () => {
-  setOtpLoading(true);
+    setOtpLoading(true);
 
-  try {
-    await axios.post(`${serverUrl}/api/auth/verify-otp`, {
-      email: formData.email,
-      otp,
-    },{withCredentials: true});
+    try {
+      await apiConfig.post('/auth/verify-otp', {
+        email: formData.email,
+        otp,
+      });
 
-    toast.success("Account verified successfully 🎉");
+      toast.success('Account verified successfully 🎉');
+      getCurrentUser();
+      navigate('/');
 
-    getCurrentUser();
-    navigate("/");
-  } catch (error) {
-    console.error(error);
-    const msg =
-      error.response?.data?.message || "OTP verification failed";
-    toast.error(msg);
-  } finally {
-    setOtpLoading(false);
-  }
-};
+    } catch {
+      // API errors are shown by the global interceptor.
+    } finally {
+      setOtpLoading(false);
+    }
+  };
 
   const googleSignup = async () => {
     setGoogleLoading(true);
@@ -156,14 +137,13 @@ function Registration() {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
 
-      await axios.post(
-        serverUrl + '/api/auth/googlelogin',
+      await apiConfig.post(
+        '/auth/googlelogin',
         {
           name: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
-        },
-        { withCredentials: true }
+        }
       );
 
       getCurrentUser();
@@ -171,7 +151,9 @@ function Registration() {
       navigate('/');
     } catch (error) {
       console.error('Google Signup Error:', error);
-      toast.error('Google signup failed. Please try again.');
+      if (!error.response) {
+        toast.error('Google signup failed. Please try again.');
+      }
     } finally {
       setGoogleLoading(false);
     }

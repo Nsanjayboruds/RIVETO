@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { BsHandbag } from 'react-icons/bs';
+import { useEffect, useState } from 'react';
 
 function CustomCursor() {
   const [position, setPosition] = useState({ x: -100, y: -100 });
@@ -37,8 +36,8 @@ function CustomCursor() {
     >
       {/* Main shopping bag icon */}
       <div className="relative animate-float">
-        <BsHandbag 
-          className="text-indigo-500 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" 
+        <BsHandbag
+          className="text-indigo-500 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]"
           size={32}
         />
         {/* Glow effect */}

@@ -4,7 +4,8 @@
 
 /* Gradient Text Animation */
 @keyframes gradient-shift {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
@@ -30,7 +31,8 @@
 
 /* Floating Animation */
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   25% {
@@ -58,13 +60,16 @@
 
 /* Pulse Glow Effect */
 @keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3),
-                0 0 40px rgba(59, 130, 246, 0.1);
+  0%,
+  100% {
+    box-shadow:
+      0 0 20px rgba(59, 130, 246, 0.3),
+      0 0 40px rgba(59, 130, 246, 0.1);
   }
   50% {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.5),
-                0 0 80px rgba(59, 130, 246, 0.2);
+    box-shadow:
+      0 0 40px rgba(59, 130, 246, 0.5),
+      0 0 80px rgba(59, 130, 246, 0.2);
   }
 }
 
@@ -74,7 +79,8 @@
 
 /* Aurora Background Effect */
 @keyframes aurora {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
     filter: hue-rotate(0deg);
   }
@@ -146,7 +152,8 @@
 
 /* Bounce Scale */
 @keyframes bounce-scale {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -160,7 +167,8 @@
 
 /* Wave Animation for Text */
 @keyframes wave {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   25% {
@@ -176,11 +184,21 @@
   animation: wave 2s ease-in-out infinite;
 }
 
-.animate-wave span:nth-child(1) { animation-delay: 0s; }
-.animate-wave span:nth-child(2) { animation-delay: 0.1s; }
-.animate-wave span:nth-child(3) { animation-delay: 0.2s; }
-.animate-wave span:nth-child(4) { animation-delay: 0.3s; }
-.animate-wave span:nth-child(5) { animation-delay: 0.4s; }
+.animate-wave span:nth-child(1) {
+  animation-delay: 0s;
+}
+.animate-wave span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.animate-wave span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.animate-wave span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.animate-wave span:nth-child(5) {
+  animation-delay: 0.4s;
+}
 
 /* Spotlight Effect */
 @keyframes spotlight {
@@ -200,7 +218,8 @@
 
 /* Border Glow Animation */
 @keyframes border-glow {
-  0%, 100% {
+  0%,
+  100% {
     border-color: rgba(59, 130, 246, 0.5);
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
   }
@@ -282,23 +301,24 @@
 
 /* Glitch Effect */
 @keyframes glitch {
-  0%, 100% {
-    text-shadow: 
+  0%,
+  100% {
+    text-shadow:
       2px 0 #ff00ff,
       -2px 0 #00ffff;
   }
   25% {
-    text-shadow: 
+    text-shadow:
       -2px 2px #ff00ff,
       2px -2px #00ffff;
   }
   50% {
-    text-shadow: 
+    text-shadow:
       2px -2px #ff00ff,
       -2px 2px #00ffff;
   }
   75% {
-    text-shadow: 
+    text-shadow:
       -2px 0 #ff00ff,
       2px 0 #00ffff;
   }
@@ -310,7 +330,7 @@
 
 /* Neon Glow */
 .neon-glow {
-  text-shadow: 
+  text-shadow:
     0 0 5px currentColor,
     0 0 10px currentColor,
     0 0 20px currentColor,
@@ -319,13 +339,15 @@
 
 /* Card Tilt on Hover */
 .card-tilt {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   perspective: 1000px;
 }
 
 .card-tilt:hover {
   transform: rotateX(5deg) rotateY(-5deg) translateZ(10px);
-  box-shadow: 
+  box-shadow:
     -10px 10px 30px rgba(0, 0, 0, 0.3),
     0 0 20px rgba(59, 130, 246, 0.2);
 }
@@ -376,7 +398,10 @@
   background: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease, opacity 0.6s ease;
+  transition:
+    width 0.6s ease,
+    height 0.6s ease,
+    opacity 0.6s ease;
   opacity: 0;
 }
 
@@ -413,7 +438,8 @@
 
 /* Morphing Background Blob */
 @keyframes morph {
-  0%, 100% {
+  0%,
+  100% {
     border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   }
   25% {
@@ -437,7 +463,7 @@
 }
 
 .hover-glow:hover {
-  box-shadow: 
+  box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.15),
     0 10px 10px -5px rgba(0, 0, 0, 0.08);
   border-color: rgba(37, 99, 235, 0.3);
@@ -453,14 +479,21 @@
   position: absolute;
   inset: 0;
   padding: 2px;
-  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899, #06b6d4, #3b82f6);
+  background: linear-gradient(
+    45deg,
+    #3b82f6,
+    #8b5cf6,
+    #ec4899,
+    #06b6d4,
+    #3b82f6
+  );
   background-size: 300% 300%;
   border-radius: inherit;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
-  mask: 
-    linear-gradient(#fff 0 0) content-box, 
+  mask:
+    linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -482,18 +515,34 @@
 }
 
 /* Stagger animation delays */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
-.stagger-7 { animation-delay: 0.7s; }
-.stagger-8 { animation-delay: 0.8s; }
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+.stagger-5 {
+  animation-delay: 0.5s;
+}
+.stagger-6 {
+  animation-delay: 0.6s;
+}
+.stagger-7 {
+  animation-delay: 0.7s;
+}
+.stagger-8 {
+  animation-delay: 0.8s;
+}
 
 /* Smooth hover transitions */
 .smooth-hover {
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* Glassmorphism Card - Hero Section Only */
@@ -501,7 +550,7 @@
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.2),
     inset 0 0 30px rgba(255, 255, 255, 0.02);
 }
@@ -509,14 +558,14 @@
 .glass-card:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(37, 99, 235, 0.3);
-  box-shadow: 
+  box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.15),
     0 10px 10px -5px rgba(0, 0, 0, 0.08);
 }
 
 /* Hero CTA Button - Commerce Style */
 .cta-button {
-  background: #2563EB;
+  background: #2563eb;
   position: relative;
   border: 1px solid rgba(37, 99, 235, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -524,7 +573,9 @@
 
 .cta-button:hover {
   background: #1d4ed8;
-  box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.25), 0 10px 10px -5px rgba(37, 99, 235, 0.15);
+  box-shadow:
+    0 20px 25px -5px rgba(37, 99, 235, 0.25),
+    0 10px 10px -5px rgba(37, 99, 235, 0.15);
   border-color: rgba(37, 99, 235, 0.5);
 }
 

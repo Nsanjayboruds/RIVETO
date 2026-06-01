@@ -1,9 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { authDataContext } from './AuthContext';
-import axios from 'axios';
+import apiConfig from '../utils/apiConfig';
 import { userDataContext } from './UserContext';
-
 
 export const shopDataContext = createContext();
 
@@ -11,38 +9,78 @@ function ShopContext({ children }) {
   const [product, setProduct] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, total: 0, pages: 1 });
   const [loadingProducts, setLoadingProducts] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [cartItem, setCartItem] = useState({});
   const [compareList, setCompareList] = useState([]);
-  const [wishlistItem, setWishlistItem] = useState([]);
   const [comparePanelOpen, setComparePanelOpen] = useState(false);
-  const addToWishlist = (itemId) => {
-   setWishlistItem(prev =>
-     prev.includes(itemId)
-       ? prev.filter(id => id !== itemId)
-       : [...prev, itemId]
-    );
-  };
-  const { serverUrl } = useContext(authDataContext);
+ 
   const { userData } = useContext(userDataContext); //
+  const [wishlist, setWishlist] = useState([]);
 
   const currency = '₹';
   const delivery_fee = 40;
+ //wishlist functions
+ const fetchWishlist = async () => {
+
+  try {
+
+    const response = await apiConfig.get('/wishlist');
+
+    if (response.data.success) {
+      setWishlist(response.data.wishlist);
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+const addToWishlist = async (productId) => {
+  try {
+    const response = await apiConfig.post('/wishlist/add', { productId });
+
+    if (response.data.success) {
+      if (response.data.wishlist) {
+        setWishlist(response.data.wishlist);
+      } else {
+        fetchWishlist();
+      }
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const removeFromWishlist = async (productId) => {
+  try {
+    const response = await apiConfig.post('/wishlist/remove', { productId });
+
+    if (response.data.success) {
+      if (response.data.wishlist) {
+        setWishlist(response.data.wishlist);
+      } else {
+        fetchWishlist();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   // Fetch products from server
   const getProducts = async (page = 1, limit = 20) => {
     if (loadingProducts) return;
     setLoadingProducts(true);
     try {
-      const result = await axios.get(
-        `${serverUrl}/api/product/list?page=${page}&limit=${limit}`
+      const result = await apiConfig.get(
+        `/product/list?page=${page}&limit=${limit}`
       );
       const incoming = result.data.products || [];
-      setProduct(prev => page === 1 ? incoming : [...prev, ...incoming]);
+      setProduct((prev) => (page === 1 ? incoming : [...prev, ...incoming]));
       setPagination(result.data.pagination || { page: 1, total: 0, pages: 1 });
     } catch (error) {
-      console.log("Error fetching products:", error);
+      console.log('Error fetching products:', error);
     } finally {
       setLoadingProducts(false);
     }
@@ -51,7 +89,7 @@ function ShopContext({ children }) {
   // Add product to cart
   const addtoCart = async (itemId, size) => {
     if (!size) {
-      console.log("Select Product Size");
+      console.log('Select Product Size');
       return;
     }
 
@@ -71,48 +109,40 @@ function ShopContext({ children }) {
     setCartItem(cartData);
     console.log(cartData);
 
-
     if (userData) {
       try {
-        let result = await axios.post(serverUrl + '/api/cart/add', { itemId, size }, { withCredentials: true })
+        let result = await apiConfig.post('/cart/add', { itemId, size });
         console.log(result.data);
-
       } catch (error) {
         console.log(error);
-
       }
     }
   };
-
 
   const getUserCart = async () => {
     if (!userData) return; // Don't call API if not logged in
 
     try {
-      const result = await axios.post(serverUrl + "/api/cart/get", {}, { withCredentials: true });
+      const result = await apiConfig.post('/cart/get', {});
       setCartItem(result.data);
     } catch (error) {
-      console.log("❌ Error fetching cart:", error);
+      console.log('❌ Error fetching cart:', error);
     }
   };
 
   const UpdateQuantity = async (itemId, size, quantity) => {
     let cartData = structuredClone(cartItem);
-    cartData[itemId][size] = quantity
-    setCartItem(cartData)
-
+    cartData[itemId][size] = quantity;
+    setCartItem(cartData);
 
     if (userData) {
       try {
-        await axios.post(serverUrl + "/api/cart/update", { itemId, size, quantity }, { withCredentials: true })
+        await apiConfig.post('/cart/update', { itemId, size, quantity });
       } catch (error) {
         console.log(error);
-
-
-
       }
     }
-  }
+  };
 
   // Count total items in cart
   const getCartCount = () => {
@@ -125,13 +155,12 @@ function ShopContext({ children }) {
             totalCount += count;
           }
         } catch (error) {
-          console.error("Error counting cart item", error);
+          console.error('Error counting cart item', error);
         }
       }
     }
     return totalCount; // ✅ Now returns the total count
   };
-
 
   const getCartAmount = () => {
     let totalAmount = 0;
@@ -142,7 +171,8 @@ function ShopContext({ children }) {
           if (itemInfo && cartItem[items][item] > 0) {
             totalAmount += itemInfo.price * cartItem[items][item];
           }
-        } catch (error) {
+        } catch (_error) {
+          void _error;
         }
       }
     }
@@ -150,34 +180,34 @@ function ShopContext({ children }) {
   };
 
   const toggleCompare = (product) => {
-    setCompareList(prev => {
-      const exists = prev.find(item => item._id === product._id);
+    setCompareList((prev) => {
+      const exists = prev.find((item) => item._id === product._id);
       if (exists) {
-        toast.info("Removed from comparison", {
-          position: "bottom-center",
+        toast.info('Removed from comparison', {
+          position: 'bottom-center',
           autoClose: 1000,
-          hideProgressBar: true
+          hideProgressBar: true,
         });
-        return prev.filter(item => item._id !== product._id);
+        return prev.filter((item) => item._id !== product._id);
       }
       if (prev.length >= 4) {
-        toast.warning("You can compare up to 4 products", {
-          position: "bottom-center",
-          autoClose: 2000
+        toast.warning('You can compare up to 4 products', {
+          position: 'bottom-center',
+          autoClose: 2000,
         });
         return prev;
       }
-      toast.success("Added to comparison", {
-        position: "bottom-center",
+      toast.success('Added to comparison', {
+        position: 'bottom-center',
         autoClose: 1000,
-        hideProgressBar: true
+        hideProgressBar: true,
       });
       return [...prev, product];
     });
   };
 
   const removeFromCompare = (id) => {
-    setCompareList(prev => prev.filter(item => item._id !== id));
+    setCompareList((prev) => prev.filter((item) => item._id !== id));
   };
 
   const toggleComparePanel = (state) => {
@@ -192,7 +222,11 @@ function ShopContext({ children }) {
       getUserCart();
     }
   }, [userData]);
-
+ useEffect(() => {
+  if (userData) {
+    fetchWishlist();
+  }
+}, [userData]);
   const value = {
     product,
     pagination,
@@ -208,7 +242,8 @@ function ShopContext({ children }) {
     addtoCart,
     getCartCount,
     setCartItem, UpdateQuantity, getCartAmount,
-    compareList, toggleCompare, removeFromCompare, comparePanelOpen, toggleComparePanel, wishlistItem, addToWishlist
+    compareList, toggleCompare, removeFromCompare, comparePanelOpen, toggleComparePanel,
+    wishlist, addToWishlist, fetchWishlist, removeFromWishlist
   };
 
   return (

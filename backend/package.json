@@ -8,9 +8,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "axios": "^1.16.1",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
@@ -20,7 +22,7 @@
     "express": "^5.1.0",
     "joi": "^18.0.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.15.2",
+    "mongoose": "^8.24.0",
     "multer": "^2.0.1",
     "nodemailer": "^8.0.7",
     "nodemon": "^3.1.10",

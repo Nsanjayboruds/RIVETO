@@ -1,5 +1,5 @@
 name: 🐛 Bug Report
-description: Report a bug or issue 
+description: Report a bug or issue
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -25,7 +25,7 @@ body:
       placeholder: |
         1. 
         2. 
-        3. 
+        3.
     validations:
       required: true
 

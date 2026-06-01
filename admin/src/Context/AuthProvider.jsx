@@ -1,10 +1,10 @@
 // context/AuthContext.jsx
-import React, { createContext } from 'react';
+import React, { createContext } from "react";
 
 export const authDataContext = createContext();
 
 function AuthProvider({ children }) {
-  const serverUrl = "https://riveto-backend.onrender.com"; 
+  const serverUrl = "https://riveto-backend.onrender.com";
 
   const value = { serverUrl };
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap'; 
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 import background1 from '../assets/ban7.jpg';
 import background2 from '../assets/ban9.png';
 import background3 from '../assets/ban10.png';
@@ -20,57 +20,59 @@ function Background({ heroCount }) {
     { primary: '#3b82f6', secondary: '#06b6d4' },
     { primary: '#8b5cf6', secondary: '#ec4899' },
     { primary: '#f59e0b', secondary: '#ef4444' },
-    { primary: '#10b981', secondary: '#06b6d4' }
+    { primary: '#10b981', secondary: '#06b6d4' },
   ];
 
   useEffect(() => {
     // Determine animation direction
     const direction = heroCount > prevHeroCount ? 1 : -1;
-    
+
     // Create a more sophisticated animation sequence
     const tl = gsap.timeline();
-    
+
     // First, fade out the current image with a slight zoom and rotation
     tl.to(bgRef.current, {
       opacity: 0,
       scale: direction > 0 ? 1.1 : 0.9,
       rotation: direction > 0 ? 2 : -2,
       duration: 0.7,
-      ease: 'power3.inOut'
+      ease: 'power3.inOut',
     })
-    // Change the image source
-    .add(() => {
-      if (bgRef.current) {
-        bgRef.current.src = currentBackground;
-      }
-    })
-    // Fade in the new image with a more dynamic effect
-    .to(bgRef.current, {
-      opacity: 1,
-      scale: 1,
-      rotation: 0,
-      duration: 1.2,
-      ease: 'power4.out'
-    })
-    // Add a subtle overlay animation for depth
-    .fromTo(overlayRef.current,
-      { opacity: 0.4 },
-      { opacity: 0.15, duration: 1, ease: 'sine.out' },
-      '-=0.8'
-    );
+      // Change the image source
+      .add(() => {
+        if (bgRef.current) {
+          bgRef.current.src = currentBackground;
+        }
+      })
+      // Fade in the new image with a more dynamic effect
+      .to(bgRef.current, {
+        opacity: 1,
+        scale: 1,
+        rotation: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+      })
+      // Add a subtle overlay animation for depth
+      .fromTo(
+        overlayRef.current,
+        { opacity: 0.4 },
+        { opacity: 0.15, duration: 1, ease: 'sine.out' },
+        '-=0.8'
+      );
 
     // Animate particles on slide change
     if (particleContainerRef.current) {
       const particles = particleContainerRef.current.children;
-      gsap.fromTo(particles, 
+      gsap.fromTo(
+        particles,
         { opacity: 0, scale: 0 },
-        { 
-          opacity: 0.6, 
-          scale: 1, 
-          stagger: 0.05, 
-          duration: 0.5, 
+        {
+          opacity: 0.6,
+          scale: 1,
+          stagger: 0.05,
+          duration: 0.5,
           ease: 'back.out(2)',
-          delay: 0.3
+          delay: 0.3,
         }
       );
     }
@@ -91,7 +93,10 @@ function Background({ heroCount }) {
     y: Math.random() * 100,
     duration: Math.random() * 8 + 6,
     delay: Math.random() * 5,
-    color: i % 2 === 0 ? colorThemes[heroCount].primary : colorThemes[heroCount].secondary
+    color:
+      i % 2 === 0
+        ? colorThemes[heroCount].primary
+        : colorThemes[heroCount].secondary,
   }));
 
   return (
@@ -105,7 +110,7 @@ function Background({ heroCount }) {
       />
 
       {/* Animated Gradient Overlay */}
-      <div 
+      <div
         ref={overlayRef}
         className="absolute inset-0 animate-aurora"
         style={{
@@ -118,7 +123,10 @@ function Background({ heroCount }) {
       <div className="absolute inset-0 bg-gradient-to-r from-black/15 via-transparent to-black/15" />
 
       {/* Floating Particles */}
-      <div ref={particleContainerRef} className="absolute inset-0 pointer-events-none">
+      <div
+        ref={particleContainerRef}
+        className="absolute inset-0 pointer-events-none"
+      >
         {particles.map((particle) => (
           <div
             key={particle.id}
@@ -139,7 +147,7 @@ function Background({ heroCount }) {
       </div>
 
       {/* Glowing Orbs */}
-      <div 
+      <div
         className="absolute w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 animate-morph"
         style={{
           background: `radial-gradient(circle, ${colorThemes[heroCount].primary}, transparent)`,
@@ -147,7 +155,7 @@ function Background({ heroCount }) {
           top: '-20%',
         }}
       />
-      <div 
+      <div
         className="absolute w-[500px] h-[500px] rounded-full blur-[100px] opacity-15 animate-morph"
         style={{
           background: `radial-gradient(circle, ${colorThemes[heroCount].secondary}, transparent)`,
@@ -158,7 +166,7 @@ function Background({ heroCount }) {
       />
 
       {/* Subtle grid pattern */}
-      <div 
+      <div
         className="absolute inset-0 opacity-5"
         style={{
           backgroundImage: `

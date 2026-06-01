@@ -1,7 +1,7 @@
 // context/AdminContext.jsx
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { authDataContext } from './AuthProvider';
-import axios from 'axios';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { authDataContext } from "./AuthProvider";
+import axios from "axios";
 
 export const adminDataContext = createContext();
 
@@ -16,10 +16,10 @@ function AdminProvider({ children }) {
       });
 
       setAdminData(result.data);
-      console.log('Admin data:', result.data);
+      console.log("Admin data:", result.data);
     } catch (error) {
       setAdminData(null);
-      console.error('Error fetching admin data:', error);
+      console.error("Error fetching admin data:", error);
     }
   };
 

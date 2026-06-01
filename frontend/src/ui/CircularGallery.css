@@ -51,19 +51,19 @@
 }
 
 .gallery-control i.chevron-left::before {
-  content: "←";
+  content: '←';
 }
 
 .gallery-control i.chevron-right::before {
-  content: "→";
+  content: '→';
 }
 
 .gallery-control i.play::before {
-  content: "▶";
+  content: '▶';
 }
 
 .gallery-control i.pause::before {
-  content: "⏸";
+  content: '⏸';
 }
 
 /* Loading state */
@@ -88,7 +88,9 @@
 }
 
 @keyframes spin {
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 /* Responsive adjustments */
@@ -96,11 +98,11 @@
   .circular-gallery-container {
     height: 60vh;
   }
-  
+
   .gallery-controls {
     bottom: 20px;
   }
-  
+
   .gallery-control {
     width: 40px;
     height: 40px;

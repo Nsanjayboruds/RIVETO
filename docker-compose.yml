@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # MongoDB Service (Secured & Reliable)
   mongo:
-    image: mongo:7.0  # <--- PINNED VERSION (was latest)
+    image: mongo:7.0 # <--- PINNED VERSION (was latest)
     container_name: riveto_mongo
     restart: always
     ports:
@@ -28,10 +28,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'        # Max 1 CPU core
-          memory: 1G         # Max 1GB RAM
+          cpus: "1.0" # Max 1 CPU core
+          memory: 1G # Max 1GB RAM
         reservations:
-          memory: 256M       # Guarantees at least 256MB
+          memory: 256M # Guarantees at least 256MB
 
   # Backend Service
   backend:
@@ -49,7 +49,7 @@ services:
       - MONGO_URI=mongodb://root:examplepassword@mongo:27017/riveto?authSource=admin
     depends_on:
       mongo:
-        condition: service_healthy  # <--- WAITS FOR HEALTH CHECK
+        condition: service_healthy # <--- WAITS FOR HEALTH CHECK
     networks:
       - riveto-network
 

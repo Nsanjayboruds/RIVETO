@@ -1,9 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { shopDataContext } from '../context/ShopContext';
-import Title from './Title';
-import Card from './Card';
 
-function RelatedProduct({ category, subCategory, currentProductId, tags = [], price = 0 }) {
+function RelatedProduct({
+  category,
+  subCategory,
+  currentProductId,
+  tags = [],
+  price = 0,
+}) {
   const { product } = useContext(shopDataContext);
   const [related, setRelated] = useState([]);
 
@@ -13,33 +17,49 @@ function RelatedProduct({ category, subCategory, currentProductId, tags = [], pr
       const scoredProducts = product
         .filter((item) => {
           // Exclude current product
-          if (item._id?.toString() === currentProductId?.toString()) return false;
-          
+          if (item._id?.toString() === currentProductId?.toString())
+            return false;
+
           // CRITICAL: Only include products that match the category
           // This ensures we NEVER show random unrelated products
-          return item.category?.toLowerCase().trim() === category?.toLowerCase().trim();
+          return (
+            item.category?.toLowerCase().trim() ===
+            category?.toLowerCase().trim()
+          );
         })
         .map((item) => {
           let score = 0;
 
           // 1. Category match (base requirement - already filtered above)
           score += 40;
-          
+
           // 2. SubCategory match (highest priority for similarity) - 35 points
-          if (item.subCategory?.toLowerCase().trim() === subCategory?.toLowerCase().trim()) {
+          if (
+            item.subCategory?.toLowerCase().trim() ===
+            subCategory?.toLowerCase().trim()
+          ) {
             score += 35;
           }
 
           // 3. Tag similarity - up to 25 points
           if (tags && tags.length > 0 && item.tags && item.tags.length > 0) {
-            const currentProductTags = tags.map(t => t?.toLowerCase().trim()).filter(Boolean);
-            const itemTags = item.tags.map(t => t?.toLowerCase().trim()).filter(Boolean);
-            
-            const commonTags = itemTags.filter(tag => currentProductTags.includes(tag));
-            
+            const currentProductTags = tags
+              .map((t) => t?.toLowerCase().trim())
+              .filter(Boolean);
+            const itemTags = item.tags
+              .map((t) => t?.toLowerCase().trim())
+              .filter(Boolean);
+
+            const commonTags = itemTags.filter((tag) =>
+              currentProductTags.includes(tag)
+            );
+
             if (commonTags.length > 0) {
               // More common tags = higher score
-              const tagScore = (commonTags.length / Math.max(currentProductTags.length, itemTags.length)) * 25;
+              const tagScore =
+                (commonTags.length /
+                  Math.max(currentProductTags.length, itemTags.length)) *
+                25;
               score += tagScore;
             }
           }
@@ -48,10 +68,10 @@ function RelatedProduct({ category, subCategory, currentProductId, tags = [], pr
           if (price > 0 && item.price) {
             const priceDiff = Math.abs(item.price - price);
             const maxDiff = price * 0.5; // Consider products within 50% price range
-            
+
             if (priceDiff <= maxDiff) {
               // Closer price = higher score
-              const priceScore = 20 * (1 - (priceDiff / maxDiff));
+              const priceScore = 20 * (1 - priceDiff / maxDiff);
               score += priceScore;
             }
           }
@@ -73,17 +93,21 @@ function RelatedProduct({ category, subCategory, currentProductId, tags = [], pr
 
       // Prioritize products with same subcategory, then by score
       const sameSubCategory = scoredProducts.filter(
-        item => item.subCategory?.toLowerCase().trim() === subCategory?.toLowerCase().trim()
+        (item) =>
+          item.subCategory?.toLowerCase().trim() ===
+          subCategory?.toLowerCase().trim()
       );
-      
+
       const differentSubCategory = scoredProducts.filter(
-        item => item.subCategory?.toLowerCase().trim() !== subCategory?.toLowerCase().trim()
+        (item) =>
+          item.subCategory?.toLowerCase().trim() !==
+          subCategory?.toLowerCase().trim()
       );
 
       // Take top 4: prioritize same subcategory, fill with same category if needed
       const finalProducts = [
         ...sameSubCategory.slice(0, 4),
-        ...differentSubCategory
+        ...differentSubCategory,
       ].slice(0, 4);
 
       setRelated(finalProducts);

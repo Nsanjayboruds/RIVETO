@@ -1,134 +1,180 @@
-import React, { useState } from "react";
-import Footer from "../components/Footer";
-import {
-  FaRulerHorizontal,
-  FaRulerVertical,
-  FaTshirt,
-  FaShoePrints,
-  FaMale,
-  FaFemale,
-  FaChild,
-  FaExchangeAlt,
-  FaInfoCircle,
-  FaChevronDown,
-  FaChevronUp,
-  FaHandPointRight,
-} from "react-icons/fa";
-import { GiTrousers, GiNecklaceDisplay } from "react-icons/gi";
+import { useState } from 'react';
+
 
 /* ─── Size Data ─── */
 
 const mensTops = {
   title: "Men's Tops",
-  headers: ["Size", "Chest (in)", "Chest (cm)", "Waist (in)", "Waist (cm)", "Length (in)", "Length (cm)"],
+  headers: [
+    'Size',
+    'Chest (in)',
+    'Chest (cm)',
+    'Waist (in)',
+    'Waist (cm)',
+    'Length (in)',
+    'Length (cm)',
+  ],
   rows: [
-    ["XS", "34", "86", "28", "71", "27", "69"],
-    ["S", "36", "91", "30", "76", "28", "71"],
-    ["M", "38–40", "97–102", "32–34", "81–86", "29", "74"],
-    ["L", "42–44", "107–112", "36–38", "91–97", "30", "76"],
-    ["XL", "46–48", "117–122", "40–42", "102–107", "31", "79"],
-    ["XXL", "50–52", "127–132", "44–46", "112–117", "32", "81"],
+    ['XS', '34', '86', '28', '71', '27', '69'],
+    ['S', '36', '91', '30', '76', '28', '71'],
+    ['M', '38–40', '97–102', '32–34', '81–86', '29', '74'],
+    ['L', '42–44', '107–112', '36–38', '91–97', '30', '76'],
+    ['XL', '46–48', '117–122', '40–42', '102–107', '31', '79'],
+    ['XXL', '50–52', '127–132', '44–46', '112–117', '32', '81'],
   ],
 };
 
 const mensBottoms = {
   title: "Men's Bottoms",
-  headers: ["Size", "Waist (in)", "Waist (cm)", "Hip (in)", "Hip (cm)", "Inseam (in)", "Inseam (cm)"],
+  headers: [
+    'Size',
+    'Waist (in)',
+    'Waist (cm)',
+    'Hip (in)',
+    'Hip (cm)',
+    'Inseam (in)',
+    'Inseam (cm)',
+  ],
   rows: [
-    ["28", "28", "71", "34", "86", "30", "76"],
-    ["30", "30", "76", "36", "91", "30", "76"],
-    ["32", "32", "81", "38", "97", "31", "79"],
-    ["34", "34", "86", "40", "102", "31", "79"],
-    ["36", "36", "91", "42", "107", "32", "81"],
-    ["38", "38", "97", "44", "112", "32", "81"],
-    ["40", "40", "102", "46", "117", "32", "81"],
+    ['28', '28', '71', '34', '86', '30', '76'],
+    ['30', '30', '76', '36', '91', '30', '76'],
+    ['32', '32', '81', '38', '97', '31', '79'],
+    ['34', '34', '86', '40', '102', '31', '79'],
+    ['36', '36', '91', '42', '107', '32', '81'],
+    ['38', '38', '97', '44', '112', '32', '81'],
+    ['40', '40', '102', '46', '117', '32', '81'],
   ],
 };
 
 const womensTops = {
   title: "Women's Tops",
-  headers: ["Size", "Bust (in)", "Bust (cm)", "Waist (in)", "Waist (cm)", "Hip (in)", "Hip (cm)"],
+  headers: [
+    'Size',
+    'Bust (in)',
+    'Bust (cm)',
+    'Waist (in)',
+    'Waist (cm)',
+    'Hip (in)',
+    'Hip (cm)',
+  ],
   rows: [
-    ["XS", "31–32", "79–81", "24–25", "61–64", "34–35", "86–89"],
-    ["S", "33–34", "84–86", "26–27", "66–69", "36–37", "91–94"],
-    ["M", "35–36", "89–91", "28–29", "71–74", "38–39", "97–99"],
-    ["L", "37–39", "94–99", "30–32", "76–81", "40–42", "102–107"],
-    ["XL", "40–42", "102–107", "33–35", "84–89", "43–45", "109–114"],
-    ["XXL", "43–45", "109–114", "36–38", "91–97", "46–48", "117–122"],
+    ['XS', '31–32', '79–81', '24–25', '61–64', '34–35', '86–89'],
+    ['S', '33–34', '84–86', '26–27', '66–69', '36–37', '91–94'],
+    ['M', '35–36', '89–91', '28–29', '71–74', '38–39', '97–99'],
+    ['L', '37–39', '94–99', '30–32', '76–81', '40–42', '102–107'],
+    ['XL', '40–42', '102–107', '33–35', '84–89', '43–45', '109–114'],
+    ['XXL', '43–45', '109–114', '36–38', '91–97', '46–48', '117–122'],
   ],
 };
 
 const womensBottoms = {
   title: "Women's Bottoms",
-  headers: ["Size", "Waist (in)", "Waist (cm)", "Hip (in)", "Hip (cm)", "Inseam (in)", "Inseam (cm)"],
+  headers: [
+    'Size',
+    'Waist (in)',
+    'Waist (cm)',
+    'Hip (in)',
+    'Hip (cm)',
+    'Inseam (in)',
+    'Inseam (cm)',
+  ],
   rows: [
-    ["XS (0–2)", "24–25", "61–64", "34–35", "86–89", "30", "76"],
-    ["S (4–6)", "26–27", "66–69", "36–37", "91–94", "30", "76"],
-    ["M (8–10)", "28–29", "71–74", "38–39", "97–99", "31", "79"],
-    ["L (12–14)", "30–32", "76–81", "40–42", "102–107", "31", "79"],
-    ["XL (16–18)", "33–35", "84–89", "43–45", "109–114", "32", "81"],
-    ["XXL (20)", "36–38", "91–97", "46–48", "117–122", "32", "81"],
+    ['XS (0–2)', '24–25', '61–64', '34–35', '86–89', '30', '76'],
+    ['S (4–6)', '26–27', '66–69', '36–37', '91–94', '30', '76'],
+    ['M (8–10)', '28–29', '71–74', '38–39', '97–99', '31', '79'],
+    ['L (12–14)', '30–32', '76–81', '40–42', '102–107', '31', '79'],
+    ['XL (16–18)', '33–35', '84–89', '43–45', '109–114', '32', '81'],
+    ['XXL (20)', '36–38', '91–97', '46–48', '117–122', '32', '81'],
   ],
 };
 
 const kidsTops = {
   title: "Kids' Tops",
-  headers: ["Age", "Size", "Chest (in)", "Chest (cm)", "Length (in)", "Length (cm)"],
+  headers: [
+    'Age',
+    'Size',
+    'Chest (in)',
+    'Chest (cm)',
+    'Length (in)',
+    'Length (cm)',
+  ],
   rows: [
-    ["3–4", "XS", "21–22", "53–56", "15", "38"],
-    ["5–6", "S", "23–24", "58–61", "17", "43"],
-    ["7–8", "M", "25–26", "64–66", "19", "48"],
-    ["9–10", "L", "27–28", "69–71", "21", "53"],
-    ["11–12", "XL", "29–30", "74–76", "23", "58"],
+    ['3–4', 'XS', '21–22', '53–56', '15', '38'],
+    ['5–6', 'S', '23–24', '58–61', '17', '43'],
+    ['7–8', 'M', '25–26', '64–66', '19', '48'],
+    ['9–10', 'L', '27–28', '69–71', '21', '53'],
+    ['11–12', 'XL', '29–30', '74–76', '23', '58'],
   ],
 };
 
 const kidsBottoms = {
   title: "Kids' Bottoms",
-  headers: ["Age", "Size", "Waist (in)", "Waist (cm)", "Hip (in)", "Hip (cm)", "Inseam (in)", "Inseam (cm)"],
+  headers: [
+    'Age',
+    'Size',
+    'Waist (in)',
+    'Waist (cm)',
+    'Hip (in)',
+    'Hip (cm)',
+    'Inseam (in)',
+    'Inseam (cm)',
+  ],
   rows: [
-    ["3–4", "XS", "20–21", "51–53", "22–23", "56–58", "15", "38"],
-    ["5–6", "S", "21–22", "53–56", "24–25", "61–64", "18", "46"],
-    ["7–8", "M", "22–23", "56–58", "26–27", "66–69", "21", "53"],
-    ["9–10", "L", "23–24", "58–61", "28–29", "71–74", "24", "61"],
-    ["11–12", "XL", "24–25", "61–64", "30–31", "76–79", "26", "66"],
+    ['3–4', 'XS', '20–21', '51–53', '22–23', '56–58', '15', '38'],
+    ['5–6', 'S', '21–22', '53–56', '24–25', '61–64', '18', '46'],
+    ['7–8', 'M', '22–23', '56–58', '26–27', '66–69', '21', '53'],
+    ['9–10', 'L', '23–24', '58–61', '28–29', '71–74', '24', '61'],
+    ['11–12', 'XL', '24–25', '61–64', '30–31', '76–79', '26', '66'],
   ],
 };
 
 const shoes = {
-  title: "Shoe Sizes",
-  headers: ["US Men", "US Women", "UK", "EU", "Foot Length (in)", "Foot Length (cm)"],
+  title: 'Shoe Sizes',
+  headers: [
+    'US Men',
+    'US Women',
+    'UK',
+    'EU',
+    'Foot Length (in)',
+    'Foot Length (cm)',
+  ],
   rows: [
-    ["6", "7.5", "5.5", "38.5", "9.25", "23.5"],
-    ["7", "8.5", "6.5", "40", "9.63", "24.4"],
-    ["8", "9.5", "7.5", "41", "9.94", "25.2"],
-    ["9", "10.5", "8.5", "42.5", "10.31", "26.2"],
-    ["10", "11.5", "9.5", "44", "10.69", "27.1"],
-    ["11", "12.5", "10.5", "45", "11.06", "28.1"],
-    ["12", "13.5", "11.5", "46", "11.44", "29.1"],
+    ['6', '7.5', '5.5', '38.5', '9.25', '23.5'],
+    ['7', '8.5', '6.5', '40', '9.63', '24.4'],
+    ['8', '9.5', '7.5', '41', '9.94', '25.2'],
+    ['9', '10.5', '8.5', '42.5', '10.31', '26.2'],
+    ['10', '11.5', '9.5', '44', '10.69', '27.1'],
+    ['11', '12.5', '10.5', '45', '11.06', '28.1'],
+    ['12', '13.5', '11.5', '46', '11.44', '29.1'],
   ],
 };
 
 const accessories = {
-  title: "Accessories — Belts & Hats",
-  headers: ["Size", "Belt Waist (in)", "Belt Waist (cm)", "Hat Circ. (in)", "Hat Circ. (cm)"],
+  title: 'Accessories — Belts & Hats',
+  headers: [
+    'Size',
+    'Belt Waist (in)',
+    'Belt Waist (cm)',
+    'Hat Circ. (in)',
+    'Hat Circ. (cm)',
+  ],
   rows: [
-    ["S", "28–30", "71–76", "21–21.5", "53–55"],
-    ["M", "32–34", "81–86", "21.5–22", "55–56"],
-    ["L", "36–38", "91–97", "22–22.5", "56–57"],
-    ["XL", "40–42", "102–107", "22.5–23", "57–58"],
-    ["XXL", "44–46", "112–117", "23–23.5", "58–60"],
+    ['S', '28–30', '71–76', '21–21.5', '53–55'],
+    ['M', '32–34', '81–86', '21.5–22', '55–56'],
+    ['L', '36–38', '91–97', '22–22.5', '56–57'],
+    ['XL', '40–42', '102–107', '22.5–23', '57–58'],
+    ['XXL', '44–46', '112–117', '23–23.5', '58–60'],
   ],
 };
 
 /* ─── Tab & Category Config ─── */
 
 const categories = [
-  { key: "men", label: "Men", icon: <FaMale /> },
-  { key: "women", label: "Women", icon: <FaFemale /> },
-  { key: "kids", label: "Kids", icon: <FaChild /> },
-  { key: "shoes", label: "Shoes", icon: <FaShoePrints /> },
-  { key: "accessories", label: "Accessories", icon: <GiNecklaceDisplay /> },
+  { key: 'men', label: 'Men', icon: <FaMale /> },
+  { key: 'women', label: 'Women', icon: <FaFemale /> },
+  { key: 'kids', label: 'Kids', icon: <FaChild /> },
+  { key: 'shoes', label: 'Shoes', icon: <FaShoePrints /> },
+  { key: 'accessories', label: 'Accessories', icon: <GiNecklaceDisplay /> },
 ];
 
 const chartMap = {
@@ -143,49 +189,49 @@ const chartMap = {
 
 const measurementTips = [
   {
-    label: "Chest / Bust",
+    label: 'Chest / Bust',
     icon: <FaTshirt className="text-xl" />,
     description:
-      "Wrap the tape around the fullest part of your chest, keeping it level under your arms and across your shoulder blades.",
+      'Wrap the tape around the fullest part of your chest, keeping it level under your arms and across your shoulder blades.',
   },
   {
-    label: "Waist",
+    label: 'Waist',
     icon: <FaRulerHorizontal className="text-xl" />,
     description:
-      "Measure around your natural waistline — the narrowest part of your torso, typically just above the belly button.",
+      'Measure around your natural waistline — the narrowest part of your torso, typically just above the belly button.',
   },
   {
-    label: "Hips",
+    label: 'Hips',
     icon: <FaRulerVertical className="text-xl" />,
     description:
-      "Stand with feet together and wrap the tape around the widest part of your hips, keeping it parallel to the floor.",
+      'Stand with feet together and wrap the tape around the widest part of your hips, keeping it parallel to the floor.',
   },
   {
-    label: "Inseam",
+    label: 'Inseam',
     icon: <GiTrousers className="text-xl" />,
     description:
-      "Measure from the top of your inner thigh down to your ankle bone. It helps to use a pair of well-fitting pants as a reference.",
+      'Measure from the top of your inner thigh down to your ankle bone. It helps to use a pair of well-fitting pants as a reference.',
   },
   {
-    label: "Foot Length",
+    label: 'Foot Length',
     icon: <FaShoePrints className="text-xl" />,
     description:
-      "Stand on a piece of paper, mark the tip of your longest toe and the back of your heel, then measure the distance between them.",
+      'Stand on a piece of paper, mark the tip of your longest toe and the back of your heel, then measure the distance between them.',
   },
 ];
 
 const proTips = [
-  "Use a soft, flexible measuring tape — not a metal one.",
-  "Wear thin clothing or measure over undergarments for best accuracy.",
-  "Keep the tape snug but not tight; you should be able to slide a finger underneath.",
-  "Measure yourself standing up straight with arms relaxed at your sides.",
-  "Take each measurement twice to confirm accuracy.",
+  'Use a soft, flexible measuring tape — not a metal one.',
+  'Wear thin clothing or measure over undergarments for best accuracy.',
+  'Keep the tape snug but not tight; you should be able to slide a finger underneath.',
+  'Measure yourself standing up straight with arms relaxed at your sides.',
+  'Take each measurement twice to confirm accuracy.',
   "If you're between sizes, we recommend going one size up for a comfortable fit.",
 ];
 
 /* ─── Reusable Size Chart Table ─── */
 
-function SizeTable({ chart }) {
+function _SizeTable({ chart }) {
   return (
     <div className="mb-10">
       <h3 className="text-lg md:text-xl font-semibold text-cyan-300 mb-4 flex items-center gap-2">
@@ -214,14 +260,20 @@ function SizeTable({ chart }) {
             {chart.rows.map((row, rIdx) => (
               <tr
                 key={rIdx}
-                className={`border-t border-slate-200 dark:border-gray-700/40 transition-colors ${rIdx % 2 === 0 ? "bg-white dark:bg-gray-800/30" : "bg-slate-50 dark:bg-gray-800/10"
-                  } hover:bg-cyan-500/10`}
+                className={`border-t border-slate-200 dark:border-gray-700/40 transition-colors ${
+                  rIdx % 2 === 0
+                    ? 'bg-white dark:bg-gray-800/30'
+                    : 'bg-slate-50 dark:bg-gray-800/10'
+                } hover:bg-cyan-500/10`}
               >
                 {row.map((cell, cIdx) => (
                   <td
                     key={cIdx}
-                    className={`px-5 py-3 whitespace-nowrap ${cIdx === 0 ? "font-semibold text-slate-900 dark:text-white" : "text-slate-700 dark:text-gray-300"
-                      }`}
+                    className={`px-5 py-3 whitespace-nowrap ${
+                      cIdx === 0
+                        ? 'font-semibold text-slate-900 dark:text-white'
+                        : 'text-slate-700 dark:text-gray-300'
+                    }`}
                   >
                     {cell}
                   </td>
@@ -245,8 +297,12 @@ function SizeTable({ chart }) {
             <div className="grid grid-cols-2 gap-2 text-sm">
               {chart.headers.slice(1).map((h, i) => (
                 <div key={i}>
-                  <span className="text-slate-500 dark:text-gray-500 text-xs">{h}</span>
-                  <p className="text-slate-800 dark:text-gray-200">{row[i + 1]}</p>
+                  <span className="text-slate-500 dark:text-gray-500 text-xs">
+                    {h}
+                  </span>
+                  <p className="text-slate-800 dark:text-gray-200">
+                    {row[i + 1]}
+                  </p>
                 </div>
               ))}
             </div>
@@ -259,7 +315,7 @@ function SizeTable({ chart }) {
 
 /* ─── Collapsible Measurement Tip ─── */
 
-function MeasurementTipCard({ tip }) {
+export function MeasurementTipCard({ tip }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -273,7 +329,9 @@ function MeasurementTipCard({ tip }) {
           <div className="w-10 h-10 rounded-lg bg-cyan-500/15 flex items-center justify-center text-cyan-400">
             {tip.icon}
           </div>
-          <span className="font-medium text-slate-900 dark:text-white">{tip.label}</span>
+          <span className="font-medium text-slate-900 dark:text-white">
+            {tip.label}
+          </span>
         </div>
         {open ? (
           <FaChevronUp className="text-cyan-400 text-sm" />
@@ -293,7 +351,7 @@ function MeasurementTipCard({ tip }) {
 /* ─── Main Page ─── */
 
 const SizeGuide = () => {
-  const [activeCategory, setActiveCategory] = useState("men");
+  const [activeCategory, setActiveCategory] = useState('men');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] pt-24 pb-1 text-slate-900 dark:text-white">
@@ -302,31 +360,42 @@ const SizeGuide = () => {
         <div className="mx-auto max-w-5xl px-4 md:px-8 text-center">
           <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-5 py-2 mb-6">
             <FaRulerHorizontal className="text-cyan-400 text-sm" />
-            <span className="text-cyan-300 text-sm font-medium">Find Your Perfect Fit</span>
+            <span className="text-cyan-300 text-sm font-medium">
+              Find Your Perfect Fit
+            </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
+          <h1
+            className="text-4xl md:text-5xl font-extrabold text-white mb-4"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+          >
             Size Guide
           </h1>
           <p className="text-slate-600 dark:text-gray-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-            Use our comprehensive size charts to find clothing and accessories that fit you perfectly.
-            All measurements are provided in both centimeters and inches.
+            Use our comprehensive size charts to find clothing and accessories
+            that fit you perfectly. All measurements are provided in both
+            centimeters and inches.
           </p>
         </div>
       </section>
 
       {/* Category Tabs */}
       <section className="mx-auto max-w-5xl px-4 md:px-8">
-        <div className="flex flex-wrap justify-center gap-3 mb-10" role="tablist" aria-label="Size chart categories">
+        <div
+          className="flex flex-wrap justify-center gap-3 mb-10"
+          role="tablist"
+          aria-label="Size chart categories"
+        >
           {categories.map((cat) => (
             <button
               key={cat.key}
               role="tab"
               aria-selected={activeCategory === cat.key}
               onClick={() => setActiveCategory(cat.key)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${activeCategory === cat.key
-                  ? "bg-blue-600 text-white border-transparent shadow-lg"
-                  : "bg-gray-800/50 text-gray-400 border-gray-700/50 hover:text-white hover:border-blue-500/40"
-                }`}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+                activeCategory === cat.key
+                  ? 'bg-blue-600 text-white border-transparent shadow-lg'
+                  : 'bg-gray-800/50 text-gray-400 border-gray-700/50 hover:text-white hover:border-blue-500/40'
+              }`}
             >
               {cat.icon}
               {cat.label}
@@ -345,8 +414,9 @@ const SizeGuide = () => {
         <div className="flex items-start gap-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-5 mb-16">
           <FaInfoCircle className="text-cyan-400 mt-1 flex-shrink-0 text-lg" />
           <p className="text-sm text-slate-700 dark:text-gray-300 leading-relaxed">
-            <span className="font-semibold text-cyan-300">Fit Tip:</span> If you're between two sizes,
-            we recommend sizing up for a more comfortable fit — especially for outerwear and structured items.
+            <span className="font-semibold text-cyan-300">Fit Tip:</span> If
+            you're between two sizes, we recommend sizing up for a more
+            comfortable fit — especially for outerwear and structured items.
           </p>
         </div>
       </section>
@@ -358,7 +428,8 @@ const SizeGuide = () => {
             How to Measure
           </h2>
           <p className="text-slate-600 dark:text-gray-400 max-w-xl mx-auto">
-            Follow these steps to take accurate body measurements so you can find your perfect size every time.
+            Follow these steps to take accurate body measurements so you can
+            find your perfect size every time.
           </p>
         </div>
 
@@ -376,7 +447,10 @@ const SizeGuide = () => {
           </h3>
           <ul className="grid gap-3 sm:grid-cols-2">
             {proTips.map((tip, idx) => (
-              <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-gray-300">
+              <li
+                key={idx}
+                className="flex items-start gap-3 text-sm text-slate-700 dark:text-gray-300"
+              >
                 <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">
                   {idx + 1}
                 </span>
@@ -396,14 +470,21 @@ const SizeGuide = () => {
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
             {[
-              { label: "1 inch", value: "2.54 cm" },
-              { label: "1 cm", value: "0.394 inch" },
-              { label: "1 foot", value: "30.48 cm" },
-              { label: "1 meter", value: "39.37 inches" },
+              { label: '1 inch', value: '2.54 cm' },
+              { label: '1 cm', value: '0.394 inch' },
+              { label: '1 foot', value: '30.48 cm' },
+              { label: '1 meter', value: '39.37 inches' },
             ].map((item, idx) => (
-              <div key={idx} className="bg-slate-100 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200 dark:border-gray-700/40">
-                <p className="text-xs text-slate-500 dark:text-gray-500 mb-1">{item.label}</p>
-                <p className="text-lg font-semibold text-cyan-300">{item.value}</p>
+              <div
+                key={idx}
+                className="bg-slate-100 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200 dark:border-gray-700/40"
+              >
+                <p className="text-xs text-slate-500 dark:text-gray-500 mb-1">
+                  {item.label}
+                </p>
+                <p className="text-lg font-semibold text-cyan-300">
+                  {item.value}
+                </p>
               </div>
             ))}
           </div>

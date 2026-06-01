@@ -1,71 +1,74 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const productSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    image1: {
+      type: String,
+      required: true,
+    },
+    image2: {
+      type: String,
+      required: true,
+    },
+    image3: {
+      type: String,
+      required: true,
+    },
+    image4: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    subCategory: {
+      type: String, // ✅ Corrected from Number
+      required: true,
+    },
+    sizes: {
+      type: [String], // ✅ Stronger type declaration
+      required: true,
+    },
+    bestseller: {
+      type: Boolean,
+      default: false,
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
+    rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+    reviewCount: {
+      type: Number,
+      default: 0,
+    },
+    popularity: {
+      type: Number,
+      default: 0,
+    },
   },
-  image1: {
-    type: String,
-    required: true
+  {
+    timestamps: true, // ✅ Automatically adds `createdAt` and `updatedAt`
   },
-  image2: {
-    type: String,
-    required: true
-  },
-  image3: {
-    type: String,
-    required: true
-  },
-  image4: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  price: {
-    type: Number,
-    required: true
-  },
-  category: {
-    type: String,
-    required: true
-  },
-  subCategory: {
-    type: String,  // ✅ Corrected from Number
-    required: true
-  },
-  sizes: {
-    type: [String],  // ✅ Stronger type declaration
-    required: true
-  },
-  bestseller: {
-    type: Boolean,
-    default: false
-  },
-  tags: {
-    type: [String],
-    default: []
-  },
-  rating: {
-    type: Number,
-    default: 0,
-    min: 0,
-    max: 5
-  },
-  reviewCount: {
-    type: Number,
-    default: 0
-  },
-  popularity: {
-    type: Number,
-    default: 0
-  }
-}, {
-  timestamps: true  // ✅ Automatically adds `createdAt` and `updatedAt`
-});
+);
 
-const Product = mongoose.model('Product', productSchema);
+const Product = mongoose.model("Product", productSchema);
 export default Product;

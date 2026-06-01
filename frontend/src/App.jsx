@@ -1,36 +1,11 @@
-import React, { useContext } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import './App.css';
-import Registration from './pages/Registration';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Nav from './components/Nav';
 import { userDataContext } from './context/UserContext';
-import About from './pages/About';
-import Collections from './pages/Collections';
-import Product from './pages/Product';
-import Contact from './pages/Contact';
-import ProductDetail from './pages/ProductDetail';
-import Cart from './pages/Cart';
-import PlaceOrder from './pages/PlaceOrder';
-import Order from './pages/Order';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import NotFound from './pages/NotFound';
-import Ai from './components/Ai';
-import FaqPage from './pages/FaqPage';
 
-import PrivicyPolicy from './pages/PrivicyPolicy';
-import TermsAndServices from './pages/TermsAndServices';
-import SizeGuide from './pages/SizeGuide';
-import CookiePolicy from './pages/CookiePolicy';
-import Contributors from './pages/Contributors';
-import NewArrivals from './pages/NewArrivals';
-import BestSellers from './pages/BestSellers';
-import Recommendations from './pages/Recommendations';
 import { shopDataContext } from './context/ShopContext';
-import ComparisonPanel from './components/ComparisonPanel';
-import { RiPriceTag3Line } from 'react-icons/ri';
+import BackToTop from './components/BackToTop';
 
 function App() {
   const { userData } = useContext(userDataContext);
@@ -79,6 +54,7 @@ function App() {
             )
           }
         />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route
           path="/about"
           element={
@@ -212,10 +188,11 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Ai />
+      <BackToTop />
 
       {/* Global Comparison Floating Button */}
       {compareList.length > 0 && !comparePanelOpen && (
-        <div className="fixed bottom-6 right-6 z-[100]">
+        <div className="fixed bottom-6 right-6 z-100">
           <button
             onClick={() => toggleComparePanel(true)}
             className="bg-cyan-500 hover:bg-cyan-400 text-white px-6 py-3 rounded-full shadow-lg shadow-cyan-500/30 flex items-center gap-2 transition-all hover:scale-105 border border-cyan-400/50 animate-bounce-short"

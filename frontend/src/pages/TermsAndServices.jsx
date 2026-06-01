@@ -1,57 +1,48 @@
-import React, { useState, useEffect } from "react";
-import Footer from "../components/Footer";
-import {
-  FaShieldAlt,
-  FaUserCheck,
-  FaLock,
-  FaMoneyBillWave,
-  FaCopyright,
-  FaExclamationTriangle,
-  FaEdit,
-  FaEnvelope,
-  FaGithub,
-  FaCheckCircle,
-  FaArrowRight,
-  FaFileContract
-} from "react-icons/fa";
+import { useState, useEffect } from 'react';
+
 
 const sections = [
   {
-    id: "introduction",
+    id: 'introduction',
     icon: <FaFileContract className="text-3xl" />,
-    title: "Introduction",
+    title: 'Introduction',
     content: (
       <div className="space-y-4">
         <p className="text-lg">
-          Welcome to <span className="text-cyan-400 font-semibold">RIVETO</span>, your trusted e-commerce platform.
-          These Terms and Services govern your use of our website and services.
+          Welcome to <span className="text-cyan-400 font-semibold">RIVETO</span>
+          , your trusted e-commerce platform. These Terms and Services govern
+          your use of our website and services.
         </p>
         <div className="bg-cyan-100 dark:bg-cyan-500/10 border border-cyan-300/60 dark:border-cyan-500/30 rounded-xl p-4">
           <p className="text-cyan-700 dark:text-cyan-200">
-            By accessing or using our platform, you agree to be bound by these terms.
-            Please read them carefully before proceeding.
+            By accessing or using our platform, you agree to be bound by these
+            terms. Please read them carefully before proceeding.
           </p>
         </div>
       </div>
     ),
   },
   {
-    id: "use-of-service",
+    id: 'use-of-service',
     icon: <FaUserCheck className="text-3xl" />,
-    title: "Use of Service",
+    title: 'Use of Service',
     content: (
       <div className="space-y-4">
         <p>
-          You agree to use our services only for lawful purposes and in accordance with these Terms.
+          You agree to use our services only for lawful purposes and in
+          accordance with these Terms.
         </p>
         <div className="grid md:grid-cols-2 gap-4">
           {[
-            "Must be at least 18 years old",
-            "Maintain account security",
-            "No illegal activities",
-            "Respect intellectual property"
+            'Must be at least 18 years old',
+            'Maintain account security',
+            'No illegal activities',
+            'Respect intellectual property',
           ].map((item, i) => (
-            <div key={i} className="flex items-start gap-3 bg-slate-100 dark:bg-gray-700/30 p-4 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700/50 transition-all duration-300">
+            <div
+              key={i}
+              className="flex items-start gap-3 bg-slate-100 dark:bg-gray-700/30 p-4 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700/50 transition-all duration-300"
+            >
               <FaCheckCircle className="text-green-400 mt-1 shrink-0" />
               <span>{item}</span>
             </div>
@@ -61,17 +52,19 @@ const sections = [
     ),
   },
   {
-    id: "privacy-policy",
+    id: 'privacy-policy',
     icon: <FaLock className="text-3xl" />,
-    title: "Privacy Policy",
+    title: 'Privacy Policy',
     content: (
       <div className="space-y-4">
         <p>
-          Your privacy is our top priority. We implement industry-standard security measures
-          to protect your personal information.
+          Your privacy is our top priority. We implement industry-standard
+          security measures to protect your personal information.
         </p>
         <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-6">
-          <h4 className="font-semibold text-lg text-purple-300 mb-3">What we collect:</h4>
+          <h4 className="font-semibold text-lg text-purple-300 mb-3">
+            What we collect:
+          </h4>
           <ul className="space-y-2">
             <li className="flex items-center gap-2">
               <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
@@ -91,24 +84,36 @@ const sections = [
     ),
   },
   {
-    id: "payment-terms",
+    id: 'payment-terms',
     icon: <FaMoneyBillWave className="text-3xl" />,
-    title: "Payment Terms",
+    title: 'Payment Terms',
     content: (
       <div className="space-y-4">
         <p>
-          All payments are processed securely through our trusted payment partners including
+          All payments are processed securely through our trusted payment
+          partners including
           <span className="text-cyan-400 font-semibold"> Razorpay</span>.
         </p>
         <div className="grid md:grid-cols-3 gap-4">
           {[
-            { label: "Currency", value: "INR (₹)", color: "cyan" },
-            { label: "Payment Methods", value: "Card, UPI, Net Banking", color: "green" },
-            { label: "Processing Time", value: "Instant", color: "yellow" },
+            { label: 'Currency', value: 'INR (₹)', color: 'cyan' },
+            {
+              label: 'Payment Methods',
+              value: 'Card, UPI, Net Banking',
+              color: 'green',
+            },
+            { label: 'Processing Time', value: 'Instant', color: 'yellow' },
           ].map((item, i) => (
-            <div key={i} className={`bg-gradient-to-br from-${item.color}-500/10 to-${item.color}-600/10 border border-${item.color}-500/30 rounded-xl p-4 text-center`}>
-              <p className="text-slate-500 dark:text-gray-400 text-sm mb-1">{item.label}</p>
-              <p className={`text-${item.color}-300 font-semibold`}>{item.value}</p>
+            <div
+              key={i}
+              className={`bg-gradient-to-br from-${item.color}-500/10 to-${item.color}-600/10 border border-${item.color}-500/30 rounded-xl p-4 text-center`}
+            >
+              <p className="text-slate-500 dark:text-gray-400 text-sm mb-1">
+                {item.label}
+              </p>
+              <p className={`text-${item.color}-300 font-semibold`}>
+                {item.value}
+              </p>
             </div>
           ))}
         </div>
@@ -116,56 +121,62 @@ const sections = [
     ),
   },
   {
-    id: "intellectual-property",
+    id: 'intellectual-property',
     icon: <FaCopyright className="text-3xl" />,
-    title: "Intellectual Property",
+    title: 'Intellectual Property',
     content: (
       <div className="space-y-4">
         <p>
-          All content, trademarks, logos, and other intellectual property on this platform
-          are owned by <span className="text-cyan-400 font-semibold">RIVETO</span> or its licensors.
+          All content, trademarks, logos, and other intellectual property on
+          this platform are owned by{' '}
+          <span className="text-cyan-400 font-semibold">RIVETO</span> or its
+          licensors.
         </p>
         <div className="bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-500/30 rounded-xl p-4 flex items-start gap-3">
           <FaExclamationTriangle className="text-red-400 text-xl mt-1 shrink-0" />
           <p className="text-red-700 dark:text-red-200">
-            Unauthorized use, reproduction, or distribution of any content is strictly prohibited
-            and may result in legal action.
+            Unauthorized use, reproduction, or distribution of any content is
+            strictly prohibited and may result in legal action.
           </p>
         </div>
       </div>
     ),
   },
   {
-    id: "limitation-liability",
+    id: 'limitation-liability',
     icon: <FaShieldAlt className="text-3xl" />,
-    title: "Limitation of Liability",
+    title: 'Limitation of Liability',
     content: (
       <div className="space-y-4">
         <p>
-          RIVETO shall not be liable for any indirect, incidental, special, consequential,
-          or punitive damages resulting from your use or inability to use the service.
+          RIVETO shall not be liable for any indirect, incidental, special,
+          consequential, or punitive damages resulting from your use or
+          inability to use the service.
         </p>
         <div className="bg-orange-100 dark:bg-orange-500/10 border border-orange-300 dark:border-orange-500/30 rounded-xl p-4">
           <p className="text-orange-700 dark:text-orange-200">
-            This includes, but is not limited to, damages for loss of profits, data, or other intangible losses.
+            This includes, but is not limited to, damages for loss of profits,
+            data, or other intangible losses.
           </p>
         </div>
       </div>
     ),
   },
   {
-    id: "changes-to-terms",
+    id: 'changes-to-terms',
     icon: <FaEdit className="text-3xl" />,
-    title: "Changes to Terms",
+    title: 'Changes to Terms',
     content: (
       <div className="space-y-4">
         <p>
-          We reserve the right to modify these terms at any time. Material changes will be
-          communicated through email or prominent notice on our platform.
+          We reserve the right to modify these terms at any time. Material
+          changes will be communicated through email or prominent notice on our
+          platform.
         </p>
         <div className="bg-blue-100 dark:bg-blue-500/10 border border-blue-300 dark:border-blue-500/30 rounded-xl p-4">
           <p className="text-blue-700 dark:text-blue-200">
-            Continued use of our services after changes constitutes acceptance of the new terms.
+            Continued use of our services after changes constitutes acceptance
+            of the new terms.
           </p>
         </div>
       </div>
@@ -173,52 +184,71 @@ const sections = [
   },
 ];
 
-const TableOfContents = ({ activeSection, onSectionClick }) => (
+const _TableOfContents = ({ activeSection, onSectionClick }) => (
   <div className="lg:sticky lg:top-28 bg-white/85 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-gray-700 p-6">
     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
       <FaFileContract className="text-cyan-400" />
       Quick Navigation
     </h3>
     <nav className="space-y-2">
-      {sections.map((section, index) => (
+      {sections.map((section, _index) => (
         <button
           key={section.id}
           onClick={() => onSectionClick(section.id)}
-          className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 flex items-center gap-3 ${activeSection === section.id
-              ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30"
-              : "text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700/50"
-            }`}
+          className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 flex items-center gap-3 ${
+            activeSection === section.id
+              ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+              : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700/50'
+          }`}
         >
-          <span className={`text-sm ${activeSection === section.id ? "text-white" : "text-cyan-400"}`}>
+          <span
+            className={`text-sm ${activeSection === section.id ? 'text-white' : 'text-cyan-400'}`}
+          >
             {section.icon}
           </span>
           <span className="text-sm font-medium">{section.title}</span>
-          {activeSection === section.id && <FaArrowRight className="ml-auto text-sm" />}
+          {activeSection === section.id && (
+            <FaArrowRight className="ml-auto text-sm" />
+          )}
         </button>
       ))}
     </nav>
   </div>
 );
 
-const Section = ({ section, isActive }) => (
+const _Section = ({ section, isActive }) => (
   <section
     id={section.id}
-    className={`scroll-mt-28 transform transition-all duration-500 ${isActive ? "scale-100 opacity-100" : "scale-95 opacity-90"
-      }`}
+    className={`scroll-mt-28 transform transition-all duration-500 ${
+      isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-90'
+    }`}
   >
-    <div className={`bg-white/85 dark:bg-gray-800/30 rounded-2xl p-6 md:p-8 border transition-all duration-300 ${isActive ? "border-cyan-500/50 shadow-lg shadow-cyan-500/10" : "border-slate-200 dark:border-gray-700"
-      }`}>
+    <div
+      className={`bg-white/85 dark:bg-gray-800/30 rounded-2xl p-6 md:p-8 border transition-all duration-300 ${
+        isActive
+          ? 'border-cyan-500/50 shadow-lg shadow-cyan-500/10'
+          : 'border-slate-200 dark:border-gray-700'
+      }`}
+    >
       <div className="flex items-center gap-4 mb-6">
-        <div className={`p-4 rounded-xl transition-all duration-300 ${isActive
-            ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30"
-            : "bg-slate-200 dark:bg-gray-700/50 text-cyan-500 dark:text-cyan-400"
-          }`}>
+        <div
+          className={`p-4 rounded-xl transition-all duration-300 ${
+            isActive
+              ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+              : 'bg-slate-200 dark:bg-gray-700/50 text-cyan-500 dark:text-cyan-400'
+          }`}
+        >
           {section.icon}
         </div>
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">{section.title}</h2>
-          <div className={`h-1 w-20 rounded-full mt-2 transition-all duration-300 ${isActive ? "bg-cyan-400" : "bg-slate-400 dark:bg-gray-600"
-            }`}></div>
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
+            {section.title}
+          </h2>
+          <div
+            className={`h-1 w-20 rounded-full mt-2 transition-all duration-300 ${
+              isActive ? 'bg-cyan-400' : 'bg-slate-400 dark:bg-gray-600'
+            }`}
+          ></div>
         </div>
       </div>
       <div className="text-slate-700 dark:text-gray-300 leading-relaxed text-base md:text-lg">
@@ -229,11 +259,13 @@ const Section = ({ section, isActive }) => (
 );
 
 const TermsAndServices = () => {
-  const [activeSection, setActiveSection] = useState("introduction");
+  const [activeSection, setActiveSection] = useState('introduction');
 
   useEffect(() => {
     const handleScroll = () => {
-      const sectionElements = sections.map(s => document.getElementById(s.id));
+      const sectionElements = sections.map((s) =>
+        document.getElementById(s.id)
+      );
       const scrollPosition = window.scrollY + 200;
 
       for (let i = sectionElements.length - 1; i >= 0; i--) {
@@ -245,18 +277,19 @@ const TermsAndServices = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       const offset = 100;
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({
         top: elementPosition - offset,
-        behavior: "smooth"
+        behavior: 'smooth',
       });
     }
   };
@@ -277,13 +310,20 @@ const TermsAndServices = () => {
                   Terms & Services
                 </h1>
                 <p className="text-slate-600 dark:text-gray-400 text-lg">
-                  Last updated: <span className="text-cyan-400 font-semibold">February 4, 2026</span>
+                  Last updated:{' '}
+                  <span className="text-cyan-400 font-semibold">
+                    February 4, 2026
+                  </span>
                 </p>
               </div>
               <div className="bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-2xl p-6 border border-cyan-500/30">
                 <div className="text-center">
-                  <p className="text-slate-600 dark:text-gray-300 text-sm mb-2">Total Sections</p>
-                  <p className="text-4xl font-bold text-cyan-400">{sections.length}</p>
+                  <p className="text-slate-600 dark:text-gray-300 text-sm mb-2">
+                    Total Sections
+                  </p>
+                  <p className="text-4xl font-bold text-cyan-400">
+                    {sections.length}
+                  </p>
                 </div>
               </div>
             </div>
@@ -294,7 +334,10 @@ const TermsAndServices = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Table of Contents - Desktop */}
           <aside className="hidden lg:block w-80">
-            <TableOfContents activeSection={activeSection} onSectionClick={scrollToSection} />
+            <TableOfContents
+              activeSection={activeSection}
+              onSectionClick={scrollToSection}
+            />
           </aside>
 
           {/* Main Content */}
@@ -314,7 +357,9 @@ const TermsAndServices = () => {
                   <FaEnvelope className="text-3xl text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Get In Touch</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
+                    Get In Touch
+                  </h2>
                   <div className="h-1 w-20 bg-cyan-400 rounded-full mt-2"></div>
                 </div>
               </div>
@@ -333,8 +378,12 @@ const TermsAndServices = () => {
                       <FaEnvelope className="text-2xl text-cyan-400 group-hover:text-white" />
                     </div>
                     <div>
-                      <p className="text-slate-500 dark:text-gray-400 text-sm">Email Us</p>
-                      <p className="text-slate-900 dark:text-white font-semibold">nishantborude555@gmail.com</p>
+                      <p className="text-slate-500 dark:text-gray-400 text-sm">
+                        Email Us
+                      </p>
+                      <p className="text-slate-900 dark:text-white font-semibold">
+                        nishantborude555@gmail.com
+                      </p>
                     </div>
                   </div>
                 </a>
@@ -350,8 +399,12 @@ const TermsAndServices = () => {
                       <FaGithub className="text-2xl text-cyan-400 group-hover:text-white" />
                     </div>
                     <div>
-                      <p className="text-slate-500 dark:text-gray-400 text-sm">GitHub</p>
-                      <p className="text-slate-900 dark:text-white font-semibold">@Nsanjayboruds</p>
+                      <p className="text-slate-500 dark:text-gray-400 text-sm">
+                        GitHub
+                      </p>
+                      <p className="text-slate-900 dark:text-white font-semibold">
+                        @Nsanjayboruds
+                      </p>
                     </div>
                   </div>
                 </a>
@@ -366,7 +419,6 @@ const TermsAndServices = () => {
         <Footer />
       </div>
     </div>
-
   );
 };
 

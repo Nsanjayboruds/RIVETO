@@ -1,19 +1,18 @@
-/* eslint-disable react/no-unknown-property */
+
 import {
   forwardRef,
   useImperativeHandle,
   useEffect,
   useRef,
-  useMemo
-} from "react";
+  useMemo,
+} from 'react';
 
-import * as THREE from "three";
+import * as THREE from 'three';
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { PerspectiveCamera } from "@react-three/drei";
-import { degToRad } from "three/src/math/MathUtils.js";
+import { useFrame } from '@react-three/fiber';
+import { degToRad } from 'three/src/math/MathUtils.js';
 
-import "./Beams.css";
+import './Beams.css';
 
 function extendMaterial(BaseMaterial, cfg) {
   const physical = THREE.ShaderLib.physical;
@@ -29,21 +28,19 @@ function extendMaterial(BaseMaterial, cfg) {
   const defaults = new BaseMaterial(cfg.material || {});
 
   if (defaults.color) uniforms.diffuse.value = defaults.color;
-  if ("roughness" in defaults) uniforms.roughness.value = defaults.roughness;
-  if ("metalness" in defaults) uniforms.metalness.value = defaults.metalness;
-  if ("envMap" in defaults) uniforms.envMap.value = defaults.envMap;
-  if ("envMapIntensity" in defaults)
+  if ('roughness' in defaults) uniforms.roughness.value = defaults.roughness;
+  if ('metalness' in defaults) uniforms.metalness.value = defaults.metalness;
+  if ('envMap' in defaults) uniforms.envMap.value = defaults.envMap;
+  if ('envMapIntensity' in defaults)
     uniforms.envMapIntensity.value = defaults.envMapIntensity;
 
   Object.entries(cfg.uniforms ?? {}).forEach(([key, u]) => {
     uniforms[key] =
-      u !== null && typeof u === "object" && "value" in u
-        ? (u)
-        : ({ value: u });
+      u !== null && typeof u === 'object' && 'value' in u ? u : { value: u };
   });
 
-  let vert = `${cfg.header}\n${cfg.vertexHeader ?? ""}\n${baseVert}`;
-  let frag = `${cfg.header}\n${cfg.fragmentHeader ?? ""}\n${baseFrag}`;
+  let vert = `${cfg.header}\n${cfg.vertexHeader ?? ''}\n${baseVert}`;
+  let frag = `${cfg.header}\n${cfg.fragmentHeader ?? ''}\n${baseFrag}`;
 
   for (const [inc, code] of Object.entries(cfg.vertex ?? {})) {
     vert = vert.replace(inc, `${inc}\n${code}`);
@@ -64,14 +61,14 @@ function extendMaterial(BaseMaterial, cfg) {
   return mat;
 }
 
-const CanvasWrapper = ({ children }) => (
+const _CanvasWrapper = ({ children }) => (
   <Canvas dpr={[1, 2]} frameloop="always" className="beams-container">
     {children}
   </Canvas>
 );
 
 const hexToNormalizedRGB = (hex) => {
-  const clean = hex.replace("#", "");
+  const clean = hex.replace('#', '');
   const r = parseInt(clean.substring(0, 2), 16);
   const g = parseInt(clean.substring(2, 4), 16);
   const b = parseInt(clean.substring(4, 6), 16);
@@ -159,7 +156,7 @@ const Beams = ({
   beamWidth = 2,
   beamHeight = 15,
   beamNumber = 12,
-  lightColor = "#ffffff",
+  lightColor = '#ffffff',
   speed = 2,
   noiseIntensity = 1.75,
   scale = 0.2,
@@ -198,19 +195,19 @@ const Beams = ({
     vec3 tangentZ = normalize(nextposZ - curpos);
     return normalize(cross(tangentZ, tangentX));
   }`,
-        fragmentHeader: "",
+        fragmentHeader: '',
         vertex: {
-          "#include <begin_vertex>": `transformed.z += getPos(transformed.xyz);`,
-          "#include <beginnormal_vertex>": `objectNormal = getNormal(position.xyz);`,
+          '#include <begin_vertex>': `transformed.z += getPos(transformed.xyz);`,
+          '#include <beginnormal_vertex>': `objectNormal = getNormal(position.xyz);`,
         },
         fragment: {
-          "#include <dithering_fragment>": `
+          '#include <dithering_fragment>': `
     float randomNoise = noise(gl_FragCoord.xy);
     gl_FragColor.rgb -= randomNoise / 15. * uNoiseIntensity;`,
         },
         material: { fog: true },
         uniforms: {
-          diffuse: new THREE.Color(...hexToNormalizedRGB("#000000")),
+          diffuse: new THREE.Color(...hexToNormalizedRGB('#000000')),
           time: { shared: true, mixed: true, linked: true, value: 0 },
           roughness: 0.3,
           metalness: 0.3,
@@ -236,7 +233,7 @@ const Beams = ({
         <DirLight color={lightColor} position={[0, 3, 10]} />
       </group>
       <ambientLight intensity={1} />
-      <color attach="background" args={["#000000"]} />
+      <color attach="background" args={['#000000']} />
       <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={30} />
     </CanvasWrapper>
   );
@@ -292,8 +289,8 @@ function createStackedPlanesBufferGeometry(
     }
   }
 
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
   geometry.setIndex(new THREE.BufferAttribute(indices, 1));
   geometry.computeVertexNormals();
   return geometry;
@@ -311,7 +308,7 @@ const MergedPlanes = forwardRef(({ material, width, count, height }, ref) => {
   });
   return <mesh ref={mesh} geometry={geometry} material={material} />;
 });
-MergedPlanes.displayName = "MergedPlanes";
+MergedPlanes.displayName = 'MergedPlanes';
 
 const PlaneNoise = forwardRef((props, ref) => (
   <MergedPlanes
@@ -322,12 +319,9 @@ const PlaneNoise = forwardRef((props, ref) => (
     height={props.height}
   />
 ));
-PlaneNoise.displayName = "PlaneNoise";
+PlaneNoise.displayName = 'PlaneNoise';
 
-const DirLight = ({
-  position,
-  color,
-}) => {
+export const DirLight = ({ position, color }) => {
   const dir = useRef(null);
   useEffect(() => {
     if (!dir.current) return;
@@ -339,7 +333,6 @@ const DirLight = ({
     cam.right = 24;
     cam.far = 64;
     dir.current.shadow.bias = -0.004;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <directionalLight

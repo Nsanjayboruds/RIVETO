@@ -1,10 +1,10 @@
-import { useRef, useEffect } from "react";
-import { Renderer, Program, Triangle, Mesh } from "ogl";
-import "./RippleGrid.css";
+import { useRef, useEffect } from 'react';
+import { Renderer, Program, Triangle, Mesh } from 'ogl';
+import './RippleGrid.css';
 
 const RippleGrid = ({
   enableRainbow = false,
-  gridColor = "#ffffff",
+  gridColor = '#ffffff',
   rippleIntensity = 0.05,
   gridSize = 10.0,
   gridThickness = 15.0,
@@ -29,10 +29,10 @@ const RippleGrid = ({
       const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result
         ? [
-          parseInt(result[1], 16) / 255,
-          parseInt(result[2], 16) / 255,
-          parseInt(result[3], 16) / 255,
-        ]
+            parseInt(result[1], 16) / 255,
+            parseInt(result[2], 16) / 255,
+            parseInt(result[3], 16) / 255,
+          ]
         : [1, 1, 1];
     };
 
@@ -43,8 +43,8 @@ const RippleGrid = ({
     const gl = renderer.gl;
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.canvas.style.width = "100%";
-    gl.canvas.style.height = "100%";
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
     containerRef.current.appendChild(gl.canvas);
 
     const vert = `
@@ -197,11 +197,11 @@ void main() {
       mouseInfluenceRef.current = 0.0;
     };
 
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
     if (mouseInteraction) {
-      containerRef.current.addEventListener("mousemove", handleMouseMove);
-      containerRef.current.addEventListener("mouseenter", handleMouseEnter);
-      containerRef.current.addEventListener("mouseleave", handleMouseLeave);
+      containerRef.current.addEventListener('mousemove', handleMouseMove);
+      containerRef.current.addEventListener('mouseenter', handleMouseEnter);
+      containerRef.current.addEventListener('mouseleave', handleMouseLeave);
     }
     resize();
 
@@ -231,19 +231,19 @@ void main() {
     requestAnimationFrame(render);
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener('resize', resize);
       if (mouseInteraction && containerRef.current) {
-        containerRef.current.removeEventListener("mousemove", handleMouseMove);
+        containerRef.current.removeEventListener('mousemove', handleMouseMove);
         containerRef.current.removeEventListener(
-          "mouseenter",
+          'mouseenter',
           handleMouseEnter
         );
         containerRef.current.removeEventListener(
-          "mouseleave",
+          'mouseleave',
           handleMouseLeave
         );
       }
-      renderer.gl.getExtension("WEBGL_lose_context")?.loseContext();
+      renderer.gl.getExtension('WEBGL_lose_context')?.loseContext();
       containerRef.current?.removeChild(gl.canvas);
     };
   }, []);
@@ -255,10 +255,10 @@ void main() {
       const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result
         ? [
-          parseInt(result[1], 16) / 255,
-          parseInt(result[2], 16) / 255,
-          parseInt(result[3], 16) / 255,
-        ]
+            parseInt(result[1], 16) / 255,
+            parseInt(result[2], 16) / 255,
+            parseInt(result[3], 16) / 255,
+          ]
         : [1, 1, 1];
     };
 

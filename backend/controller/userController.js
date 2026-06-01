@@ -14,18 +14,19 @@ export const getCurrentUser = async (req, res) => {
   }
 };
 
-
 export const getAdmin = async (req, res) => {
   try {
     const adminEmail = req.adminEmail;
 
     if (!adminEmail) {
-      return res.status(401).json({ message: "Unauthorized: No admin email found" });
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: No admin email found" });
     }
 
     return res.status(200).json({
       email: adminEmail,
-      role: "admin"
+      role: "admin",
     });
   } catch (error) {
     console.error("getAdmin error:", error);

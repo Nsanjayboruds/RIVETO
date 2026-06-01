@@ -1,28 +1,38 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import { authDataContext } from './AuthContext';
+import { createContext, useEffect, useState } from 'react';
+import apiConfig from '../utils/apiConfig';
 
 export const userDataContext = createContext();
 
 function UserContext({ children }) {
-  const [userData, setUserData] = useState(null); 
-  const { serverUrl } = useContext(authDataContext);
+  const [userData, setUserData] = useState(null);
 
   const getCurrentUser = async () => {
     try {
-      const result = await axios.get(`${serverUrl}/api/user/getCurrentUser`, {
-        withCredentials: true,
+      const result = await apiConfig.get('/user/getCurrentUser', {
+        skipAuthRedirect: true,
+        skipGlobalErrorToast: true,
       });
       setUserData(result.data);
-      console.log("✅ Current user:", result.data);
-    } catch (error) {
+      console.log('✅ Current user:', result.data);}
+     catch (error) {
       setUserData(null);
       if (error.response && error.response.status === 401) {
-        console.log("🚫 Unauthorized: No user logged in");
+        console.log('🚫 Unauthorized: No user logged in');
       } else {
-        console.error("❌ Error fetching current user:", error);
+        console.error('❌ Error fetching current user:', error);
       }
     }
+// catch (error) {
+
+//   console.log('⚠ Using temporary demo user');
+
+//   setUserData({
+//     _id: "temp123",
+//     name: "Demo User",
+//     email: "demo@test.com",
+//   });
+
+// }
   };
 
   useEffect(() => {

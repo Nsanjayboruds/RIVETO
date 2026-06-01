@@ -1,10 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Background from '../components/Background';
-import Hero from '../components/Hero';
-import Product from './Product';
-import OurPolicy from '../components/OurPolicy';
-import NewLetterBox from '../components/NewLetterBox';
-import Footer from '../components/Footer';
+import { useEffect, useState, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -13,10 +7,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 function Home() {
   const heroData = [
-    { text1: "30% OFF LIMITED TIME OFFER", text2: "Style Your Home with Our Products" },
-    { text1: "Discover the best of bold fashion", text2: "LIMITED TIME OFFER ONLY!" },
-    { text1: "Explore our best collection", text2: "Shop Now and Save Big!" },
-    { text1: "Choose your perfect Fashion", text2: "Now is the perfect time to shop!" }
+    {
+      text1: '30% OFF LIMITED TIME OFFER',
+      text2: 'Style Your Home with Our Products',
+    },
+    {
+      text1: 'Discover the best of bold fashion',
+      text2: 'LIMITED TIME OFFER ONLY!',
+    },
+    { text1: 'Explore our best collection', text2: 'Shop Now and Save Big!' },
+    {
+      text1: 'Choose your perfect Fashion',
+      text2: 'Now is the perfect time to shop!',
+    },
   ];
 
   const [heroCount, setHeroCount] = useState(0);
@@ -28,7 +31,7 @@ function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setHeroCount(prevCount => (prevCount === 3 ? 0 : prevCount + 1));
+      setHeroCount((prevCount) => (prevCount === 3 ? 0 : prevCount + 1));
     }, 3000);
     return () => clearInterval(interval);
   }, []);
@@ -49,12 +52,13 @@ function Home() {
   useEffect(() => {
     // Product section animation
     if (productRef.current) {
-      gsap.fromTo(productRef.current.children,
-        { 
-          opacity: 0, 
-          y: 100, 
+      gsap.fromTo(
+        productRef.current.children,
+        {
+          opacity: 0,
+          y: 100,
           scale: 0.9,
-          rotateX: 15
+          rotateX: 15,
         },
         {
           opacity: 1,
@@ -69,18 +73,19 @@ function Home() {
             start: 'top 85%',
             end: 'bottom 15%',
             toggleActions: 'play none none reverse',
-          }
+          },
         }
       );
     }
 
     // Policy section animation
     if (policyRef.current) {
-      gsap.fromTo(policyRef.current,
-        { 
-          opacity: 0, 
+      gsap.fromTo(
+        policyRef.current,
+        {
+          opacity: 0,
           x: -80,
-          filter: 'blur(10px)'
+          filter: 'blur(10px)',
         },
         {
           opacity: 1,
@@ -92,18 +97,19 @@ function Home() {
             trigger: policyRef.current,
             start: 'top 80%',
             toggleActions: 'play none none reverse',
-          }
+          },
         }
       );
     }
 
     // Newsletter section animation
     if (newsletterRef.current) {
-      gsap.fromTo(newsletterRef.current,
-        { 
-          opacity: 0, 
+      gsap.fromTo(
+        newsletterRef.current,
+        {
+          opacity: 0,
           y: 60,
-          scale: 0.95
+          scale: 0.95,
         },
         {
           opacity: 1,
@@ -115,17 +121,18 @@ function Home() {
             trigger: newsletterRef.current,
             start: 'top 85%',
             toggleActions: 'play none none reverse',
-          }
+          },
         }
       );
     }
 
     // Footer animation
     if (footerRef.current) {
-      gsap.fromTo(footerRef.current,
-        { 
-          opacity: 0, 
-          y: 40
+      gsap.fromTo(
+        footerRef.current,
+        {
+          opacity: 0,
+          y: 40,
         },
         {
           opacity: 1,
@@ -136,22 +143,22 @@ function Home() {
             trigger: footerRef.current,
             start: 'top 90%',
             toggleActions: 'play none none reverse',
-          }
+          },
         }
       );
     }
 
     // Cleanup ScrollTrigger instances
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
   return (
-    <div className='overflow-x-hidden bg-white dark:bg-gradient-to-b dark:from-[#0a0a0f] dark:via-[#0d0d15] dark:to-[#0a0a0f] min-h-screen transition-colors duration-300'>
+    <div className="overflow-x-hidden bg-white dark:bg-gradient-to-b dark:from-[#0a0a0f] dark:via-[#0d0d15] dark:to-[#0a0a0f] min-h-screen transition-colors duration-300">
       {/* Animated Background Orbs - Visible only in dark mode */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden hidden dark:block">
-        <div 
+        <div
           className="absolute w-[800px] h-[800px] rounded-full blur-[150px] opacity-10"
           style={{
             background: 'radial-gradient(circle, #3b82f6, transparent)',
@@ -161,7 +168,7 @@ function Home() {
             transition: 'transform 0.3s ease-out',
           }}
         />
-        <div 
+        <div
           className="absolute w-[600px] h-[600px] rounded-full blur-[120px] opacity-10"
           style={{
             background: 'radial-gradient(circle, #8b5cf6, transparent)',
@@ -171,7 +178,7 @@ function Home() {
             transition: 'transform 0.3s ease-out',
           }}
         />
-        <div 
+        <div
           className="absolute w-[500px] h-[500px] rounded-full blur-[100px] opacity-8"
           style={{
             background: 'radial-gradient(circle, #06b6d4, transparent)',
@@ -184,19 +191,25 @@ function Home() {
       </div>
 
       {/* Hero Section */}
-      <div className='relative w-full h-screen overflow-hidden'>
+      <div className="relative w-full h-screen overflow-hidden">
         <Background heroCount={heroCount} />
-        <Hero heroCount={heroCount} heroData={heroData[heroCount]} setHeroCount={setHeroCount} />
-        
+        <Hero
+          heroCount={heroCount}
+          heroData={heroData[heroCount]}
+          setHeroCount={setHeroCount}
+        />
+
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce-scale">
-          <span className="text-white/60 text-sm mb-2 tracking-widest">SCROLL</span>
+          <span className="text-white/60 text-sm mb-2 tracking-widest">
+            SCROLL
+          </span>
           <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
             <div className="w-1.5 h-3 bg-white/60 rounded-full mt-2 animate-bounce" />
           </div>
         </div>
       </div>
-        
+
       {/* Animated Product Section */}
       <div ref={productRef} className="relative z-10">
         <Product />

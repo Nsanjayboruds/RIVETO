@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import Title from './Title';
-import Card from './Card';
+import { useContext, useEffect, useState, useRef } from 'react';
+
 import { shopDataContext } from '../context/ShopContext';
-import { FaFire, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -20,7 +19,7 @@ function BestSeller() {
   const autoScrollRef = useRef(null);
 
   useEffect(() => {
-    const filterProduct = product.filter(item => item.bestseller);
+    const filterProduct = product.filter((item) => item.bestseller);
     setBestseller(filterProduct.slice(0, 8)); // Show top 8 bestsellers
   }, [product]);
 
@@ -77,7 +76,7 @@ function BestSeller() {
 
     // Check if card is near the right edge (within 300px)
     const distanceFromRight = containerRightEdge - cardRightEdge;
-    
+
     if (distanceFromRight < 300 && distanceFromRight > -100) {
       startAutoScroll();
     }
@@ -114,23 +113,25 @@ function BestSeller() {
 
   useEffect(() => {
     // Animation for the section
-    gsap.fromTo(titleRef.current,
+    gsap.fromTo(
+      titleRef.current,
       { opacity: 0, y: -30 },
       {
         opacity: 1,
         y: 0,
         duration: 1,
-        ease: "power3.out",
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none"
-        }
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
       }
     );
 
     // Stagger animation for cards
-    gsap.fromTo(cardsRef.current,
+    gsap.fromTo(
+      cardsRef.current,
       { opacity: 0, y: 50, scale: 0.9 },
       {
         opacity: 1,
@@ -138,40 +139,52 @@ function BestSeller() {
         scale: 1,
         duration: 0.8,
         stagger: 0.15,
-        ease: "back.out(1.7)",
+        ease: 'back.out(1.7)',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 70%",
-          toggleActions: "play none none none"
-        }
+          start: 'top 70%',
+          toggleActions: 'play none none none',
+        },
       }
     );
   }, [bestseller]);
 
   return (
-    <section ref={sectionRef} className="w-full py-10 sm:py-14 md:py-20 px-3 sm:px-4 md:px-8 relative overflow-hidden bg-white dark:bg-[#0B0F1A]">
+    <section
+      ref={sectionRef}
+      className="w-full py-10 sm:py-14 md:py-20 px-3 sm:px-4 md:px-8 relative overflow-hidden bg-white dark:bg-[#0B0F1A]"
+    >
       {/* Section Container */}
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header - Left Aligned */}
-        <div ref={titleRef} className="flex items-end justify-between mb-8 sm:mb-10">
+        <div
+          ref={titleRef}
+          className="flex items-end justify-between mb-8 sm:mb-10"
+        >
           <div>
             <div className="inline-flex items-center gap-2 sm:gap-3 mb-2">
               <div className="w-10 h-10 bg-[#EF4444] rounded-full flex items-center justify-center shadow-lg">
                 <FaFire className="text-white text-lg" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              <h2
+                className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
                 Best Sellers
               </h2>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base max-w-md" style={{ fontFamily: 'Inter, sans-serif' }}>
+            <p
+              className="text-gray-600 dark:text-gray-400 text-sm md:text-base max-w-md"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
               Most loved products — tried, tested, and adored by thousands
             </p>
           </div>
-          
+
           {/* Inline Text CTA */}
           {bestseller.length > 0 && (
-            <button 
-              onClick={() => window.location.href = '/collection'}
+            <button
+              onClick={() => (window.location.href = '/collection')}
               className="group flex items-center gap-2 text-[#2563EB] hover:text-[#1d4ed8] font-semibold text-sm md:text-base transition-colors"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
@@ -206,14 +219,15 @@ function BestSeller() {
               </button>
             )}
 
-            <div 
+            <div
               ref={scrollContainerRef}
               className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 scrollbar-hide"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
               {bestseller.map((item, index) => (
                 <div
                   key={item._id}
-                  ref={el => cardsRef.current[index] = el}
+                  ref={(el) => (cardsRef.current[index] = el)}
                   className="flex-shrink-0 w-64 sm:w-72 snap-start"
                   onMouseEnter={() => handleCardHover(index)}
                   onMouseLeave={stopAutoScroll}
@@ -226,7 +240,7 @@ function BestSeller() {
                     badge="BESTSELLER"
                     badgeColor="from-red-500 to-orange-500"
                     onCompare={() => toggleCompare(item)}
-                    isCompared={compareList?.some(p => p._id === item._id)}
+                    isCompared={compareList?.some((p) => p._id === item._id)}
                   />
                 </div>
               ))}
@@ -235,20 +249,60 @@ function BestSeller() {
             {/* Trust Strip */}
             <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#121826] rounded-2xl p-6 border border-gray-700/50">
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-[#4F8CFF] mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>10K+</div>
-                <div className="text-gray-400 text-xs md:text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>Units Sold</div>
+                <div
+                  className="text-2xl md:text-3xl font-bold text-[#4F8CFF] mb-1"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
+                  10K+
+                </div>
+                <div
+                  className="text-gray-400 text-xs md:text-sm"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Units Sold
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-[#4F8CFF] mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>4.9★</div>
-                <div className="text-gray-400 text-xs md:text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>Average Rating</div>
+                <div
+                  className="text-2xl md:text-3xl font-bold text-[#4F8CFF] mb-1"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
+                  4.9★
+                </div>
+                <div
+                  className="text-gray-400 text-xs md:text-sm"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Average Rating
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-[#4F8CFF] mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>24H</div>
-                <div className="text-gray-400 text-xs md:text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>Fast Shipping</div>
+                <div
+                  className="text-2xl md:text-3xl font-bold text-[#4F8CFF] mb-1"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
+                  24H
+                </div>
+                <div
+                  className="text-gray-400 text-xs md:text-sm"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Fast Shipping
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-[#4F8CFF] mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>24/7</div>
-                <div className="text-gray-400 text-xs md:text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>Support</div>
+                <div
+                  className="text-2xl md:text-3xl font-bold text-[#4F8CFF] mb-1"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
+                  24/7
+                </div>
+                <div
+                  className="text-gray-400 text-xs md:text-sm"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Support
+                </div>
               </div>
             </div>
           </div>
@@ -257,8 +311,12 @@ function BestSeller() {
             <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-4 sm:mb-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full flex items-center justify-center">
               <FaFire className="text-gray-600 text-xl sm:text-2xl md:text-3xl" />
             </div>
-            <p className="text-gray-400 text-sm sm:text-base md:text-lg mb-2 sm:mb-4">No bestsellers yet</p>
-            <p className="text-gray-500 text-xs sm:text-sm">Our bestsellers will appear here soon</p>
+            <p className="text-gray-400 text-sm sm:text-base md:text-lg mb-2 sm:mb-4">
+              No bestsellers yet
+            </p>
+            <p className="text-gray-500 text-xs sm:text-sm">
+              Our bestsellers will appear here soon
+            </p>
           </div>
         )}
 

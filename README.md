@@ -1,14 +1,12 @@
-# RIVETO      
-    
-![License](https://img.shields.io/github/license/Nsanjayboruds/RIVETO)
-![Issues](https://img.shields.io/github/issues/Nsanjayboruds/RIVETO) 
-![Stars](https://img.shields.io/github/stars/Nsanjayboruds/RIVETO)
+# RIVETO
 
---- 
-  
---------
+[![License](https://img.shields.io/github/license/Nsanjayboruds/RIVETO)](LICENSE)
+[![Issues](https://img.shields.io/github/issues/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/issues)
+[![Stars](https://img.shields.io/github/stars/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/stargazers)
+---
 
-## 🚀 Overview 
+
+## 🚀 Overview
 
 **RIVETO** is a modern, fullstack web application built for scalability, advanced analytics.  
 It features a robust admin panel for management, user tracking, advanced UI components, and secure file/image upload via Cloudinary.
@@ -17,11 +15,11 @@ It features a robust admin panel for management, user tracking, advanced UI comp
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, Tailwind CSS  
-- **Backend:** Node.js, Express.js  
-- **Database:** MongoDB (Mongoose ODM)  
-- **Tracking:** Custom analytics & event tracking  
-- **UI:** Advanced, responsive design with Tailwind  
+- **Frontend:** React, Tailwind CSS
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (Mongoose ODM)
+- **Tracking:** Custom analytics & event tracking
+- **UI:** Advanced, responsive design with Tailwind
 - **Image Uploads:** [Cloudinary](https://cloudinary.com/) for secure and performant media management
 
 ---
@@ -29,7 +27,6 @@ It features a robust admin panel for management, user tracking, advanced UI comp
 ## 🏗️ Architecture
 
 <img width="3596" height="4077" alt="image" src="https://github.com/user-attachments/assets/65429204-b3b5-4b63-9bd1-f4249e68362f" />
-
 
 ---
 
@@ -56,11 +53,11 @@ cd RIVETO
 ### 2. Set up the environment
 
 - Copy and edit environment files:
-  - For backend:  
+  - For backend:
     ```bash
     cp backend/.env.example backend/.env
     ```
-  - For frontend:  
+  - For frontend:
     ```bash
     cp frontend/.env.example frontend/.env
     ```
@@ -103,29 +100,30 @@ npm start
 - Stores Cloudinary URLs in MongoDB model fields.
 
 **Sample Endpoint (Express.js):**
+
 ```js
 // /backend/routes/upload.js
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
 
 // Cloudinary config (use your .env)
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'riveto_uploads',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'svg', 'webp'],
+    folder: "riveto_uploads",
+    allowed_formats: ["jpg", "png", "jpeg", "svg", "webp"],
   },
 });
 const upload = multer({ storage });
 
-router.post('/upload', upload.single('image'), (req, res) => {
+router.post("/upload", upload.single("image"), (req, res) => {
   res.json({ url: req.file.path });
 });
 ```
@@ -136,39 +134,39 @@ router.post('/upload', upload.single('image'), (req, res) => {
 - Store the returned Cloudinary URL for use in UI or database.
 
 **Sample Usage:**
+
 ```js
 const handleUpload = async (event) => {
   const formData = new FormData();
-  formData.append('image', event.target.files[0]);
-  const response = await fetch('/api/upload', { method: 'POST', body: formData });
+  formData.append("image", event.target.files[0]);
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
   const data = await response.json();
   setImageUrl(data.url); // Save/display Cloudinary URL
 };
 ```
 
----
+
 
 ## 🧪 Testing
 
-```bash
-# Backend
-cd backend
-npm test
+Run lint checks:
 
-# Frontend
-cd ../frontend
-npm test
+```bash
+npm run lint
 ```
 
----
+
 
 ## 📂 Project Structure
 
 ```
 RIVETO/
 ├── backend/
-│   ├── controllers/
-│   ├── models/
+│   ├── controller/
+│   ├── model/
 │   ├── routes/
 │   ├── middleware/
 │   ├── services/
@@ -221,15 +219,49 @@ REACT_APP_RAZORPAY_KEY=
 - Custom components for user and payment management
 
 ---
+
 ## 📈 Tracking
 
 - Custom event logging and analytics
 - Admin dashboard for real-time tracking
 
 ---
+## 🤝 Feedback and Community
+
+We welcome bug reports, feature requests, and community feedback.
+
+### 🐛 Report Issues
+
+If you find a bug or security issue, please open an issue on GitHub with:
+
+* Steps to reproduce
+* Expected behavior
+* Screenshots/logs if applicable
+
+GitHub Issues:
+https://github.com/Nsanjayboruds/RIVETO/issues
+
+### 💡 Feature Requests
+
+Have an idea for improving RIVETO?
+Open a feature request issue and describe your suggestion.
+
+### 💬 Discussions
+
+Use GitHub Discussions for:
+
+* Questions
+* Community help
+* Project ideas
+* Feedback
+
+GitHub Discussions:
+https://github.com/Nsanjayboruds/RIVETO/discussions
+
 
 ## 📝 Contribution Guidelines
-befor start contribution star the repo
+
+Before contributing, please star the repository ⭐
 1. Fork the project
 2. Create your feature branch (`git checkout -b feature/YourFeature`)
 3. Commit your changes (`git commit -m 'Add feature'`)
@@ -249,11 +281,12 @@ Thank you to all contributors who have helped make RIVETO better! 🚀
 </a>
 
 ### 🏆 Special Recognition
+
 - 🎯 **First Contributor:** Madhav Majumdar ([@madhav2348](https://github.com/madhav2348)) - For being the first to join and contribute to RIVETO!
 - 💡 **Most Innovative:** Md Ashad ([@asadanwarr0](https://github.com/asadanwarr0)) - For enhancing the About, Contact, and Home sections.
 - 🎨 **UI/UX Champion:** Vedant ([@vedantbudhabaware](https://github.com/vedantbudhabaware)) - For fixing critical UI issues and optimizing the mobile experience.
 
-*Want to see your name here? Check out our [Contributing Guide](contribute.md)!*
+_Want to see your name here? Check out our [Contributing Guide](contribute.md)!_
 
 ---
 

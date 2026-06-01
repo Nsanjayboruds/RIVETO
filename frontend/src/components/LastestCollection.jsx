@@ -1,10 +1,8 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import { shopDataContext } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
-import Card from './Card';
-import Title from './Title';
+
 import mobvid from '../assets/4 Mobile.mp4';
-import { FaPlay, FaPause, FaExpand, FaCompress } from 'react-icons/fa';
 
 import gsap from 'gsap';
 
@@ -20,14 +18,16 @@ function LatestCollection() {
   // Animation on component mount
   useEffect(() => {
     if (sectionRef.current) {
-      gsap.fromTo(sectionRef.current,
+      gsap.fromTo(
+        sectionRef.current,
         { opacity: 0, y: 50 },
         { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
       );
     }
 
     if (gridRef.current) {
-      gsap.fromTo(gridRef.current.children,
+      gsap.fromTo(
+        gridRef.current.children,
         { opacity: 0, y: 30 },
         {
           opacity: 1,
@@ -35,7 +35,7 @@ function LatestCollection() {
           stagger: 0.1,
           duration: 0.8,
           ease: 'power2.out',
-          delay: 0.3
+          delay: 0.3,
         }
       );
     }
@@ -55,7 +55,7 @@ function LatestCollection() {
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
-      videoRef.current.requestFullscreen().catch(err => {
+      videoRef.current.requestFullscreen().catch((err) => {
         console.error(`Error attempting to enable fullscreen: ${err.message}`);
       });
       setIsFullscreen(true);
@@ -64,8 +64,6 @@ function LatestCollection() {
       setIsFullscreen(false);
     }
   };
-
-
 
   // Handle fullscreen change events
   useEffect(() => {
@@ -80,7 +78,10 @@ function LatestCollection() {
   }, []);
 
   return (
-    <div ref={sectionRef} className="w-full min-h-screen bg-white dark:bg-gradient-to-br dark:from-[#0a0a0f] dark:via-[#0f1117] dark:to-[#06080e] py-16 px-4 md:px-7 relative overflow-hidden transition-colors duration-300">
+    <div
+      ref={sectionRef}
+      className="w-full min-h-screen bg-white dark:bg-gradient-to-br dark:from-[#0a0a0f] dark:via-[#0f1117] dark:to-[#06080e] py-16 px-4 md:px-7 relative overflow-hidden transition-colors duration-300"
+    >
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
@@ -96,7 +97,8 @@ function LatestCollection() {
               Trending Right Now
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base font-light max-w-xl">
-              Discover our handpicked selection of the latest and most sought-after mobile devices
+              Discover our handpicked selection of the latest and most
+              sought-after mobile devices
             </p>
           </div>
           <button
@@ -104,8 +106,18 @@ function LatestCollection() {
             className="hidden md:flex items-center gap-2 text-[#2563EB] hover:text-[#1d4ed8] font-semibold transition-colors duration-300 group"
           >
             <span>Explore</span>
-            <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              className="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
             </svg>
           </button>
         </div>
@@ -113,21 +125,26 @@ function LatestCollection() {
       </div>
 
       {/* Product Grid with Featured Card Support */}
-      <div ref={gridRef} className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 z-10 relative">
+      <div
+        ref={gridRef}
+        className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 z-10 relative"
+      >
         {product && product.length > 0 ? (
-          product.slice(0, 8).map((item, index) => (
-            <Card
-              key={item._id}
-              name={item.name}
-              image={item.image1}
-              id={item._id}
-              price={item.price}
-              isFeatured={index === 0}
-              className="transform transition-all duration-500 hover:scale-105 hover:shadow-2xl"
-              onCompare={() => toggleCompare(item)}
-              isCompared={compareList?.some(p => p._id === item._id)}
-            />
-          ))
+          product
+            .slice(0, 8)
+            .map((item, index) => (
+              <Card
+                key={item._id}
+                name={item.name}
+                image={item.image1}
+                id={item._id}
+                price={item.price}
+                isFeatured={index === 0}
+                className="transform transition-all duration-500 hover:scale-105 hover:shadow-2xl"
+                onCompare={() => toggleCompare(item)}
+                isCompared={compareList?.some((p) => p._id === item._id)}
+              />
+            ))
         ) : (
           <div className="col-span-full flex flex-col items-center justify-center py-16">
             <div className="w-24 h-24 border-t-2 border-blue-500 rounded-full animate-spin mb-4"></div>
@@ -192,8 +209,13 @@ function LatestCollection() {
 
           {/* Video Content Text */}
           <div className="absolute bottom-6 left-6 text-white max-w-md">
-            <h3 className="text-2xl md:text-3xl font-bold mb-2">Experience Innovation</h3>
-            <p className="text-sm md:text-base opacity-90">Discover the future of mobile technology with our latest collection</p>
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">
+              Experience Innovation
+            </h3>
+            <p className="text-sm md:text-base opacity-90">
+              Discover the future of mobile technology with our latest
+              collection
+            </p>
           </div>
         </div>
       </div>

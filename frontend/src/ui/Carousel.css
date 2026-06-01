@@ -21,7 +21,7 @@
   justify-content: space-between;
   border: 1px solid #555;
   border-radius: calc(var(--outer-r) - var(--p-distance));
-  background-color: #0D0716;
+  background-color: #0d0716;
   overflow: hidden;
   cursor: grab;
 }
@@ -35,9 +35,9 @@
 }
 
 .carousel-item.round {
-  background-color: #0D0716;
+  background-color: #0d0716;
   position: relative;
-  bottom: .1em;
+  bottom: 0.1em;
   border: 1px solid #555;
   justify-content: center;
   align-items: center;

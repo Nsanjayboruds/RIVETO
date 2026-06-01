@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { FaCheckCircle, FaStar, FaBolt, FaGift, FaCrown } from 'react-icons/fa';
-import { MdEmail } from "react-icons/md";
+import { useState, useRef, useEffect } from 'react';
+
 import { toast } from 'react-toastify';
 
 function NewsletterBox() {
@@ -18,7 +17,7 @@ function NewsletterBox() {
 
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
-    
+
     // Set canvas size
     canvas.width = rect.width * 2;
     canvas.height = rect.height * 2;
@@ -31,7 +30,7 @@ function NewsletterBox() {
     gradient.addColorStop(0, '#94a3b8');
     gradient.addColorStop(0.5, '#cbd5e1');
     gradient.addColorStop(1, '#94a3b8');
-    
+
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, rect.width, rect.height);
 
@@ -103,7 +102,7 @@ function NewsletterBox() {
 
   const handleMouseDown = () => setIsScratching(true);
   const handleMouseUp = () => setIsScratching(false);
-  
+
   const handleMouseMove = (e) => {
     if (!isScratching) return;
     scratch(e.clientX, e.clientY);
@@ -111,7 +110,7 @@ function NewsletterBox() {
 
   const handleTouchStart = () => setIsScratching(true);
   const handleTouchEnd = () => setIsScratching(false);
-  
+
   const handleTouchMove = (e) => {
     if (!isScratching) return;
     const touch = e.touches[0];
@@ -120,7 +119,7 @@ function NewsletterBox() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!email) {
       toast.error('Please enter your email address');
       return;
@@ -130,7 +129,7 @@ function NewsletterBox() {
     setTimeout(() => {
       setIsSubscribed(true);
       toast.success('Welcome to exclusive membership!');
-      
+
       // Reset after 5 seconds
       setTimeout(() => {
         setIsSubscribed(false);
@@ -144,9 +143,8 @@ function NewsletterBox() {
       <div className="max-w-7xl mx-auto">
         {/* Split Editorial Layout */}
         <div className="grid md:grid-cols-2 gap-0 overflow-hidden rounded-2xl md:rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl">
-          
           {/* LEFT: Visual Scene */}
-          <div 
+          <div
             ref={containerRef}
             className="relative bg-gradient-to-br from-[#2563EB] via-[#1d4ed8] to-[#1e40af] p-8 md:p-12 flex items-center justify-center overflow-hidden min-h-[300px] md:min-h-[400px]"
           >
@@ -170,18 +168,26 @@ function NewsletterBox() {
             <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
             <div className="absolute bottom-10 right-10 w-40 h-40 bg-blue-400/20 rounded-full blur-3xl"></div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
-            
+
             {/* Crown Icon - Content to be revealed */}
-            <div className={`relative z-10 text-center transition-all duration-700 ${
-              isScratched ? 'scale-100 opacity-100' : 'scale-95 opacity-80'
-            }`}>
+            <div
+              className={`relative z-10 text-center transition-all duration-700 ${
+                isScratched ? 'scale-100 opacity-100' : 'scale-95 opacity-80'
+              }`}
+            >
               <div className="w-20 h-20 md:w-24 md:h-24 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 border border-white/20">
                 <FaCrown className="w-10 h-10 md:w-12 md:h-12 text-white" />
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              <h3
+                className="text-2xl md:text-3xl font-bold text-white mb-2"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
                 Members Only
               </h3>
-              <p className="text-blue-100 text-sm md:text-base" style={{ fontFamily: 'Inter, sans-serif' }}>
+              <p
+                className="text-blue-100 text-sm md:text-base"
+                style={{ fontFamily: 'Inter, sans-serif' }}
+              >
                 Join 10,000+ style insiders
               </p>
             </div>
@@ -194,17 +200,22 @@ function NewsletterBox() {
 
           {/* RIGHT: Membership Copy */}
           <div className="bg-white dark:bg-[#121826] p-8 md:p-12 flex flex-col justify-center">
-            
             {isSubscribed ? (
               // Success State
               <div className="text-center py-6">
                 <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-green-500/20">
                   <FaCheckCircle className="w-8 h-8 text-green-500" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <h3
+                  className="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
                   You're In!
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400" style={{ fontFamily: 'Inter, sans-serif' }}>
+                <p
+                  className="text-gray-600 dark:text-gray-400"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
                   First drops are heading your way
                 </p>
               </div>
@@ -212,10 +223,16 @@ function NewsletterBox() {
               <>
                 {/* Headline */}
                 <div className="mb-6">
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 leading-tight" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                  <h2
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 leading-tight"
+                    style={{ fontFamily: 'Poppins, sans-serif' }}
+                  >
                     Get Early Access
                   </h2>
-                  <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  <p
+                    className="text-gray-600 dark:text-gray-400 text-base md:text-lg"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  >
                     Members receive exclusive privileges others won't
                   </p>
                 </div>
@@ -226,24 +243,36 @@ function NewsletterBox() {
                     <div className="w-5 h-5 bg-blue-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                       <FaBolt className="w-3 h-3 text-[#2563EB]" />
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      <span className="font-semibold">First access</span> to seasonal drops
+                    <p
+                      className="text-gray-700 dark:text-gray-300 text-sm md:text-base"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
+                      <span className="font-semibold">First access</span> to
+                      seasonal drops
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 bg-blue-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                       <FaGift className="w-3 h-3 text-[#2563EB]" />
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      <span className="font-semibold">Exclusive deals</span> up to 30% off launch week
+                    <p
+                      className="text-gray-700 dark:text-gray-300 text-sm md:text-base"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
+                      <span className="font-semibold">Exclusive deals</span> up
+                      to 30% off launch week
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 bg-blue-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                       <FaStar className="w-3 h-3 text-[#2563EB]" />
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      <span className="font-semibold">VIP invites</span> to private sale events
+                    <p
+                      className="text-gray-700 dark:text-gray-300 text-sm md:text-base"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
+                      <span className="font-semibold">VIP invites</span> to
+                      private sale events
                     </p>
                   </div>
                 </div>
@@ -273,8 +302,11 @@ function NewsletterBox() {
                       Unlock Access
                     </button>
                   </div>
-                  
-                  <p className="text-gray-500 dark:text-gray-500 text-xs" style={{ fontFamily: 'Inter, sans-serif' }}>
+
+                  <p
+                    className="text-gray-500 dark:text-gray-500 text-xs"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  >
                     No spam. Unsubscribe anytime. See our privacy policy.
                   </p>
                 </form>
@@ -285,8 +317,15 @@ function NewsletterBox() {
 
         {/* Social Proof Strip */}
         <div className="mt-8 text-center">
-          <p className="text-gray-500 dark:text-gray-400 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
-            Trusted by <span className="font-semibold text-gray-700 dark:text-gray-300">10,000+</span> members worldwide
+          <p
+            className="text-gray-500 dark:text-gray-400 text-sm"
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          >
+            Trusted by{' '}
+            <span className="font-semibold text-gray-700 dark:text-gray-300">
+              10,000+
+            </span>{' '}
+            members worldwide
           </p>
         </div>
       </div>

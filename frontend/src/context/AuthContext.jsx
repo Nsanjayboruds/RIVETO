@@ -1,11 +1,13 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 
 // Create and export the context
 export const authDataContext = createContext();
 
 function authContext({ children }) {
-  // ❌ FIXED: Removed leading space before "http"
-  const serverUrl ="https://riveto-backend.onrender.com"; 
+  // Use Vite env var if available (local dev uses VITE_BACKEND_URL)
+  const rawServer =
+    import.meta.env.VITE_BACKEND_URL || 'https://riveto-backend.onrender.com';
+  const serverUrl = rawServer.replace(/\/+$/, '');
 
   const value = {
     serverUrl,
@@ -20,4 +22,3 @@ function authContext({ children }) {
 }
 
 export default authContext;
-

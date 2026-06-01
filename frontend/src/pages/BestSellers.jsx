@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { shopDataContext } from '../context/ShopContext';
-import Card from '../components/Card';
-import Title from '../components/Title';
-import { motion } from 'framer-motion';
 
 const BestSellers = () => {
   const { product, compareList, toggleCompare } = useContext(shopDataContext);
@@ -12,7 +9,7 @@ const BestSellers = () => {
   useEffect(() => {
     if (product && product.length > 0) {
       // Filter products that are marked as bestseller
-      const filteredProducts = product.filter(item => item.bestseller);
+      const filteredProducts = product.filter((item) => item.bestseller);
       setBestsellers(filteredProducts);
       setIsLoading(false);
     } else {
@@ -49,38 +46,38 @@ const BestSellers = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 border-t pt-16">
-        <div className="text-center text-2xl mb-8">
-            <Title text1={'BEST'} text2={'SELLERS'}/>
-            <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-                Discover our most popular products, loved by customers worldwide.
-            </p>
-        </div>
+      <div className="text-center text-2xl mb-8">
+        <Title text1={'BEST'} text2={'SELLERS'} />
+        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
+          Discover our most popular products, loved by customers worldwide.
+        </p>
+      </div>
 
-        {bestsellers.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-xl text-gray-500">No bestsellers found.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-            {bestsellers.map((item, index) => (
-                <motion.div
-                  key={item._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                >
-                  <Card
-                    id={item._id}
-                    image={item.image1}
-                    name={item.name}
-                    price={item.price}
-                    onCompare={() => toggleCompare(item)}
-                    isCompared={compareList?.some(p => p._id === item._id)}
-                  />
-                </motion.div>
-            ))}
-          </div>
-        )}
+      {bestsellers.length === 0 ? (
+        <div className="text-center py-20">
+          <p className="text-xl text-gray-500">No bestsellers found.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+          {bestsellers.map((item, index) => (
+            <motion.div
+              key={item._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+            >
+              <Card
+                id={item._id}
+                image={item.image1}
+                name={item.name}
+                price={item.price}
+                onCompare={() => toggleCompare(item)}
+                isCompared={compareList?.some((p) => p._id === item._id)}
+              />
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

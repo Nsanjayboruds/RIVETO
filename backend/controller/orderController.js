@@ -1,6 +1,5 @@
-
 import Order from "../model/orderModel.js"; // ✅ Keep this
-import User from "../model/userModel.js";   // ✅ Keep this
+import User from "../model/userModel.js"; // ✅ Keep this
 //for user//
 export const placeOrder = async (req, res) => {
   try {
@@ -12,10 +11,10 @@ export const placeOrder = async (req, res) => {
       amount,
       userId,
       address,
-      paymentMethod: 'COD',
+      paymentMethod: "COD",
       payment: false,
-      status: 'Placed',
-      date: Date.now()
+      status: "Placed",
+      date: Date.now(),
     };
 
     const newOrder = new Order(orderData);
@@ -41,21 +40,17 @@ export const userOrders = async (req, res) => {
   }
 };
 
-
 //for admin//
- 
 
-export const allOrders =async (req,res)=>{
+export const allOrders = async (req, res) => {
   try {
-    const orders =await Order.find({})
-    res.status(200).json(orders)
+    const orders = await Order.find({});
+    res.status(200).json(orders);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({message:"adminAllOrders error"})
-    
+    return res.status(500).json({ message: "adminAllOrders error" });
   }
-}
-
+};
 
 export const updateStatus = async (req, res) => {
   try {

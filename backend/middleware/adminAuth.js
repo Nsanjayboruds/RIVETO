@@ -5,7 +5,9 @@ const adminAuth = async (req, res, next) => {
     const token = req.cookies.adminToken; // ✅ use correct cookie key
 
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized: No token provided" });
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: No token provided" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -18,9 +20,10 @@ const adminAuth = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("admin auth error:", error.message);
-    return res.status(500).json({ message: "admin auth error: " + error.message });
+    return res
+      .status(500)
+      .json({ message: "admin auth error: " + error.message });
   }
 };
 
 export default adminAuth;
-
