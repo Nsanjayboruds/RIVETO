@@ -19,7 +19,7 @@ function ShopContext({ children }) {
     percentage: 0,
     maxAmount: 50,
   });
-  const { serverUrl } = useContext(authDataContext);
+
   const { userData } = useContext(userDataContext); //
   const [wishlist, setWishlist] = useState([]);
 
@@ -221,7 +221,7 @@ const removeFromWishlist = async (productId) => {
 
   const applyCoupon = async (code) => {
     try {
-      const response = await axios.post(`${serverUrl}/api/coupon/validate`, {
+      const response = await apiConfig.post('/coupon/validate', {
         code,
       });
       if (response.data.success) {
