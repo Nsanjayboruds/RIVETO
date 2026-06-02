@@ -116,15 +116,15 @@ const _FilterContent = ({
             aria-valuemin={0}
             aria-valuemax={2000}
             aria-valuenow={priceRange[1]}
-            aria-label={`Maximum price ${priceRange[1]} dollars`}
+            aria-label={`Maximum price ₹${priceRange[1]}`}
           />
           <div className="flex justify-between mt-3">
             <span className="text-slate-700 dark:text-gray-400 text-sm font-medium">
-              ${priceRange[0]}
+              ₹{priceRange[0]}
             </span>
 
             <span className="text-slate-900 dark:text-white text-sm font-semibold">
-              ${priceRange[1]}
+              ₹{priceRange[1]}
             </span>
           </div>
         </div>
@@ -236,7 +236,6 @@ function Collections() {
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [activeFilters, setActiveFilters] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFiltering, setIsFiltering] = useState(false);
 
   const contentRef = useRef(null);
   const filterRef = useRef(null);
@@ -280,66 +279,51 @@ function Collections() {
     }
   };
 
-  const applyFilter = () => {
-    setIsFiltering(true);
+  const applyFilter = useCallback(() => {
+    let productCopy = product.slice();
 
-    // Simulate filtering delay for better UX
-    setTimeout(() => {
-      let productCopy = product.slice();
-
-      // Search filter
-      if (showSearch && search) {
-        productCopy = productCopy.filter((item) =>
-          item.name.toLowerCase().includes(search.toLowerCase())
-        );
-      }
-
-      // Category filter
-      if (category.length > 0) {
-        productCopy = productCopy.filter((item) =>
-          category.includes(item.category)
-        );
-      }
-
-      // Subcategory filter
-      if (subCategory.length > 0) {
-        productCopy = productCopy.filter((item) =>
-          subCategory.includes(item.subCategory)
-        );
-      }
-
-      // Price filter
-      productCopy = productCopy.filter(
-        (item) => item.price >= priceRange[0] && item.price <= priceRange[1]
+    if (showSearch && search) {
+      productCopy = productCopy.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase())
       );
+    }
 
-      // Rating filter (simulated)
-      if (selectedRatings.length > 0) {
-        productCopy = productCopy.filter((_item) => {
-          const itemRating = Math.floor(Math.random() * 1.5 + 3.5); // Simulated rating
-          return selectedRatings.some((rating) => itemRating >= rating);
-        });
-      }
+    if (category.length > 0) {
+      productCopy = productCopy.filter((item) =>
+        category.includes(item.category)
+      );
+    }
 
-      setFilterProduct(productCopy);
+    if (subCategory.length > 0) {
+      productCopy = productCopy.filter((item) =>
+        subCategory.includes(item.subCategory)
+      );
+    }
 
-      // Count active filters
-      const filterCount =
-        category.length +
-        subCategory.length +
-        selectedRatings.length +
-        (priceRange[0] > 0 || priceRange[1] < 2000 ? 1 : 0);
-      setActiveFilters(filterCount);
+    productCopy = productCopy.filter(
+      (item) => item.price >= priceRange[0] && item.price <= priceRange[1]
+    );
 
-      setIsFiltering(false);
-    }, 500);
-  };
+    if (selectedRatings.length > 0) {
+      productCopy = productCopy.filter((item) => {
+        const itemRating = item.rating || 0;
+        return selectedRatings.some((rating) => itemRating >= rating);
+      });
+    }
 
-  const sortProduct = () => {
-    setIsFiltering(true);
+    setFilterProduct(productCopy);
 
-    setTimeout(() => {
-      let sorted = [...filterProduct];
+    const filterCount =
+      category.length +
+      subCategory.length +
+      selectedRatings.length +
+      (priceRange[0] > 0 || priceRange[1] < 2000 ? 1 : 0);
+    setActiveFilters(filterCount);
+  }, [product, showSearch, search, category, subCategory, priceRange, selectedRatings]);
+
+  const sortProduct = useCallback(() => {
+    setFilterProduct((prev) => {
+      let sorted = [...prev];
       switch (sortType) {
         case 'low-high':
           sorted.sort((a, b) => a.price - b.price);
@@ -348,28 +332,21 @@ function Collections() {
           sorted.sort((a, b) => b.price - a.price);
           break;
         case 'rating':
-          sorted.sort((a, b) => (b.rating || 4.5) - (a.rating || 4.5));
+          sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
           break;
         default:
-          // Relevant sorting (default)
           break;
       }
-      setFilterProduct(sorted);
-      setIsFiltering(false);
-    }, 300);
-  };
+      return sorted;
+    });
+  }, [sortType]);
 
   const clearAllFilters = () => {
-    setIsFiltering(true);
-
-    setTimeout(() => {
-      setCategory([]);
-      setSubCategory([]);
-      setSelectedRatings([]);
-      setPriceRange([0, 2000]);
-      setSortType('relevant');
-      setIsFiltering(false);
-    }, 500);
+    setCategory([]);
+    setSubCategory([]);
+    setSelectedRatings([]);
+    setPriceRange([0, 2000]);
+    setSortType('relevant');
   };
 
   // Inject style element on mount
@@ -397,15 +374,15 @@ function Collections() {
 
   useEffect(() => {
     sortProduct();
-  }, [sortType]);
+  }, [sortType, sortProduct]);
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory, search, showSearch, priceRange, selectedRatings]);
+  }, [category, subCategory, search, showSearch, priceRange, selectedRatings, applyFilter]);
 
   useEffect(() => {
     // Animations
-    if (!isLoading && !isFiltering) {
+    if (!isLoading) {
       gsap.fromTo(
         '.collection-item',
         { opacity: 0, y: 30 },
@@ -434,7 +411,7 @@ function Collections() {
         }
       );
     }
-  }, [filterProduct, isLoading, isFiltering]);
+  }, [filterProduct, isLoading]);
 
   return (
     <>
@@ -528,13 +505,6 @@ function Collections() {
                     <CardSkeleton key={index} />
                   ))}
                 </div>
-              </div>
-            ) : isFiltering ? (
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p className="text-cyan-700 dark:text-cyan-200">
-                  Applying filters...
-                </p>
               </div>
             ) : filterProduct.length > 0 ? (
               <>

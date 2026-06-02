@@ -1,6 +1,5 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
-import { authDataContext } from '../context/AuthContext';
+import { useEffect, useMemo, useState } from 'react';
+import apiConfig from '../utils/apiConfig';
 
 const STACK_OPTIONS = [
   'React',
@@ -18,7 +17,6 @@ const LEVELS = [
 ];
 
 export default function IssueRecommendations() {
-  const { serverUrl } = useContext(authDataContext);
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -54,8 +52,8 @@ export default function IssueRecommendations() {
       setError('');
 
       try {
-        const res = await axios.get(
-          `${serverUrl}/api/recommendations?${queryParams.toString()}`,
+        const res = await apiConfig.get(
+          `/recommendations?${queryParams.toString()}`,
           {
             signal: controller.signal,
           }
@@ -76,7 +74,7 @@ export default function IssueRecommendations() {
     fetchIssues();
 
     return () => controller.abort();
-  }, [serverUrl, queryParams]);
+  }, [queryParams]);
 
   const difficultyColor = (label) => {
     if (label === 'Easy')

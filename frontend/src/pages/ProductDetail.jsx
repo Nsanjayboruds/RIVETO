@@ -2,14 +2,12 @@ import { useCallback, useContext, useEffect, useMemo, useState, useRef } from 'r
 import { useParams } from 'react-router-dom';
 import { shopDataContext } from '../context/ShopContext';
 import { toast } from 'react-toastify';
-import { authDataContext } from '../context/AuthContext';
 import { userDataContext } from '../context/UserContext';
-import axios from 'axios';
+import apiConfig from '../utils/apiConfig';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 function ProductDetail() {
-  const { serverUrl } = useContext(authDataContext);
   const { userData } = useContext(userDataContext);
   const { productId } = useParams();
 
@@ -92,12 +90,12 @@ function ProductDetail() {
 
   const fetchReviews = useCallback(async () => {
     try {
-      const response = await axios.get(`${serverUrl}/api/review/${productId}`);
+      const response = await apiConfig.get(`/review/${productId}`);
       setReviews(response.data);
     } catch {
-      toast.error('Failed to load reviews');
+      // API errors are shown by the global interceptor.
     }
-  }, [serverUrl, productId]);
+  }, [productId]);
 
   useEffect(() => {
     const found = (product || []).find((item) => item._id === productId);
@@ -156,14 +154,13 @@ function ProductDetail() {
     }
 
     try {
-      const response = await axios.post(
-        `${serverUrl}/api/review/add`,
+      const response = await apiConfig.post(
+        '/review/add',
         {
           productId,
           rating: reviewRating,
           comment: reviewComment.trim(),
-        },
-        { withCredentials: true }
+        }
       );
 
       toast.success(response.data.message);
@@ -171,9 +168,8 @@ function ProductDetail() {
       setReviewRating(5);
       setIsEditingReview(false);
       fetchReviews();
-    } catch (error) {
-      const msg = error.response?.data?.message || 'Failed to submit review';
-      toast.error(msg);
+    } catch {
+      // API errors are shown by the global interceptor.
     }
   };
 

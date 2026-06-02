@@ -295,7 +295,7 @@ function Card({
         </h3>
 
         {/* Trust Strip - Ratings + Reviews + Dispatch */}
-        <div className="flex items-center gap-3 mb-3 text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex items-center flex-wrap gap-2 mb-3 text-sm text-gray-600 dark:text-gray-400">
           <div className="flex items-center gap-1">
             <FaStar className="text-yellow-400 text-xs" />
 
@@ -312,9 +312,9 @@ function Card({
 
           <span className="text-gray-400">•</span>
 
-          <span className="text-xs font-medium text-green-600 dark:text-green-400">
-            {dispatchHours}h dispatch
-          </span>
+         <span className="text-xs font-medium text-green-600 dark:text-green-400 whitespace-nowrap">
+  {dispatchHours}h dispatch
+</span>
         </div>
 
         {/* Price Block with Value-Attached Savings */}

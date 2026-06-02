@@ -1,8 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { authDataContext } from '../context/AuthContext';
-import axios from 'axios';
+import apiConfig from '../utils/apiConfig';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../utils/Firebase';
 import { userDataContext } from '../context/UserContext';
@@ -16,7 +15,6 @@ function Registration() {
   const [otp, setOtp] = useState('');
   const [otpLoading, setOtpLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const { serverUrl } = useContext(authDataContext);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -102,20 +100,12 @@ function Registration() {
     setLoading(true);
 
     try {
-      await axios.post(
-        `${serverUrl}/api/auth/send-otp`,
-        formData,
-        { withCredentials: true }
-      );
+      await apiConfig.post('/auth/send-otp', formData);
 
       toast.success('OTP sent successfully 🎉');
       setStep('2');
-    } catch (error) {
-      console.error('OTP ERROR:', error);
-      toast.error(
-        error.response?.data?.message || 'Failed to send OTP'
-      );
-
+    } catch {
+      // API errors are shown by the global interceptor.
     } finally {
       setLoading(false);
     }
@@ -125,18 +115,17 @@ function Registration() {
     setOtpLoading(true);
 
     try {
-      await axios.post(`${serverUrl}/api/auth/verify-otp`, {
+      await apiConfig.post('/auth/verify-otp', {
         email: formData.email,
         otp,
-      }, { withCredentials: true });
+      });
 
       toast.success('Account verified successfully 🎉');
       getCurrentUser();
       navigate('/');
 
-    } catch (error) {
-      console.error('OTP Verification Error:', error);
-      toast.error(error.response?.data?.message || 'OTP verification failed');
+    } catch {
+      // API errors are shown by the global interceptor.
     } finally {
       setOtpLoading(false);
     }
@@ -148,14 +137,13 @@ function Registration() {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
 
-      await axios.post(
-        serverUrl + '/api/auth/googlelogin',
+      await apiConfig.post(
+        '/auth/googlelogin',
         {
           name: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
-        },
-        { withCredentials: true }
+        }
       );
 
       getCurrentUser();
@@ -163,7 +151,9 @@ function Registration() {
       navigate('/');
     } catch (error) {
       console.error('Google Signup Error:', error);
-      toast.error('Google signup failed. Please try again.');
+      if (!error.response) {
+        toast.error('Google signup failed. Please try again.');
+      }
     } finally {
       setGoogleLoading(false);
     }

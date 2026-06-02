@@ -1,17 +1,16 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import { authDataContext } from './AuthContext';
+import { createContext, useEffect, useState } from 'react';
+import apiConfig from '../utils/apiConfig';
 
 export const userDataContext = createContext();
 
 function UserContext({ children }) {
   const [userData, setUserData] = useState(null);
-  const { serverUrl } = useContext(authDataContext);
 
   const getCurrentUser = async () => {
     try {
-      const result = await axios.get(`${serverUrl}/api/user/getCurrentUser`, {
-        withCredentials: true,
+      const result = await apiConfig.get('/user/getCurrentUser', {
+        skipAuthRedirect: true,
+        skipGlobalErrorToast: true,
       });
       setUserData(result.data);
       console.log('✅ Current user:', result.data);}

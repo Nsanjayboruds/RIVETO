@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState, useRef } from 'react';
 import { shopDataContext } from '../context/ShopContext';
-import { authDataContext } from '../context/AuthContext';
-import axios from 'axios';
+import apiConfig from '../utils/apiConfig';
 import { FaBox, FaShoppingBag, FaShippingFast, FaCheckCircle, FaClock, FaMapMarkerAlt, FaUndo } from 'react-icons/fa';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,17 +12,12 @@ function Order() {
   const [isLoading, setIsLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState('all');
   const { currency } = useContext(shopDataContext);
-  const { serverUrl } = useContext(authDataContext);
   const sectionRef = useRef(null);
 
   const loadOrderData = async () => {
     try {
       setIsLoading(true);
-      const result = await axios.post(
-        serverUrl + '/api/order/userorder',
-        {},
-        { withCredentials: true }
-      );
+      const result = await apiConfig.post('/order/userorder', {});
 
       if (result.data) {
         let allOrdersItem = [];

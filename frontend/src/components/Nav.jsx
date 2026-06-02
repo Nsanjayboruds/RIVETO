@@ -20,10 +20,9 @@ import { RiContactsLine } from 'react-icons/ri';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import axios from 'axios';
+import apiConfig from '../utils/apiConfig';
 
 import { userDataContext } from '../context/UserContext';
-import { authDataContext } from '../context/AuthContext';
 import { shopDataContext } from '../context/ShopContext';
 import { ThemeContext } from '../context/ThemeContext';
 
@@ -31,8 +30,6 @@ import gsap from 'gsap';
 
 function Nav() {
   const { getCurrentUser, userData } = useContext(userDataContext);
-
-  const { serverUrl } = useContext(authDataContext);
 
   const {
     showSearch,
@@ -152,9 +149,7 @@ function Nav() {
 
   const handleLogout = async () => {
     try {
-      await axios.get(`${serverUrl}/api/auth/logout`, {
-        withCredentials: true,
-      });
+      await apiConfig.post('/auth/logout');
 
       getCurrentUser();
       navigate('/login');
