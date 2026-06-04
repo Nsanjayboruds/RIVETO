@@ -4,6 +4,9 @@ import { shopDataContext } from '../context/ShopContext';
 
 
 import { toast } from 'react-toastify';
+import LoadingState from '../components/states/LoadingState';
+import EmptyState from '../components/states/EmptyState';
+import ErrorState from '../components/states/ErrorState';
 
 function Cart() {
   const { product, currency, cartItem, UpdateQuantity } =
@@ -54,7 +57,7 @@ function Cart() {
     return (price * quantity).toFixed(2);
   };
 
-  if (isLoading) {
+  if (cartError) {
     return (
       <div className="min-h-screen bg-[#0b1220] flex items-center justify-center pt-20">
         <div

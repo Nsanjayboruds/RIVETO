@@ -497,7 +497,9 @@ function Collections() {
             </div>
 
             {/* Product Grid */}
-            {isLoading ? (
+            {productError ? (
+              <ErrorState message={productError} onRetry={() => getProducts()} />
+            ) : (isLoading || (product.length === 0 && loadingProducts)) ? (
               <div className="space-y-8">
                 <Loader />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">

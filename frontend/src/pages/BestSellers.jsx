@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { shopDataContext } from '../context/ShopContext';
 
 const BestSellers = () => {
-  const { product, compareList, toggleCompare } = useContext(shopDataContext);
+  const { product, compareList, toggleCompare, productError, loadingProducts, getProducts } = useContext(shopDataContext);
   const [bestsellers, setBestsellers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -12,34 +12,31 @@ const BestSellers = () => {
       const filteredProducts = product.filter((item) => item.bestseller);
       setBestsellers(filteredProducts);
       setIsLoading(false);
-    } else {
-      // If product array is empty, wait for products to load
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
-      return () => clearTimeout(timer);
+    } else if (!loadingProducts) {
+      setIsLoading(false);
     }
-  }, [product]);
+  }, [product, loadingProducts]);
+
+  // Error state
+  if (productError) {
+    return (
+      <div className="container mx-auto px-4 py-16 pt-24">
+        <ErrorState message={productError} onRetry={() => getProducts()} />
+      </div>
+    );
+  }
 
   // Loading skeleton
-  if (isLoading) {
+  if (isLoading || (product.length === 0 && loadingProducts)) {
     return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center">
+      <div className="container mx-auto px-4 py-16 pt-24 animate-fadeIn">
+        <div className="text-center mb-8">
           <Title text1="BEST" text2="SELLERS" />
-          <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600 mb-8">
+          <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
             Check out our most popular products.
           </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-          {[...Array(8)].map((_, i) => (
-            <div key={i} className="animate-pulse">
-              <div className="bg-gray-200 h-64 rounded-lg mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-            </div>
-          ))}
-        </div>
+        <LoadingState type="grid" message="Loading Bestsellers..." />
       </div>
     );
   }

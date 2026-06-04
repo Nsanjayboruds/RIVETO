@@ -12,6 +12,16 @@ function ShopContext({ children }) {
   const [search, setSearch] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [cartItem, setCartItem] = useState({});
+  const [loadingCart, setLoadingCart] = useState(false);
+  const [cartError, setCartError] = useState(null);
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      const saved = localStorage.getItem('wishlist');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
   const [compareList, setCompareList] = useState([]);
   const [comparePanelOpen, setComparePanelOpen] = useState(false);
  
@@ -70,8 +80,8 @@ const removeFromWishlist = async (productId) => {
 
   // Fetch products from server
   const getProducts = async (page = 1, limit = 20) => {
-    if (loadingProducts) return;
     setLoadingProducts(true);
+    setProductError(null);
     try {
       const result = await apiConfig.get(
         `/product/list?page=${page}&limit=${limit}`
@@ -121,13 +131,35 @@ const removeFromWishlist = async (productId) => {
 
   const getUserCart = async () => {
     if (!userData) return; // Don't call API if not logged in
-
+    setLoadingCart(true);
+    setCartError(null);
     try {
       const result = await apiConfig.post('/cart/get', {});
       setCartItem(result.data);
     } catch (error) {
       console.log('❌ Error fetching cart:', error);
     }
+  };
+
+  const addToWishlist = (id) => {
+    setWishlist(prev => {
+      let updated;
+      if (prev.includes(id)) {
+        updated = prev.filter(itemId => itemId !== id);
+      } else {
+        updated = [...prev, id];
+      }
+      localStorage.setItem('wishlist', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const removeFromWishlist = (id) => {
+    setWishlist(prev => {
+      const updated = prev.filter(itemId => itemId !== id);
+      localStorage.setItem('wishlist', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const UpdateQuantity = async (itemId, size, quantity) => {
@@ -231,6 +263,7 @@ const removeFromWishlist = async (productId) => {
     product,
     pagination,
     loadingProducts,
+    productError,
     currency,
     delivery_fee,
     getProducts,

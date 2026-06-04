@@ -9,6 +9,10 @@ import {
 import { useFocusTrap, useEscapeKey } from '../hooks/useDialogA11y';
 
 
+import React, { useContext, useState, useRef, useEffect } from 'react';
+import { IoSearchCircleOutline, IoSearchCircleSharp } from 'react-icons/io5';
+import { FaUserCircle, FaHeart } from 'react-icons/fa';
+import { MdOutlineShoppingCart, MdLogout } from 'react-icons/md';
 import { IoMdHome } from 'react-icons/io';
 
 import {

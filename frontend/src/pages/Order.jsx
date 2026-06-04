@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 function Order() {
   const [orderData, setOrderData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const { currency } = useContext(shopDataContext);
   const sectionRef = useRef(null);
@@ -35,8 +36,9 @@ function Order() {
         });
         setOrderData(allOrdersItem.reverse());
       }
-    } catch (error) {
-      console.log('Error loading orders:', error);
+    } catch (err) {
+      console.log('Error loading orders:', err);
+      setError(err.message || 'Failed to load your orders. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -150,6 +152,14 @@ function Order() {
       minute: '2-digit',
     });
   };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] pt-24 pb-20 px-4 flex items-center justify-center">
+        <ErrorState message={error} onRetry={() => loadOrderData()} />
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
