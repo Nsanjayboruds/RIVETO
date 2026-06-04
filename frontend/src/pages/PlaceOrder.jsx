@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
 import { shopDataContext } from '../context/ShopContext';
-import { authDataContext } from "../context/UserContext"
 import apiConfig from '../utils/apiConfig';
 import { useNavigate } from 'react-router-dom';
 import { FaMoneyBillWave } from 'react-icons/fa';
