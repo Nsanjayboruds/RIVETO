@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiConfig from '../utils/apiConfig';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth, provider } from '../../utils/Firebase';
 import { userDataContext } from '../context/UserContext';
 import { shopDataContext } from '../context/ShopContext';
@@ -175,16 +175,9 @@ function Login() {
   const googleLogin = async () => {
     setGoogleLoading(true);
     try {
-      const response = await signInWithPopup(auth, provider);
-      const user = response.user;
-      await apiConfig.post(
-        '/auth/googlelogin',
-        {
-          name: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-        }
-      );
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      await apiConfig.post('/auth/googlelogin', { idToken: credential.idToken });
 
       toast.success('🎉 Google login successful!');
       setTimeout(() => {
@@ -218,7 +211,6 @@ function Login() {
         );
       }
 
-      console.error('Google login error:', err);
     } finally {
       setGoogleLoading(false);
     }

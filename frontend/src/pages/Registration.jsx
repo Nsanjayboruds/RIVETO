@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import apiConfig from '../utils/apiConfig';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth, provider } from '../../utils/Firebase';
 import { userDataContext } from '../context/UserContext';
 import gsap from 'gsap';
@@ -134,23 +134,14 @@ function Registration() {
   const googleSignup = async () => {
     setGoogleLoading(true);
     try {
-      const response = await signInWithPopup(auth, provider);
-      const user = response.user;
-
-      await apiConfig.post(
-        '/auth/googlelogin',
-        {
-          name: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-        }
-      );
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      await apiConfig.post('/auth/googlelogin', { idToken: credential.idToken });
 
       getCurrentUser();
       toast.success('Welcome to Riveto! 🎉');
       navigate('/');
     } catch (error) {
-      console.error('Google Signup Error:', error);
       if (!error.response) {
         toast.error('Google signup failed. Please try again.');
       }

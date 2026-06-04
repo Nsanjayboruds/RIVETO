@@ -1,3 +1,4 @@
+import { OAuth2Client } from "google-auth-library";
 import User from "../model/userModel.js";
 import validator from "validator";
 import bcrypt from "bcryptjs";
@@ -6,6 +7,8 @@ import { sendMail } from "../config/sendEmail.js";
 import generateOTP from "../utils/otp.js";
 import TempUser from "../model/tempUserModel.js";
 import { otpTemplate } from "../utils/otpTemplet.js";
+
+const googleClient = new OAuth2Client();
 
 export const sendOTP = async (req, res) => {
   try {
@@ -114,6 +117,10 @@ export const login = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "User not found" });
 
+    if (!user.password) {
+      return res.status(400).json({ message: "This account uses Google login" });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
@@ -134,11 +141,30 @@ export const login = async (req, res) => {
 
 export const googleLogin = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { idToken } = req.body;
 
-    let user = await User.findOne({ email });
+    if (!idToken) {
+      return res.status(400).json({ message: "Google ID token is required" });
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name } = payload;
+
+    let user = await User.findOne({ googleId });
+
     if (!user) {
-      user = await User.create({ name, email });
+      user = await User.findOne({ email });
+      if (user) {
+        user.googleId = googleId;
+        await user.save();
+      } else {
+        user = await User.create({ name, email, googleId });
+      }
     }
 
     const token = genToken(user._id);
@@ -150,9 +176,11 @@ export const googleLogin = async (req, res) => {
     });
 
     return res.status(200).json(user);
-  } catch (_error) {
-    console.log("google login error:", _error);
-    return res.status(500).json({ message: `google login error: ${_error}` });
+  } catch (error) {
+    if (error.message?.includes("Token used too late") || error.message?.includes("Invalid token")) {
+      return res.status(401).json({ message: "Invalid or expired Google token" });
+    }
+    return res.status(500).json({ message: "Google login failed" });
   }
 };
 
