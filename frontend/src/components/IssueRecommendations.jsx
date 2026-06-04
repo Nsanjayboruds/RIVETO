@@ -1,5 +1,12 @@
+
 import { useEffect, useMemo, useState } from 'react';
 import apiConfig from '../utils/apiConfig';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
+import { authDataContext } from '../context/AuthContext';
+import LoadingState from './states/LoadingState';
+import EmptyState from './states/EmptyState';
+import ErrorState from './states/ErrorState';
 
 const STACK_OPTIONS = [
   'React',
@@ -24,6 +31,7 @@ export default function IssueRecommendations() {
   const [level, setLevel] = useState('all');
   const [stack, setStack] = useState([]);
   const [history, setHistory] = useState('');
+  const [retryTrigger, setRetryTrigger] = useState(0);
 
   const toggleStack = (tech) => {
     setStack((prev) =>
@@ -169,80 +177,87 @@ export default function IssueRecommendations() {
         </div>
 
         {loading && (
-          <p className="text-sm text-slate-500">Loading recommendations...</p>
+          <LoadingState type="spinner" message="Loading recommendations..." />
         )}
-        {error && <p className="text-sm font-medium text-rose-600">{error}</p>}
+        {error && (
+          <ErrorState message={error} onRetry={() => setRetryTrigger((prev) => prev + 1)} />
+        )}
         {!loading && issues.length === 0 && !error && (
-          <p className="text-sm text-slate-500">
-            No issues found. Try different filters.
-          </p>
+          <EmptyState
+            icon="search"
+            title="No recommendations found"
+            description="Try adjusting your filters or search query to get recommended issues."
+            actionText={null}
+          />
         )}
 
-        <div className="mt-6 grid gap-4">
-          {issues.map((issue) => (
-            <article
-              key={issue.id}
-              className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl"
-            >
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
-                    Issue #{issue.id}
-                  </p>
-                  <a
-                    href={issue.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-2 block text-lg font-semibold text-slate-900 hover:text-cyan-700"
-                  >
-                    {issue.title}
-                  </a>
-                </div>
-                <span
-                  className={`rounded-full border px-3 py-1 text-xs font-semibold ${difficultyColor(
-                    issue.difficultyLabel
-                  )}`}
-                >
-                  {issue.difficultyLabel}
-                </span>
-              </div>
-
-              <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
-                {issue.body}
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {issue.isGoodFirst && (
-                  <span className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-800">
-                    Good first issue
-                  </span>
-                )}
-                {issue.historyMatch > 0 && (
-                  <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
-                    Matches your recent work
-                  </span>
-                )}
-                {issue.stackMatch > 0 && (
-                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-                    {issue.stackMatch} stack match
-                    {issue.stackMatch > 1 ? 'es' : ''}
-                  </span>
-                )}
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {issue.labels.map((label) => (
+        {!loading && !error && issues.length > 0 && (
+          <div className="mt-6 grid gap-4">
+            {issues.map((issue) => (
+              <article
+                key={issue.id}
+                className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+                      Issue #{issue.id}
+                    </p>
+                    <a
+                      href={issue.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 block text-lg font-semibold text-slate-900 hover:text-cyan-700"
+                    >
+                      {issue.title}
+                    </a>
+                  </div>
                   <span
-                    key={label}
-                    className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"
+                    className={`rounded-full border px-3 py-1 text-xs font-semibold ${difficultyColor(
+                      issue.difficultyLabel
+                    )}`}
                   >
-                    {label}
+                    {issue.difficultyLabel}
                   </span>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
+                </div>
+
+                <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
+                  {issue.body}
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {issue.isGoodFirst && (
+                    <span className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-800">
+                      Good first issue
+                    </span>
+                  )}
+                  {issue.historyMatch > 0 && (
+                    <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
+                      Matches your recent work
+                    </span>
+                  )}
+                  {issue.stackMatch > 0 && (
+                    <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                      {issue.stackMatch} stack match
+                      {issue.stackMatch > 1 ? 'es' : ''}
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {issue.labels.map((label) => (
+                    <span
+                      key={label}
+                      className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

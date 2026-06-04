@@ -147,6 +147,16 @@ function App() {
           }
         />
         <Route
+          path="/wishlist"
+          element={
+            userData ? (
+              <Wishlist />
+            ) : (
+              <Navigate to="/login" state={{ from: location.pathname }} />
+            )
+          }
+        />
+        <Route
           path="/placeorder"
           element={
             userData ? (
