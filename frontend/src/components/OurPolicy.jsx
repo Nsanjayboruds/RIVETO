@@ -1,5 +1,9 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RiExchangeFundsLine } from 'react-icons/ri';
+import { TbRosetteDiscountCheckFilled } from 'react-icons/tb';
+import { BiSupport } from 'react-icons/bi';
+import { FaShippingFast } from 'react-icons/fa';
 
 function OurPolicy() {
   const sectionRef = useRef(null);

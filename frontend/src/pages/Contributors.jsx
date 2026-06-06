@@ -5,6 +5,11 @@ import useGitHubContributors from '../hooks/useGitHubContributors';
 
 import { BsStar, BsGit } from 'react-icons/bs';
 import { HiOutlineUserGroup } from 'react-icons/hi';
+import { FaAward, FaCrown, FaMedal, FaTrophy } from 'react-icons/fa';
+import { BsArrowUpRight, BsSearch } from 'react-icons/bs';
+import { motion, AnimatePresence } from 'framer-motion';
+import ContributorCard from '../components/ContributorCard';
+import Footer from '../components/Footer';
 
 // Special mentions (hardcoded specific contributors)
 const specialMentions = {

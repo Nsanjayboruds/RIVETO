@@ -7,6 +7,7 @@ import {
   FaCreditCard,
   FaEnvelope,
 } from 'react-icons/fa';
+import Footer from '../components/Footer';
 
 const faqPage = () => {
   const faqs = [

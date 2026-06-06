@@ -5,6 +5,31 @@
 [![Stars](https://img.shields.io/github/stars/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/stargazers)
 ---
 
+## 📑 Table of Contents
+
+- [🌍 Overview](#-overview)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🏗️ Architecture](#️-architecture)
+- [⚙️ Features](#️-features)
+- [🚦 Quick Start](#-quick-start)
+  - [Clone the repository](#1-clone-the-repository)
+  - [Set up the environment](#2-set-up-the-environment)
+  - [Install dependencies](#3-install-dependencies)
+  - [Start development servers](#4-start-development-servers)
+- [🖼️ Image Upload with Cloudinary](#️-image-upload-with-cloudinary)
+- [🧪 Testing](#-testing)
+- [📂 Project Structure](#-project-structure)
+- [🛡️ Environment Configuration](#️-environment-configuration)
+- [🎨 UI/UX](#-uiux)
+- [📈 Tracking](#-tracking)
+- [🤝 Feedback and Community](#-feedback-and-community)
+- [📝 Contribution Guidelines](#-contribution-guidelines)
+- [🌟 Our Amazing Contributors](#-our-amazing-contributors)
+- [🚀 Deployment](#-deployment)
+- [📝 License](#-license)
+- [🙋‍♂️ Contact](#-contact)
+
+---
 
 ## 🚀 Overview
 

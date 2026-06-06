@@ -1,5 +1,7 @@
 
 
+import { motion } from 'framer-motion';
+
 const ContributorCard = ({ contributor }) => {
   return (
     <motion.div

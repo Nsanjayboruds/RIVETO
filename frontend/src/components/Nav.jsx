@@ -27,6 +27,11 @@ import { shopDataContext } from '../context/ShopContext';
 import { ThemeContext } from '../context/ThemeContext';
 
 import gsap from 'gsap';
+import { IoSearchCircleOutline } from 'react-icons/io5';
+import { BsBoxSeam, BsMoon, BsSearch, BsSun } from 'react-icons/bs';
+import { FaHeart, FaUserCircle } from 'react-icons/fa';
+import { MdLogout, MdOutlineShoppingCart } from 'react-icons/md';
+import { FiInfo, FiLogIn } from 'react-icons/fi';
 
 function Nav() {
   const { getCurrentUser, userData } = useContext(userDataContext);

@@ -4,6 +4,8 @@ import { shopDataContext } from '../context/ShopContext';
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FaArrowRight, FaChevronLeft, FaChevronRight, FaFire } from 'react-icons/fa';
+import Card from '../components/Card';
 
 gsap.registerPlugin(ScrollTrigger);
 

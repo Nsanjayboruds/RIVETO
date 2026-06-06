@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import mobvid from '../assets/4 Mobile.mp4';
 
 import gsap from 'gsap';
+import { FaCompress, FaExpand, FaPause, FaPlay } from 'react-icons/fa';
+import Card from '../components/Card';
 
 function LatestCollection() {
   const { product, compareList, toggleCompare } = useContext(shopDataContext);

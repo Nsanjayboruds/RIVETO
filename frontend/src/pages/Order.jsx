@@ -4,6 +4,9 @@ import apiConfig from '../utils/apiConfig';
 import { FaBox, FaShoppingBag, FaShippingFast, FaCheckCircle, FaClock, FaMapMarkerAlt, FaUndo } from 'react-icons/fa';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FaCalendarAlt, FaMoneyBillWave, FaStar } from 'react-icons/fa';
+import { GiReceiveMoney } from 'react-icons/gi';
+import Title from '../components/Title';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -187,7 +190,7 @@ function Order() {
         {/* Filter Tabs */}
         <div className="flex flex-wrap gap-2 mb-8 justify-center">
           {statusFilters.map((filter) => {
-            const _IconComponent = filter.icon;
+            const IconComponent = filter.icon;
             return (
               <button
                 key={filter.value}
@@ -268,7 +271,7 @@ function Order() {
             </div>
           ) : (
             filteredOrders.map((item, index) => {
-              const _StatusIcon = getStatusIcon(item.status);
+              const StatusIcon = getStatusIcon(item.status);
               const statusIndex = getNormalizedStatusIndex(item.status);
               const isCancelled = item.status?.toLowerCase().includes('cancel');
 
@@ -337,7 +340,7 @@ function Order() {
                         <div className="space-y-3">
                           <div className="flex items-center justify-between">
                             {statusSteps.map((step, idx) => {
-                              const _StepIcon = step.icon;
+                              const StepIcon = step.icon;
                               const isCompleted = idx <= statusIndex;
                               const _isCurrent = idx === statusIndex;
 

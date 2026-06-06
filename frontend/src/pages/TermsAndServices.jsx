@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { FaArrowRight, FaCheckCircle, FaCopyright, FaEdit, FaEnvelope, FaExclamationTriangle, FaFileContract, FaGithub, FaLock, FaMoneyBillWave, FaShieldAlt, FaUserCheck } from 'react-icons/fa';
+import Footer from '../components/Footer';
 
 
 const sections = [
@@ -184,7 +186,7 @@ const sections = [
   },
 ];
 
-const _TableOfContents = ({ activeSection, onSectionClick }) => (
+const TableOfContents = ({ activeSection, onSectionClick }) => (
   <div className="lg:sticky lg:top-28 bg-white/85 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-gray-700 p-6">
     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
       <FaFileContract className="text-cyan-400" />
@@ -216,7 +218,7 @@ const _TableOfContents = ({ activeSection, onSectionClick }) => (
   </div>
 );
 
-const _Section = ({ section, isActive }) => (
+const Section = ({ section, isActive }) => (
   <section
     id={section.id}
     className={`scroll-mt-28 transform transition-all duration-500 ${

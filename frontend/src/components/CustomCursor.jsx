@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { BsHandbag } from 'react-icons/bs';
 
 function CustomCursor() {
   const [position, setPosition] = useState({ x: -100, y: -100 });

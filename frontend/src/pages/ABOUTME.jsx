@@ -24,6 +24,7 @@ import {
 } from 'react-icons/si';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FaCloud, FaCode, FaDatabase, FaDownload, FaEnvelope, FaGithub, FaLinkedin, FaServer, FaTwitter } from 'react-icons/fa';
 
 gsap.registerPlugin(ScrollTrigger);
 

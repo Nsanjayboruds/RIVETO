@@ -11,8 +11,6 @@ import './styles/animations.css';
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <ThemeProvider>
-      {' '}
-      {/* ⬅️ wrap here */}
       <AuthContext>
         <UserContext>
           <ShopContext>

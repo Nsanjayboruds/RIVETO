@@ -4,6 +4,10 @@ import { shopDataContext } from '../context/ShopContext';
 
 
 import { toast } from 'react-toastify';
+import { FaArrowLeft, FaLock, FaShieldAlt, FaShoppingBasket, FaTruck } from 'react-icons/fa';
+import { RiAddLine, RiDeleteBin6Line, RiShoppingBag3Line, RiSubtractLine } from 'react-icons/ri';
+import { MdLocalOffer } from 'react-icons/md';
+import CartTotal from '../components/CartTotal';
 
 function Cart() {
   const { product, currency, cartItem, UpdateQuantity } =
