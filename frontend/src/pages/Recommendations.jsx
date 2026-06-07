@@ -1,4 +1,3 @@
-import React from 'react';
 import IssueRecommendations from '../components/IssueRecommendations';
 
 export default function Recommendations() {
