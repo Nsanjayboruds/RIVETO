@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { FaChevronDown, FaChevronUp, FaChild, FaExchangeAlt, FaFemale, FaHandPointRight, FaInfoCircle, FaMale, FaRulerHorizontal, FaRulerVertical, FaShoePrints, FaTshirt } from 'react-icons/fa';
+import { GiNecklaceDisplay, GiTrousers } from 'react-icons/gi';
+import Footer from '../components/Footer';
 
 
 /* ─── Size Data ─── */
@@ -231,7 +234,7 @@ const proTips = [
 
 /* ─── Reusable Size Chart Table ─── */
 
-function _SizeTable({ chart }) {
+function SizeTable({ chart }) {
   return (
     <div className="mb-10">
       <h3 className="text-lg md:text-xl font-semibold text-cyan-300 mb-4 flex items-center gap-2">

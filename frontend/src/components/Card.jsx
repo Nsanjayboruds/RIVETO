@@ -4,6 +4,7 @@ import { shopDataContext } from '../context/ShopContext';
 
 import { toast } from 'react-toastify';
 import gsap from 'gsap';
+import { FaCheck, FaExchangeAlt, FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa';
 
 function Card({
   name,

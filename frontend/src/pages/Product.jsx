@@ -1,12 +1,14 @@
 
+import LastestCollection from '../components/LastestCollection';
+import BestSeller from '../components/BestSeller';
 function Product() {
   return (
-    <div className="w-full min-h-[100vh] bg-white dark:bg-gradient-to-l dark:from-[#141414] dark:to-[#0c2025] flex items-center justify-start flex-col py-[20px] transition-colors duration-300">
-      <div className="w-[100%] min-h-[70px] flex items-center justify-center gap-[10px] flex-col">
-        <LastestCollection />
-      </div>
-      <div className="w-[100%] min-h-[70px] flex items-center justify-center gap-[10px] flex-col">
-        <BestSeller />
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-50 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] pt-24 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="space-y-16">
+          <LastestCollection />
+          <BestSeller />
+        </div>
       </div>
     </div>
   );

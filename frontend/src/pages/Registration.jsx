@@ -7,6 +7,8 @@ import { auth, provider } from '../../utils/Firebase';
 import { userDataContext } from '../context/UserContext';
 import gsap from 'gsap';
 import { toast } from 'react-toastify';
+import { FcGoogle } from 'react-icons/fc';
+import { IoEye, IoEyeOutline, IoLockClosed, IoMail, IoPerson } from 'react-icons/io5';
 
 function Registration() {
   const [show, setShow] = useState(false);

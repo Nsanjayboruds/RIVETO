@@ -11,8 +11,8 @@ import {
   FaEnvelope,
   FaMapMarkerAlt,
   FaHeart,
-  FaXTwitter,
 } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import { RiCustomerService2Fill } from 'react-icons/ri';
 import { BiSupport } from 'react-icons/bi';
 

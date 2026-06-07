@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { FaArrowRight, FaChartLine, FaCheckCircle, FaCog, FaCookie, FaExclamationTriangle, FaInfoCircle, FaLock, FaShieldAlt, FaUserCog } from 'react-icons/fa';
+import Footer from '../components/Footer';
 
 
 const sections = [

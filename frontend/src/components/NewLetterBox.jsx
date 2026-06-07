@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import { toast } from 'react-toastify';
+import { FaBolt, FaCheckCircle, FaCrown, FaGift, FaStar } from 'react-icons/fa';
 
 function NewsletterBox() {
   const [email, setEmail] = useState('');

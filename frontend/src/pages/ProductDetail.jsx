@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { userDataContext } from '../context/UserContext';
 import apiConfig from '../utils/apiConfig';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaChevronLeft, FaChevronRight, FaHeart, FaShare, FaShoppingCart, FaStar } from 'react-icons/fa';
+import RelatedProduct from '../components/RelatedProduct';
 
 
 function ProductDetail() {

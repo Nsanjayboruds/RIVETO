@@ -8,6 +8,8 @@ import { shopDataContext } from '../context/ShopContext';
 import { toast } from 'react-toastify';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FcGoogle } from 'react-icons/fc';
+import { IoMail, IoLockClosed, IoEye, IoEyeOutline } from 'react-icons/io5';
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -4,6 +4,10 @@ import { useFocusTrap, useEscapeKey } from '../hooks/useDialogA11y';
 import { shopDataContext } from '../context/ShopContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { RiArrowUpDownLine, RiPriceTag3Line } from 'react-icons/ri';
+import { FaFilter, FaSearch, FaStar, FaTimes } from 'react-icons/fa';
+import Card from '../components/Card';
+import Footer from '../components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,7 +35,7 @@ const slideAnimationStyle = `
 `;
 
 // Loader Component
-const _Loader = () => {
+const Loader = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20">
       <div className="relative w-16 h-16 mb-4">
@@ -49,7 +53,7 @@ const _Loader = () => {
 };
 
 // Skeleton Loader for Cards
-const _CardSkeleton = () => {
+const CardSkeleton = () => {
   return (
     <div className="bg-gradient-to-br from-slate-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden shadow-xl border border-slate-200 dark:border-gray-700 animate-pulse">
       <div className="w-full h-64 bg-slate-200 dark:bg-gray-700"></div>
@@ -66,7 +70,7 @@ const _CardSkeleton = () => {
 };
 
 // Filter Content Component
-const _FilterContent = ({
+const FilterContent = ({
   activeFilters,
   clearAllFilters,
   priceRange,

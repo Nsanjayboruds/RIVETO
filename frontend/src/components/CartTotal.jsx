@@ -1,6 +1,9 @@
 import { useContext, useState, useEffect } from 'react';
 import { shopDataContext } from '../context/ShopContext';
 import gsap from 'gsap';
+import { RiArrowRightSLine, RiCoupon2Line } from 'react-icons/ri';
+import { FaGift, FaPercentage, FaShippingFast } from 'react-icons/fa';
+import Title from '../components/Title';
 
 function CartTotal() {
   const { currency, delivery_fee, getCartAmount } = useContext(shopDataContext);

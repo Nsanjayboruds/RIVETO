@@ -1,6 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Background from '../components/Background';
+import Hero from '../components/Hero';
+import OurPolicy from '../components/OurPolicy';
+import NewLetterBox from '../components/NewLetterBox';
+import Footer from '../components/Footer';
+import Product from '../pages/Product';
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);

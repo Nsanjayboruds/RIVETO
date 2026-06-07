@@ -1,4 +1,8 @@
 import { useState, useRef } from 'react';
+import { FaCheckCircle, FaClock, FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaPhone } from 'react-icons/fa';
+import { HiSparkles } from 'react-icons/hi';
+import NewsletterBox from '../components/NewLetterBox';
+import Footer from '../components/Footer';
 
 
 function Contact() {
