@@ -26,6 +26,7 @@ const MESSAGE_MAP = {
 const apiConfig = axios.create({
   baseURL: `${serverURL}/api`,
   withCredentials: true,
+  timeout: 30000,
 });
 
 apiConfig.interceptors.response.use(

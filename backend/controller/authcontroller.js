@@ -2,7 +2,7 @@ import User from "../model/userModel.js";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import { genToken, genToken1 } from "../config/Token.js";
-import { sendMail } from "../config/sendEmail.js";
+import { sendMail, isEmailConfigured } from "../config/sendEmail.js";
 import generateOTP from "../utils/otp.js";
 import TempUser from "../model/tempUserModel.js";
 import { otpTemplate } from "../utils/otpTemplet.js";
@@ -40,6 +40,16 @@ export const sendOTP = async (req, res) => {
       otp,
       otpExpire: new Date(Date.now() + 5 * 60 * 1000),
     });
+
+    if (!isEmailConfigured()) {
+      await TempUser.deleteOne({ email });
+
+      return res.status(503).json({
+        success: false,
+        message: "Email service is not configured",
+      });
+    }
+
     try {
       await sendMail(email, otpTemplate(otp));
     } catch (_error) {

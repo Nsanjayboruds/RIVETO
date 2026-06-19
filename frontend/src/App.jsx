@@ -231,6 +231,7 @@ function App() {
 
         {/* Public routes - Legal pages should be accessible without login */}
         <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+        <Route path="/privacy" element={<Navigate to="/privacypolicy" replace />} />
         <Route path="/privicypolicy" element={<Navigate to="/privacypolicy" replace />} />
         <Route path="/terms" element={<TermsAndServices />} />
         <Route path="/termsandservices" element={<TermsAndServices />} />

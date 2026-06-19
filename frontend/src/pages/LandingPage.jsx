@@ -1121,7 +1121,7 @@ function LandingPage() {
               </h3>
               <ul className="space-y-2">
                 {[
-                  { label: 'Privacy Policy', path: '/privacy' },
+                  { label: 'Privacy Policy', path: '/privacypolicy' },
                   { label: 'Terms of Service', path: '/terms' },
                   { label: 'Cookie Policy', path: '/cookie-policy' },
                   { label: 'Size Guide', path: '/size-guide' },
@@ -1147,7 +1147,7 @@ function LandingPage() {
             <div className="flex items-center gap-6">
               <button
                 type="button"
-                onClick={() => navigate('/privacy')}
+                onClick={() => navigate('/privacypolicy')}
                 className="hover:text-[#2563EB] transition-colors"
               >
                 Privacy

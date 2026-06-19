@@ -19,6 +19,7 @@ import {
 function Registration() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [step, setStep] = useState('1');
   const [otp, setOtp] = useState('');
   const [otpLoading, setOtpLoading] = useState(false);
@@ -65,8 +66,8 @@ function Registration() {
 
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
-    } else if (formData.name.length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
+    } else if (formData.name.trim().length < 3) {
+      newErrors.name = 'Name must be at least 3 characters';
     }
 
     if (!formData.email.trim()) {
@@ -106,14 +107,23 @@ function Registration() {
     if (!validateForm()) return;
 
     setLoading(true);
+    setSubmitError('');
 
     try {
-      await apiConfig.post('/auth/send-otp', formData);
+      await apiConfig.post('/auth/send-otp', formData, {
+        skipAuthRedirect: true,
+      });
 
       toast.success('OTP sent successfully 🎉');
       setStep('2');
-    } catch {
-      // API errors are shown by the global interceptor.
+    } catch (error) {
+      if (error.code === 'ECONNABORTED') {
+        setSubmitError('Request timed out. Please check your connection and try again.');
+      } else if (error.response?.data?.message) {
+        setSubmitError(error.response.data.message);
+      } else {
+        setSubmitError('Unable to send OTP. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -126,6 +136,8 @@ function Registration() {
       await apiConfig.post('/auth/verify-otp', {
         email: formData.email,
         otp,
+      }, {
+        skipAuthRedirect: true,
       });
 
       toast.success('Account verified successfully 🎉');
@@ -317,7 +329,7 @@ function Registration() {
                     </Link>{' '}
                     and{' '}
                     <Link
-                      to="/privacy"
+                      to="/privacypolicy"
                       className="text-cyan-400 hover:underline focus:outline-none focus:ring-1 focus:ring-cyan-400 rounded"
                     >
                       Privacy Policy
@@ -340,6 +352,12 @@ function Registration() {
                     'Create Account'
                   )}
                 </button>
+
+                {submitError && (
+                  <p className="form-element text-red-400 text-sm text-center">
+                    {submitError}
+                  </p>
+                )}
               </form>
 
               {/* Login Link */}
