@@ -1,32 +1,86 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useContext } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+
 import Home from "./pages/Home";
 import Add from "./pages/Add";
 import List from "./pages/List";
 import Order from "./pages/Order";
 import Login from "./pages/Login";
-import { useContext } from "react";
+
 import { adminDataContext } from "./Context/AdminProvider";
-import { ToastContainer } from "react-toastify";
+
+function ProtectedRoute({ children }) {
+  const { adminData } = useContext(adminDataContext);
+
+  if (!adminData) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
 
 function App() {
-  let { adminData } = useContext(adminDataContext);
+  const { adminData } = useContext(adminDataContext);
+
   return (
     <>
       <ToastContainer />
-      {!adminData ? (
-        <Login />
-      ) : (
-        <>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/add" element={<Add />} />
-            <Route path="/list" element={<List />} />
-            <Route path="/order" element={<Order />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </>
-      )}
+
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            adminData ? <Navigate to="/" replace /> : <Login />
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/add"
+          element={
+            <ProtectedRoute>
+              <Add />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/list"
+          element={
+            <ProtectedRoute>
+              <List />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/order"
+          element={
+            <ProtectedRoute>
+              <Order />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            <Navigate
+              to={adminData ? "/" : "/login"}
+              replace
+            />
+          }
+        />
+      </Routes>
     </>
   );
 }

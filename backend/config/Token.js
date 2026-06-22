@@ -1,9 +1,16 @@
 import jwt from "jsonwebtoken";
 
-export const genToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+export const genToken = (userId, role = "user") => {
+  return jwt.sign(
+    {
+      userId,
+      role,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
 };
 
 export const genToken1 = async (email) => {

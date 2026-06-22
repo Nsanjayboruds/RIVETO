@@ -96,7 +96,7 @@ export const verifyOTP = async (req, res) => {
       type: "new_user",
     });
 
-    const token = genToken(user._id);
+    const token = genToken(user._id, user.role);
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -126,7 +126,7 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = genToken(user._id);
+    const token = genToken(user._id, user.role);
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -150,7 +150,7 @@ export const googleLogin = async (req, res) => {
       user = await User.create({ name, email });
     }
 
-    const token = genToken(user._id);
+    const token = genToken(user._id, user.role);
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

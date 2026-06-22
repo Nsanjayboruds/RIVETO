@@ -24,13 +24,20 @@ const userSchema = new mongoose.Schema(
     },
 
     wishlist: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+  },
+],
+
+role: {
+  type: String,
+  enum: ["user", "admin", "super_admin"],
+  default: "user",
+},
+
+resetPasswordToken: String,
+resetPasswordExpire: Date,
   },
   {
     timestamps: true,

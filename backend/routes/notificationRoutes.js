@@ -55,36 +55,72 @@ router.put("/read-all-admin", adminAuth, adminRateLimiter, async (req, res) => {
 });
 
 // PUT /api/notifications/:id/read - Mark single notification as read
-router.put("/:id/read", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const notification = await Notification.findById(id);
-    if (!notification) {
-      return res.status(404).json({ message: "Notification not found" });
-    }
+router.put(
+  "/:id/read",
+  isAuth,
+  userRateLimiter,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const notification = await Notification.findById(id);
+      
+      if (!notification) {
+        return res.status(404).json({ message: "Notification not found" });
+      }
 
-    notification.read = true;
-    await notification.save();
-    return res.status(200).json({ success: true, notification });
-  } catch (error) {
-    console.error("Error marking notification read:", error);
-    return res.status(500).json({ message: "Server error" });
+      // Ownership check: prevent users from modifying other users' notifications
+      if (
+        !notification.isAdmin &&
+        notification.userId?.toString() !== req.userId
+      ) {
+        return res.status(403).json({
+          success: false,
+          message: "Forbidden: Access denied",
+        });
+      }
+
+      notification.read = true;
+      await notification.save();
+      return res.status(200).json({ success: true, notification });
+    } catch (error) {
+      console.error("Error marking notification read:", error);
+      return res.status(500).json({ message: "Server error" });
+    }
   }
-});
+);
 
 // DELETE /api/notifications/:id - Delete single notification
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const notification = await Notification.findByIdAndDelete(id);
-    if (!notification) {
-      return res.status(404).json({ message: "Notification not found" });
+router.delete(
+  "/:id",
+  isAuth,
+  userRateLimiter,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const notification = await Notification.findById(id);
+      
+      if (!notification) {
+        return res.status(404).json({ message: "Notification not found" });
+      }
+
+      // Ownership check: prevent users from deleting other users' notifications
+      if (
+        !notification.isAdmin &&
+        notification.userId?.toString() !== req.userId
+      ) {
+        return res.status(403).json({
+          success: false,
+          message: "Forbidden: Access denied",
+        });
+      }
+
+      await notification.deleteOne();
+      return res.status(200).json({ success: true, message: "Notification deleted" });
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+      return res.status(500).json({ message: "Server error" });
     }
-    return res.status(200).json({ success: true, message: "Notification deleted" });
-  } catch (error) {
-    console.error("Error deleting notification:", error);
-    return res.status(500).json({ message: "Server error" });
   }
-});
+);
 
 export default router;

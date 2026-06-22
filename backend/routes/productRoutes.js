@@ -12,6 +12,8 @@ let productRoutes = express.Router();
 
 productRoutes.post(
   "/addproduct",
+  adminAuth,
+  adminRateLimiter,
   upload.fields([
     { name: "image1", maxCount: 1 },
     { name: "image2", maxCount: 1 },
