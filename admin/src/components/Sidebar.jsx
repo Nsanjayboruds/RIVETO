@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { FaRectangleList } from "react-icons/fa6";
 import { SiTicktick } from "react-icons/si";
+import { MdAnalytics } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Sidebar() {
@@ -25,6 +26,11 @@ function Sidebar() {
       icon: <SiTicktick className="w-5 h-5" />,
       label: "View Orders",
     },
+    {
+      path: "/analytics",
+      icon: <MdAnalytics className="w-5 h-5" />,
+      label: "Analytics",
+    },
   ];
 
   const handleNavigation = (path) => {
@@ -33,7 +39,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="w-20 md:w-64 min-h-screen bg-gradient-to-b ffrom-slate-900 via-blue-900 to-slate-900 border-r border-gray-200 py-16 fixed left-0 top-0 shadow-lg z-40 transition-all duration-300">
+    <div className="w-20 md:w-64 min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-slate-900 border-r border-gray-200 py-16 fixed left-0 top-0 shadow-lg z-40 transition-all duration-300">
       <div className="flex flex-col gap-2 pt-8 px-4 text-base">
         {menuItems.map((item) => (
           <div

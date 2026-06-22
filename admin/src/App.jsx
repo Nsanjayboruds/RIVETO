@@ -5,6 +5,7 @@ import Add from "./pages/Add";
 import List from "./pages/List";
 import Order from "./pages/Order";
 import Login from "./pages/Login";
+import Analytics from "./pages/Analytics";
 import { useContext } from "react";
 import { adminDataContext } from "./Context/AdminProvider";
 import { ToastContainer } from "react-toastify";
@@ -23,6 +24,7 @@ function App() {
             <Route path="/add" element={<Add />} />
             <Route path="/list" element={<List />} />
             <Route path="/order" element={<Order />} />
+            <Route path="/analytics" element={<Analytics />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </>
