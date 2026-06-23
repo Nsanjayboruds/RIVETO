@@ -147,8 +147,12 @@ export const googleLogin = async (req, res) => {
 
     let user = await User.findOne({ email });
     if (!user) {
-      user = await User.create({ name, email });
-    }
+    user = await User.create({
+        name,
+        email,
+        authProvider: "google",
+    });
+  }
 
     const token = genToken(user._id);
     res.cookie("token", token, {

@@ -13,9 +13,17 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
 
+    authProvider: {
+       type: String,
+       default: "local"
+    },
+
     password: {
-      type: String,
-      required: true,
+       type: String,
+       required: function ()
+       {
+       return this.authProvider === "local";
+       },
     },
 
     cartData: {
