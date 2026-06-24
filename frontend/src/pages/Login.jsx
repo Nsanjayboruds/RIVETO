@@ -9,7 +9,13 @@ import { toast } from 'react-toastify';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FcGoogle } from 'react-icons/fc';
-import { IoMail, IoLockClosed, IoEye, IoEyeOutline } from 'react-icons/io5';
+import {
+  IoMail,
+  IoLockClosed,
+  IoEye,
+  IoEyeOutline,
+  IoArrowBack,
+} from 'react-icons/io5';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,7 +34,7 @@ function Login() {
   const { getCurrentUser } = useContext(userDataContext);
   const { product } = useContext(shopDataContext);
   const navigate = useNavigate();
-  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(true);
 
   const leftPanelRef = useRef(null);
   const googleBtnRef = useRef(null);
@@ -349,12 +355,24 @@ function Login() {
       </div>
 
       {/* RIGHT PANEL - Auth Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-white dark:bg-[#0B0F1A]">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-4 bg-white dark:bg-[#0B0F1A] relative">
+        {/* Floating Back to Home Link */}
+        <button
+          onClick={() => navigate('/')}
+          className="absolute top-6 left-6 z-20 group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700/80 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          aria-label="Back to Home"
+        >
+          <IoArrowBack className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-gray-500 dark:text-gray-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+          <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
+            Back to Home
+          </span>
+        </button>
+
         <div className="login-container max-w-md w-full">
           {/* Mobile Logo */}
           <div
             onClick={() => navigate('/')}
-            className="cursor-pointer mb-8 text-center lg:hidden"
+            className="cursor-pointer mb-4 text-center lg:hidden"
             aria-label="Navigate Home"
           >
             <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
@@ -363,7 +381,7 @@ function Login() {
           </div>
 
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-4">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Welcome Back!
             </h2>
@@ -373,13 +391,13 @@ function Login() {
           </div>
 
           {/* Card Container */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* LAYER 1: Google Login - Primary CTA with Staged Entry */}
             <button
               ref={googleBtnRef}
               onClick={googleLogin}
               disabled={googleLoading}
-              className="w-full flex items-center justify-center gap-3 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-xl py-4 px-6 font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-3 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-xl py-3 px-6 font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {googleLoading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -399,7 +417,7 @@ function Login() {
               </button>
 
               {showEmailForm && (
-                <div className="mt-6 space-y-6 animate-fadeIn">
+                <div className="mt-4 space-y-4 animate-fadeIn">
                   {/* Divider */}
                   <div className="flex items-center">
                     <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
@@ -410,7 +428,7 @@ function Login() {
                   </div>
 
                   {/* Form */}
-                  <form onSubmit={handleLogin} className="space-y-5">
+                  <form onSubmit={handleLogin} className="space-y-4">
                     {/* Email Field */}
                     <div className="form-element">
                       <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
@@ -501,7 +519,7 @@ function Login() {
             </div>
 
             {/* Sign Up Link */}
-            <div className="form-element text-center pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="form-element text-center pt-4 border-t border-gray-200 dark:border-gray-700">
               <p className="text-gray-600 dark:text-gray-400">
                 Don't have an account?{' '}
                 <button

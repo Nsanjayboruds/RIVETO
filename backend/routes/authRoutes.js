@@ -1,14 +1,13 @@
 import express from "express";
-import { sendOTP, login, logOut, googleLogin, verifyOTP, adminLogin } from "../controller/authcontroller.js";
+import { sendOTP, login, logOut, googleLogin, verifyOTP, adminLogin, forgotPassword, resetPassword } from "../controller/authcontroller.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { registerSchema, loginSchema } from "../validators/authSchemas.js";
-
+import { authIpLimiter, otpIpLimiter } from "../middleware/rateLimiters.js";
 
 const authRoutes = express.Router();
 
-
-authRoutes.post('/send-otp', validateRequest(registerSchema), sendOTP);
-authRoutes.post("/verify-otp", verifyOTP);
+authRoutes.post("/send-otp", otpIpLimiter, validateRequest(registerSchema), sendOTP);
+authRoutes.post("/verify-otp", otpIpLimiter, verifyOTP);
 
 /**
  * @swagger
@@ -42,7 +41,7 @@ authRoutes.post("/verify-otp", verifyOTP);
  *                   type: string
  *                   example: "eyJhbGciOiJIUzI1Ni..."
  */
-authRoutes.post("/login", validateRequest(loginSchema), login);
+authRoutes.post("/login", authIpLimiter, validateRequest(loginSchema), login);
 
 /**
  * @swagger
@@ -66,7 +65,7 @@ authRoutes.post("/logout", logOut);
  *       200:
  *         description: OK
  */
-authRoutes.post("/googlelogin", googleLogin);
+authRoutes.post("/googlelogin", authIpLimiter, googleLogin);
 
 /**
  * @swagger
@@ -78,6 +77,9 @@ authRoutes.post("/googlelogin", googleLogin);
  *       200:
  *         description: OK
  */
-authRoutes.post("/adminlogin", adminLogin);
+authRoutes.post("/adminlogin", authIpLimiter, adminLogin);
+
+authRoutes.post("/forgot-password", forgotPassword);
+authRoutes.put("/reset-password/:resetToken", resetPassword);
 
 export default authRoutes;

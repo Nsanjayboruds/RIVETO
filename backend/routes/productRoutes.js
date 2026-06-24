@@ -6,6 +6,7 @@ import {
   removeProduct,
 } from "../controller/productController.js";
 import adminAuth from "../middleware/adminAuth.js";
+import { adminRateLimiter } from "../middleware/rateLimiters.js";
 
 let productRoutes = express.Router();
 
@@ -21,6 +22,6 @@ productRoutes.post(
 );
 
 productRoutes.get("/list", listProducts);
-productRoutes.post("/remove/:id", adminAuth, removeProduct);
+productRoutes.post("/remove/:id", adminAuth, adminRateLimiter, removeProduct);
 
 export default productRoutes;

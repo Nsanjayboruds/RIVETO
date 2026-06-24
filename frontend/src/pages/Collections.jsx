@@ -39,6 +39,8 @@ const FilterContent = ({
   clearAllFilters,
   priceRange,
   setPriceRange,
+  minPrice,
+  maxPrice,
   categories,
   category,
   toggleCategory,
@@ -74,15 +76,15 @@ const FilterContent = ({
           <input
             id="collections-price-range"
             type="range"
-            min="0"
-            max="2000"
+            min={minPrice}
+            max={maxPrice}
             value={priceRange[1]}
             onChange={(e) =>
               setPriceRange([priceRange[0], parseInt(e.target.value)])
             }
             className="w-full h-2 bg-slate-300 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb"
-            aria-valuemin={0}
-            aria-valuemax={2000}
+            aria-valuemin={minPrice}
+            aria-valuemax={maxPrice}
             aria-valuenow={priceRange[1]}
             aria-label={`Maximum price ₹${priceRange[1]}`}
           />
@@ -197,15 +199,29 @@ function Collections() {
     compareList,
     toggleCompare,
   } = useContext(shopDataContext);
+
+  const minPrice =
+    product.length > 0
+      ? Math.min(...product.map((item) => item.price))
+      : 0;
+
+  const maxPrice =
+    product.length > 0
+      ? Math.max(...product.map((item) => item.price))
+      : 2000;
   const [filterProduct, setFilterProduct] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState('relevant');
-  const [priceRange, setPriceRange] = useState([0, 2000]);
+  const [priceRange, setPriceRange] = useState([0, 0]);
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [activeFilters, setActiveFilters] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-
+ useEffect(() => {
+    if (product.length > 0) {
+      setPriceRange([minPrice, maxPrice]);
+    }
+  }, [product, minPrice, maxPrice]);
   const contentRef = useRef(null);
   const filterRef = useRef(null);
   const filterDrawerRef = useRef(null);
@@ -286,9 +302,15 @@ function Collections() {
       category.length +
       subCategory.length +
       selectedRatings.length +
-      (priceRange[0] > 0 || priceRange[1] < 2000 ? 1 : 0);
+      (
+    priceRange[0] > minPrice ||
+    priceRange[1] < maxPrice
+      ? 1
+      : 0
+  );
     setActiveFilters(filterCount);
-  }, [product, showSearch, search, category, subCategory, priceRange, selectedRatings]);
+  }, [product, showSearch, search, category, subCategory, priceRange, selectedRatings,minPrice,
+  maxPrice,]);
 
   const sortProduct = useCallback(() => {
     setFilterProduct((prev) => {
@@ -314,7 +336,7 @@ function Collections() {
     setCategory([]);
     setSubCategory([]);
     setSelectedRatings([]);
-    setPriceRange([0, 2000]);
+    setPriceRange([minPrice, maxPrice]);
     setSortType('relevant');
   };
 
@@ -407,6 +429,8 @@ function Collections() {
               clearAllFilters={clearAllFilters}
               priceRange={priceRange}
               setPriceRange={setPriceRange}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
               categories={categories}
               category={category}
               toggleCategory={toggleCategory}
@@ -418,6 +442,8 @@ function Collections() {
               toggleRating={toggleRating}
             />
           </div>
+
+
 
           {/* Products Section */}
           <div className="flex-1 min-w-0" ref={contentRef}>
@@ -576,21 +602,23 @@ function Collections() {
               </div>
 
               <div className="p-6">
-                <FilterContent
-                  activeFilters={activeFilters}
-                  clearAllFilters={clearAllFilters}
-                  priceRange={priceRange}
-                  setPriceRange={setPriceRange}
-                  categories={categories}
-                  category={category}
-                  toggleCategory={toggleCategory}
-                  subCategories={subCategories}
-                  subCategory={subCategory}
-                  toggleSubCategory={toggleSubCategory}
-                  ratings={ratings}
-                  selectedRatings={selectedRatings}
-                  toggleRating={toggleRating}
-                />
+               <FilterContent
+              activeFilters={activeFilters}
+              clearAllFilters={clearAllFilters}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              categories={categories}
+              category={category}
+              toggleCategory={toggleCategory}
+              subCategories={subCategories}
+              subCategory={subCategory}
+              toggleSubCategory={toggleSubCategory}
+              ratings={ratings}
+              selectedRatings={selectedRatings}
+              toggleRating={toggleRating}
+            />
               </div>
 
               {/* Action Buttons */}

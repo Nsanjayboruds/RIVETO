@@ -21,8 +21,10 @@ import orderRoutes from "./routes/orderRoutes.js";
 import reviewRoutes from "./routes/reviewRoute.js";
 import wishlistRouter from "./routes/wishlistRoutes.js";
 import recommendationsRoute from "./routes/recommendations.js";
+import { globalIpLimiter } from "./middleware/rateLimiters.js";
 
 const app = express();
+app.set("trust proxy", 1);
 const server = createServer(app);
 initSocket(server);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -39,6 +41,7 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use(express.json());
+app.use("/api", globalIpLimiter);
 
 connectdb();
 

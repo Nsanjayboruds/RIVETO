@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ThemeContext } from '../context/ThemeContext';
+import { BsSun, BsMoon } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ShoppingBag,
@@ -286,6 +288,7 @@ function SectionHeader({ eyebrow, eyebrowColor, title, highlight, subtitle }) {
 // ─── Landing Page ─────────────────────────────────────────────────────────────
 
 function LandingPage() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
@@ -334,17 +337,39 @@ function LandingPage() {
                 key={id}
                 type="button"
                 onClick={() => scrollTo(id)}
-                className="text-gray-600 dark:text-gray-300 hover:text-[#2563EB] dark:hover:text-blue-400 transition-colors"
+                className=" group relative  px-3 py-2 overflow-visible transition-all  duration-30  "
               >
-                {label}
+                {/* Soft Aura */}
+                <span className="  absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 opacity-0 blur-lg rounded-full bg-gradient-to-r from-[#3B82F6]/15  via-[#6366F1]/20  to-[#8B5CF6]/15 transition-all  duration-500  group-hover:w-20  group-hover:h-7 group-hover:opacity-100" />
+
+                {/* Text */}
+                <span className=" relative z-10 text-gray-300 transition-all  duration-300 group-hover:text-[#b9b4cc]">
+                  {label}
+                </span>
+
+                {/* Underline */}
+                <span className=" absolute left-0  -bottom-1 h-[1.5px] w-0 rounded-full bg-gradient-to-r from-[#60A5FA] via-[#818CF8] to-[#A78BFA] transition-all duration-500 group-hover:w-[85%] " />
               </button>
             ))}
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              type="button"
-              onClick={() => navigate('/login')}
+  {/* THEME TOGGLE */}
+  <button
+    type="button"
+    onClick={toggleTheme}
+    className="p-1.5 rounded-full hover:bg-white/10 transition-colors"
+    aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+  >
+    {theme === 'dark' ? (
+      <BsSun className="text-yellow-400 text-lg" />
+    ) : (
+      <BsMoon className="text-gray-700 text-lg" />
+    )}
+  </button>
+  <button
+    type="button"
+    onClick={() => navigate('/login')}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-[#2563EB] dark:hover:text-blue-400 transition-colors px-3 py-2 hidden sm:block"
             >
               Login
@@ -1072,16 +1097,36 @@ function LandingPage() {
                 shoppers. Discover, shop, and express yourself.
               </p>
               <div className="mt-4 flex items-center gap-3">
-                {[
-                  { Icon: FaInstagram, label: 'Instagram' },
-                  { Icon: FaXTwitter, label: 'X' },
-                  { Icon: FaFacebook, label: 'Facebook' },
-                ].map(({ Icon, label }) => (
-                  <a
-                    key={label}
-                    href="#"
-                    aria-label={`Follow Riveto on ${label}`}
-                    className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-[#2563EB] hover:text-white transition-all"
+               {[
+  {
+    Icon: FaInstagram,
+    label: 'Instagram',
+    url: 'https://www.instagram.com',
+    color: 'hover:text-pink-500',
+    shadow: 'hover:shadow-[0_0_20px_rgba(225,48,108,0.45)]',
+  },
+  {
+    Icon: FaXTwitter,
+    label: 'X',
+    url: 'https://www.x.com',
+    color: 'hover:text-slate-100',
+    shadow: 'hover:shadow-[0_0_20px_rgba(255,255,255,0.25)]',
+  },
+  {
+    Icon: FaFacebook,
+    label: 'Facebook',
+    url: 'https://www.facebook.com',
+    color: 'hover:text-blue-500',
+    shadow: 'hover:shadow-[0_0_20px_rgba(24,119,242,0.45)]',
+  },
+].map(({ Icon, label, url, color, shadow }) => (
+  <a
+    key={label}
+    href={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`Follow Riveto on ${label}`}
+                    className={`w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 transition-all duration-400 hover:scale-125 ${color} ${shadow}`}
                   >
                     <Icon className="w-4 h-4" aria-hidden="true" />
                   </a>
@@ -1105,9 +1150,12 @@ function LandingPage() {
                     <button
                       type="button"
                       onClick={onClick}
-                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#2563EB] dark:hover:text-blue-400 transition-colors"
+                      className="group text-sm text-gray-500 dark:text-gray-400 hover:text-sky-300 transition-all duration-300 hover:translate-x-0.5"
                     >
-                      {label}
+                      <span className="relative">
+                        {label}
+                        <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[0.5px] w-0  bg-teal-400/70 transition-all duration-600 ease-out group-hover:w-full"></span>
+                      </span>
                     </button>
                   </li>
                 ))}
@@ -1131,9 +1179,12 @@ function LandingPage() {
                     <button
                       type="button"
                       onClick={() => navigate(path)}
-                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#2563EB] dark:hover:text-blue-400 transition-colors"
+                      className="group text-sm text-gray-500 dark:text-gray-400 hover:text-sky-300 transition-all duration-300 hover:translate-x-0.5"
                     >
-                      {label}
+                      <span className="relative">
+                        {label}
+                        <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[0.5px] w-0  bg-teal-400/70 transition-all duration-600 ease-out group-hover:w-full"></span>
+                      </span>
                     </button>
                   </li>
                 ))}
@@ -1155,14 +1206,14 @@ function LandingPage() {
               <button
                 type="button"
                 onClick={() => navigate('/terms')}
-                className="hover:text-[#2563EB] transition-colors"
+                className="hover:text-cyan-300 transition-all duration-300 underline-offset-4 hover:underline"
               >
                 Terms
               </button>
               <button
                 type="button"
                 onClick={() => navigate('/contributors')}
-                className="hover:text-[#2563EB] transition-colors"
+                className="hover:text-cyan-300 transition-all duration-300 underline-offset-4 hover:underline"
               >
                 Contributors
               </button>

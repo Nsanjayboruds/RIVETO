@@ -14,6 +14,7 @@ import {
   IoLockClosed,
   IoMail,
   IoPerson,
+  IoArrowBack,
 } from 'react-icons/io5';
 
 function Registration() {
@@ -179,7 +180,19 @@ function Registration() {
   return (
     <>
       {step === '1' ? (
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4 py-8 transition-colors duration-300">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4 py-3 transition-colors duration-300 relative">
+          {/* Floating Back to Home Link */}
+          <button
+            onClick={() => navigate('/')}
+            className="absolute top-6 left-6 z-20 group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700/80 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            aria-label="Back to Home"
+          >
+            <IoArrowBack className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-gray-500 dark:text-gray-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+            <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
+              Back to Home
+            </span>
+          </button>
+
           {/* Animated Background Elements */}
           <div className="absolute inset-0 overflow-hidden z-0">
             <div className="absolute -top-24 -right-24 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
@@ -188,10 +201,10 @@ function Registration() {
 
           <div className="registration-container max-w-md w-full relative z-10">
             {/* Header */}
-            <div className="text-center mb-8">
+            <div className="text-center mb-4">
               <div
                 onClick={() => navigate('/')}
-                className="cursor-pointer mb-6 inline-block"
+                className="cursor-pointer mb-3 inline-block"
                 aria-label="Navigate Home"
               >
                 <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
@@ -208,12 +221,12 @@ function Registration() {
             </div>
 
             {/* Card Container */}
-            <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-2xl transition-colors duration-300">
+            <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-2xl transition-colors duration-300">
               {/* Google Signup Button */}
               <button
                 onClick={googleSignup}
                 disabled={googleLoading}
-                className="form-element w-full flex items-center justify-center gap-3 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-300 dark:border-gray-600 rounded-xl py-3 px-4 text-gray-700 dark:text-white font-medium transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+                className="form-element w-full flex items-center justify-center gap-3 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-300 dark:border-gray-600 rounded-xl py-2.5 px-4 text-gray-700 dark:text-white font-medium transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed mb-4"
               >
                 {googleLoading ? (
                   <div className="w-5 h-5 border-2 border-gray-600 dark:border-white border-t-transparent rounded-full animate-spin"></div>
@@ -224,7 +237,7 @@ function Registration() {
               </button>
 
               {/* Divider */}
-              <div className="flex items-center mb-6">
+              <div className="flex items-center mb-4">
                 <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
                 <span className="mx-4 text-gray-500 dark:text-gray-400 text-sm">
                   OR
@@ -233,7 +246,7 @@ function Registration() {
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSignup} className="space-y-5">
+              <form onSubmit={handleSignup} className="space-y-4">
                 {/* Name Field */}
                 <div className="form-element">
                   <label className="block text-gray-300 text-sm mb-2">
@@ -361,7 +374,7 @@ function Registration() {
               </form>
 
               {/* Login Link */}
-              <div className="form-element text-center mt-6 pt-6 border-t border-gray-700">
+              <div className="form-element text-center mt-4 pt-4 border-t border-gray-700">
                 <p className="text-gray-400">
                   Already have an account?{' '}
                   <button
@@ -373,32 +386,22 @@ function Registration() {
                 </p>
               </div>
             </div>
-
-            {/* Security Badges */}
-            <div className="form-element mt-6 grid grid-cols-3 gap-4 text-center">
-              <div className="p-3 bg-gray-800/50 rounded-lg">
-                <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-green-400 text-sm">🔒</span>
-                </div>
-                <p className="text-gray-400 text-xs">SSL Secure</p>
-              </div>
-              <div className="p-3 bg-gray-800/50 rounded-lg">
-                <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-blue-400 text-sm">🛡️</span>
-                </div>
-                <p className="text-gray-400 text-xs">Data Protected</p>
-              </div>
-              <div className="p-3 bg-gray-800/50 rounded-lg">
-                <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-cyan-400 text-sm">⚡</span>
-                </div>
-                <p className="text-gray-400 text-xs">Fast Signup</p>
-              </div>
-            </div>
           </div>
         </div>
       ) : (
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4 relative">
+          {/* Floating Back to Home Link */}
+          <button
+            onClick={() => navigate('/')}
+            className="absolute top-6 left-6 z-20 group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700/80 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            aria-label="Back to Home"
+          >
+            <IoArrowBack className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-gray-500 dark:text-gray-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+            <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
+              Back to Home
+            </span>
+          </button>
+
           <div className="max-w-md w-full bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-2">
               Verify OTP

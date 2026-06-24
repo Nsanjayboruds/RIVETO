@@ -11,6 +11,8 @@ function NewsletterBox() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const scratchPercentageRef = useRef(0);
+  const timeoutRef1 = useRef(null);
+  const timeoutRef2 = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -127,17 +129,24 @@ function NewsletterBox() {
     }
 
     // Simulate API call
-    setTimeout(() => {
+    timeoutRef1.current = setTimeout(() => {
       setIsSubscribed(true);
       toast.success('Welcome to exclusive membership!');
 
       // Reset after 5 seconds
-      setTimeout(() => {
+      timeoutRef2.current = setTimeout(() => {
         setIsSubscribed(false);
         setEmail('');
       }, 5000);
     }, 1000);
   };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutRef1.current);
+      clearTimeout(timeoutRef2.current);
+    };
+  }, []);
 
   return (
     <section className="w-full bg-gradient-to-b from-white to-gray-50 dark:from-[#0B0F1A] dark:to-[#0B0F1A] px-4 py-16 md:py-20 transition-colors duration-300">

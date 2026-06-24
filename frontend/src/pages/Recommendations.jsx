@@ -1,12 +1,10 @@
+import PageShell from '../components/PageShell';
 import IssueRecommendations from '../components/IssueRecommendations';
-import Footer from '../components/Footer';
 
 export default function Recommendations() {
   return (
-  <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-cyan-50 dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] pt-24 pb-16">
-    <IssueRecommendations />
-    <Footer />
-  </div>
-
+    <PageShell withFooter>
+      <IssueRecommendations />
+    </PageShell>
   );
 }

@@ -6,13 +6,13 @@ import {
 } from "../controller/wishlistController.js";
 
 import isAuth from "../middleware/isAuth.js";
+import { userRateLimiter } from "../middleware/rateLimiters.js";
 
 const wishlistRouter = express.Router();
 
-wishlistRouter.post("/add", isAuth, addToWishlist);
-
-wishlistRouter.post("/remove", isAuth, removeFromWishlist);
-
-wishlistRouter.get("/", isAuth, getWishlist);
+wishlistRouter.use(isAuth, userRateLimiter);
+wishlistRouter.post("/add", addToWishlist);
+wishlistRouter.post("/remove", removeFromWishlist);
+wishlistRouter.get("/", getWishlist);
 
 export default wishlistRouter;

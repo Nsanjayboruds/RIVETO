@@ -1,11 +1,12 @@
 import express from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { botIpLimiter } from '../middleware/rateLimiters.js';
 
 const router = express.Router();
 console.log("KEY:", process.env.GEMINI_API_KEY);
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-router.post('/bot', async (req, res) => {
+router.post('/bot', botIpLimiter, async (req, res) => {
 
   console.log('GEMINI KEY:', process.env.GEMINI_API_KEY); // ← add this
   const { message } = req.body;

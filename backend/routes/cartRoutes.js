@@ -7,11 +7,13 @@ import {
 import isAuth from "../middleware/isAuth.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { addToCartSchema, updateCartSchema } from "../validators/authSchemas.js";
+import { userRateLimiter } from "../middleware/rateLimiters.js";
 
 const cartRoutes = express.Router();
 
-cartRoutes.post('/get', isAuth, getUserCart);     // ✅ Uses logged-in user from token
-cartRoutes.post('/add', isAuth,validateRequest(addToCartSchema), addToCart);
-cartRoutes.post('/update', isAuth,validateRequest(updateCartSchema), updateCart);
+cartRoutes.use(isAuth, userRateLimiter);
+cartRoutes.post("/get", getUserCart);
+cartRoutes.post("/add", validateRequest(addToCartSchema), addToCart);
+cartRoutes.post("/update", validateRequest(updateCartSchema), updateCart);
 
 export default cartRoutes;

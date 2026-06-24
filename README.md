@@ -1,10 +1,9 @@
 # RIVETO
-
-[![License](https://img.shields.io/github/license/Nsanjayboruds/RIVETO)](LICENSE)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/issues)
 [![Stars](https://img.shields.io/github/stars/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/stargazers)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11234/badge)](https://www.bestpractices.dev/projects/11234)
 ---
-
 ## 📑 Table of Contents
 
 - [🌍 Overview](#-overview)
@@ -101,14 +100,12 @@ npm install
 
 ### 4. Start development servers
 
+Open two separate terminal windows to run the servers simultaneously:
+
+**Terminal 1 (Backend):**
 ```bash
-# Backend (Node.js/Express)
 cd backend
 npm run dev
-
-# Frontend (React)
-cd ../frontend
-npm start
 ```
 
 - Backend: [http://localhost:5000](http://localhost:5000)

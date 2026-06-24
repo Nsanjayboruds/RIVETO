@@ -2,11 +2,12 @@ import express from "express";
 import isAuth from "../middleware/isAuth.js";
 import adminAuth from "../middleware/adminAuth.js";
 import Notification from "../model/notificationModel.js";
+import { userRateLimiter, adminRateLimiter } from "../middleware/rateLimiters.js";
 
 const router = express.Router();
 
 // GET /api/notifications - User notifications
-router.get("/", isAuth, async (req, res) => {
+router.get("/", isAuth, userRateLimiter, async (req, res) => {
   try {
     const notifications = await Notification.find({ userId: req.userId })
       .sort({ createdAt: -1 })
@@ -19,7 +20,7 @@ router.get("/", isAuth, async (req, res) => {
 });
 
 // GET /api/notifications/admin - Admin notifications
-router.get("/admin", adminAuth, async (req, res) => {
+router.get("/admin", adminAuth, adminRateLimiter, async (req, res) => {
   try {
     const notifications = await Notification.find({ isAdmin: true })
       .sort({ createdAt: -1 })
@@ -32,7 +33,7 @@ router.get("/admin", adminAuth, async (req, res) => {
 });
 
 // PUT /api/notifications/read-all-user - Mark all read for User
-router.put("/read-all-user", isAuth, async (req, res) => {
+router.put("/read-all-user", isAuth, userRateLimiter, async (req, res) => {
   try {
     await Notification.updateMany({ userId: req.userId, read: false }, { read: true });
     return res.status(200).json({ success: true, message: "All user notifications marked as read" });
@@ -43,7 +44,7 @@ router.put("/read-all-user", isAuth, async (req, res) => {
 });
 
 // PUT /api/notifications/read-all-admin - Mark all read for Admin
-router.put("/read-all-admin", adminAuth, async (req, res) => {
+router.put("/read-all-admin", adminAuth, adminRateLimiter, async (req, res) => {
   try {
     await Notification.updateMany({ isAdmin: true, read: false }, { read: true });
     return res.status(200).json({ success: true, message: "All admin notifications marked as read" });

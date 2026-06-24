@@ -1,6 +1,7 @@
 import User from "../model/userModel.js";
 import validator from "validator";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { genToken, genToken1 } from "../config/Token.js";
 import { sendMail, isEmailConfigured } from "../config/sendEmail.js";
 import generateOTP from "../utils/otp.js";
@@ -209,5 +210,99 @@ export const adminLogin = async (req, res) => {
   } catch (_error) {
     console.log("admin login error:", _error);
     return res.status(500).json({ message: `admin login error: ${_error}` });
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found with this email" });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(20).toString("hex");
+
+    // Hash and set to resetPasswordToken field
+    user.resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    // Set expire (15 mins)
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+
+    await user.save();
+
+    // Create reset URL - Robust version
+    let frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    frontendUrl = frontendUrl.replace(/\/+$/, "");
+    const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
+
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`[DEV MODE] PASSWORD RESET LINK: ${resetUrl}`);
+    }
+
+    const message = `
+      <h1>You have requested a password reset</h1>
+      <p>Please go to this link to reset your password:</p>
+      <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+    `;
+
+    try {
+      await sendMail(user.email, message);
+      res.status(200).json({ success: true, message: "Email sent" });
+    } catch (_error) {
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[DEV MODE] Email failed, but token saved for local testing.");
+        return res.status(200).json({ success: true, message: "Reset link generated (check console)" });
+      }
+
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save();
+      
+      console.error("EMAIL SENDING FAILED:", _error.message);
+      return res.status(500).json({ 
+        message: "Email could not be sent. Please check SMTP configuration (EMAIL_USER/EMAIL_PASS)." 
+      });
+    }
+  } catch (_error) {
+    res.status(500).json({ message: _error.message });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const rawToken = req.params.resetToken;
+    const resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(rawToken)
+      .digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired reset token" });
+    }
+
+    // Set new password
+    user.password = await bcrypt.hash(req.body.password, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successful",
+    });
+  } catch (_error) {
+    res.status(500).json({ message: _error.message });
   }
 };
