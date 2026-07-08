@@ -193,9 +193,13 @@ function Add() {
               <textarea
                 placeholder="Describe the product in detail..."
                 value={description}
+                maxLength={500}
                 onChange={(e) => setDescription(e.target.value)}
                 className="w-full h-32 bg-slate-700/40 border border-slate-600 rounded-lg px-4 py-3 text-lg placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none"
               />
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 text-right">
+                {reviewData.comment.length}/500 characters
+                </p>
             </div>
 
             {/* Category and Subcategory */}

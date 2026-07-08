@@ -232,9 +232,13 @@ function Contact() {
                           onChange={handleInputChange}
                           placeholder="Describe your inquiry..."
                           rows="6"
+                          maxLength={500}
                           className="w-full px-4 py-3 bg-white dark:bg-[#0f172a] border border-gray-200 dark:border-[#1f2a44] rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200 resize-none"
                           required
                         />
+                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 text-right">
+                          {formData.message.length}/500 characters
+                          </p>
                       </div>
 
                       <button
