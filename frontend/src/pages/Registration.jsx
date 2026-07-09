@@ -29,6 +29,7 @@ function Registration() {
     email: '',
     password: '',
   });
+  const [errors, setErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState("");
   const { getCurrentUser } = useContext(userDataContext);
   const navigate = useNavigate();
@@ -321,19 +322,25 @@ function Registration() {
                       )}
                     </button>
                   </div>
-                  {formData.password && (
-                    <p
-                    className={`text-sm mt-1 font-medium ${
-                      passwordStrength === "Weak"
-                      ? "text-red-400"
-                      : passwordStrength === "Medium"
-                      ? "text-yellow-400"
-                      : "text-green-400"
-                    }`}
-                    >
-                      Password Strength: {passwordStrength}
-                      </p>
-                    )}
+                  {errors.password && (
+  <p className="text-red-400 text-sm mt-1">
+    {errors.password}
+  </p>
+)}
+
+{formData.password && (
+  <p
+    className={`text-sm mt-1 font-medium ${
+      passwordStrength === "Weak"
+        ? "text-red-400"
+        : passwordStrength === "Medium"
+        ? "text-yellow-400"
+        : "text-green-400"
+    }`}
+  >
+    Password Strength: {passwordStrength}
+  </p>
+)}
                 </div>
 
                 {/* Terms Agreement */}
