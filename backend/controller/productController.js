@@ -132,24 +132,31 @@ export const listProducts = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const [products, total] = await Promise.all([
-  Product.find({}).sort({ _id: 1 }).skip(skip).limit(limit).lean(),
-  Product.countDocuments({}),
-]);
-const productsWithReviewCount = await Promise.all(
-  products.map(async (product) => {
-    const reviewCount = await Review.countDocuments({
-      productId: product._id,
+      Product.find({}).sort({ _id: 1 }).skip(skip).limit(limit).lean(),
+      Product.countDocuments({}),
+    ]);
+    const productsWithReviewCount = await Promise.all(
+      products.map(async (product) => {
+        const reviewCount = await Review.countDocuments({
+          productId: product._id,
+        });
+
+        return {
+          ...product,
+          reviewCount,
+        };
+      })
+    );
+
+    // Add cache control headers for public product listing
+    // Cache for 5 minutes, allow stale content while revalidating
+    res.set({
+      "Cache-Control": "public, max-age=300, stale-while-revalidate=60",
+      "Vary": "Accept-Encoding",
     });
 
-    return {
-      ...product,
-      reviewCount,
-    };
-  })
-);
-
     return res.status(200).json({
-      products : productsWithReviewCount,
+      products: productsWithReviewCount,
       pagination: {
         page,
         limit,
