@@ -2,21 +2,12 @@ import { Server } from "socket.io";
 import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import Notification from "../model/notificationModel.js";
+import { socketCorsOptions } from "../config/cors.js";
 
 let io = null;
 
 export const initSocket = (server) => {
-  io = new Server(server, {
-    cors: {
-      origin: [
-        "https://riveto-frontend2.onrender.com",
-        "https://riveto-admin4.onrender.com",
-        "http://localhost:5173",
-        "http://localhost:5174",
-      ],
-      credentials: true,
-    },
-  });
+  io = new Server(server, socketCorsOptions);
 
   io.use((socket, next) => {
     try {

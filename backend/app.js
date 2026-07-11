@@ -18,19 +18,12 @@ import reviewRoutes from "./routes/reviewRoute.js";
 import wishlistRouter from "./routes/wishlistRoutes.js";
 import recommendationsRoute from "./routes/recommendations.js";
 import { globalIpLimiter } from "./middleware/rateLimiters.js";
+import { corsOptions } from "./config/cors.js";
 
 const app = express();
 
 app.set("trust proxy", 1);
-app.use(cors({
-  origin: [
-    "https://riveto-frontend2.onrender.com",
-    "https://riveto-admin4.onrender.com",
-    "http://localhost:5173",
-    "http://localhost:5174",
-  ],
-  credentials: true,
-}));
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api", globalIpLimiter);
