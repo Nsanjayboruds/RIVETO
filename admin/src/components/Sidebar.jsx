@@ -40,7 +40,7 @@ useEffect(() => {
 }, [location.pathname]);
 
   return (
-    <div className="w-20 md:w-64 min-h-screen bg-gradient-to-b ffrom-slate-900 via-blue-900 to-slate-900 border-r border-gray-200 py-16 fixed left-0 top-0 shadow-lg z-40 transition-all duration-300">
+    <div className="w-20 md:w-64 min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-slate-900 border-r border-gray-200 py-16 fixed left-0 top-0 shadow-lg z-40 transition-all duration-300">
       <div className="flex flex-col gap-2 pt-8 px-4 text-base">
         {menuItems.map((item) => (
           <div
