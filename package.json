@@ -21,6 +21,9 @@
     ],
     "backend/**/*.js": [
       "npm --prefix backend run lint:fix --"
+    ],
+    "admin/**/*.{js,jsx}": [
+      "npm --prefix admin run lint:fix --"
     ]
   }
 }
