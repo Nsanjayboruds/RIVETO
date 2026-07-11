@@ -142,6 +142,12 @@ export const refreshToken = async (req, res) => {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
 
+    // Check if the stored refresh token has expired
+    if (storedToken.expiresAt && storedToken.expiresAt < new Date()) {
+      await RefreshToken.findByIdAndDelete(storedToken._id);
+      return res.status(403).json({ message: "Refresh token expired, please login again" });
+    }
+
     const newAccessToken = generateAccessToken(decoded.id);
     const newRefreshToken = generateRefreshToken(decoded.id);
 
