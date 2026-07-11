@@ -1,37 +1,31 @@
-version: "3.8"
-
 services:
   # MongoDB Service (Secured & Reliable)
   mongo:
-    image: mongo:7.0 # <--- PINNED VERSION (was latest)
+    image: mongo:7.0
     container_name: riveto_mongo
     restart: always
     ports:
       - "27017:27017"
     environment:
-      # <--- AUTHENTICATION ADDED
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: examplepassword
     volumes:
       - mongo-data:/data/db
     networks:
       - riveto-network
-    # <--- HEALTH CHECK ADDED
-    # This checks if Mongo is actually ready to accept connections
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
       interval: 10s
       timeout: 10s
       retries: 5
       start_period: 40s
-    # <--- RESOURCE LIMITS ADDED
     deploy:
       resources:
         limits:
-          cpus: "1.0" # Max 1 CPU core
-          memory: 1G # Max 1GB RAM
+          cpus: "1.0"
+          memory: 1G
         reservations:
-          memory: 256M # Guarantees at least 256MB
+          memory: 256M
 
   # Backend Service
   backend:
@@ -45,13 +39,18 @@ services:
     env_file:
       - ./backend/.env
     environment:
-      # <--- UPDATED URI WITH AUTH CREDENTIALS
       - MONGO_URI=mongodb://root:examplepassword@mongo:27017/riveto?authSource=admin
     depends_on:
       mongo:
-        condition: service_healthy # <--- WAITS FOR HEALTH CHECK
+        condition: service_healthy
     networks:
       - riveto-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:5000/', (r) => r.statusCode === 200 ? process.exit(0) : process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Frontend Service
   frontend:
@@ -64,6 +63,24 @@ services:
       - /app/node_modules
     env_file:
       - ./frontend/.env
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+    networks:
+      - riveto-network
+
+  # Admin Service
+  admin:
+    build: ./admin
+    container_name: riveto_admin
+    ports:
+      - "5174:5173"
+    volumes:
+      - ./admin:/app
+      - /app/node_modules
+    env_file:
+      - ./admin/.env
     stdin_open: true
     tty: true
     depends_on:
