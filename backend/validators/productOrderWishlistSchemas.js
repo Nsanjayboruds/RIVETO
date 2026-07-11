@@ -2,25 +2,27 @@ import Joi from "joi";
 
 // Product Creation
 export const productCreateSchema = Joi.object({
-  name: Joi.string().trim().min(2).required(),
+  name: Joi.string().trim().min(2).max(200).required(),
 
-  description: Joi.string().trim().required(),
+  description: Joi.string().trim().required().max(2000),
 
   price: Joi.number().positive().required(),
 
-  category: Joi.string().required(),
+  category: Joi.string().trim().required().valid("Men", "Women", "Kids", "Accessories", "Footwear", "Beauty", "Home", "Sports", "Electronics", "Other"),
 
-  subCategory: Joi.string().required(),
+  subCategory: Joi.string().trim().required(),
 
   sizes: Joi.alternatives().try(
-    Joi.array().items(Joi.string()),
-    Joi.string()
+    Joi.array().items(Joi.string().trim()).min(1),
+    Joi.string().trim()
   ),
 
   bestseller: Joi.alternatives().try(
     Joi.boolean(),
     Joi.string()
   ),
+
+  rating: Joi.number().min(0).max(5),
 });
 
 // Product Delete Params
