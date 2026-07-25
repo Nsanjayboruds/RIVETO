@@ -97,7 +97,7 @@ function Order() {
 
   const statusSteps = [
     {
-      name: 'Order Placed',
+      name: 'Placed',
       icon: FaShoppingBag,
       color: 'from-blue-500 to-cyan-500',
     },
@@ -331,7 +331,9 @@ function Order() {
                         <span
                           className={`font-medium ${getStatusColor(item.status)}`}
                         >
-                          {item.status || 'Processing'}
+                          {item.status === 'Order Placed'
+                            ? 'Placed'
+                            : item.status || 'Processing'}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-gray-400">
