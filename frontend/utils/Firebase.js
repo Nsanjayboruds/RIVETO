@@ -15,7 +15,9 @@ const missingFirebaseEnv = requiredFirebaseEnv.filter(
 );
 
 if (missingFirebaseEnv.length > 0) {
-  const message = `Configuration error: missing environment variables (${missingFirebaseEnv.join(
+  // Keep the detailed message out of the DOM to avoid exposing
+  // internal environment variable names to end users.
+  const devMessage = `Configuration error: missing environment variables (${missingFirebaseEnv.join(
     ', '
   )}). The site owner needs to add these in the hosting dashboard.`;
 
@@ -23,12 +25,12 @@ if (missingFirebaseEnv.length > 0) {
   // to avoid leaving the user with a silent blank white screen.
   document.body.innerHTML = `
     <div style="font-family: sans-serif; max-width: 480px; margin: 80px auto; padding: 24px; text-align: center; color: #333;">
-      <h2 style="color:#c0392b;">Something's misconfigured</h2>
-      <p>${message}</p>
+      <h2 style="color:#c0392b;">We're currently unavailable</h2>
+      <p>This application is temporarily unavailable due to a configuration issue. Please try again later or contact support.</p>
     </div>
   `;
 
-  throw new Error(message);
+  throw new Error(devMessage);
 }
 
 const firebaseConfig = {
