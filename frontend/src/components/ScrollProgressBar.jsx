@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "../styles/ScrollProgressBar.css";
 
 const ScrollProgressBar = () => {
   const [progress, setProgress] = useState(0);
@@ -23,22 +22,10 @@ const ScrollProgressBar = () => {
   }, []);
 
   return (
-    <div style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "4px",
-      background: "rgba(0,0,0,0.08)",
-      zIndex: 9999,
-    }}>
-      <div style={{
-        height: "100%",
-        width: `${progress}%`,
-        transition: "width 0.08s linear",
-        borderRadius: "0 2px 2px 0",
-      }}
-      className="progress-fill"
+    <div className="fixed top-0 left-0 w-full h-1 bg-black/10 dark:bg-white/10 z-[9999]">
+      <div
+        style={{ width: `${progress}%`, transition: "width 0.08s linear" }}
+        className="h-full rounded-r-sm bg-gradient-to-r from-blue-500 to-purple-500"
       />
     </div>
   );
