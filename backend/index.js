@@ -13,6 +13,12 @@ import wishlistRouter from "./routes/wishlistRoutes.js";
 import recommendationsRoute from "./routes/recommendations.js";
 import { globalIpLimiter } from "./middleware/rateLimiters.js";
 import errorHandler from "./middleware/errorHandler.js";
+import express from "express";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import notificationRouter from "./routes/notificationRoutes.js";
+import botRoute from "./routes/bot.js";
 
 
 const PORT = process.env.PORT || 3000;
@@ -27,6 +33,8 @@ if (process.env.NODE_ENV !== "production") {
     next();
   });
 }
+
+app.use(globalIpLimiter);
 
 // API routes
 app.use("/api/auth", authRoutes);
