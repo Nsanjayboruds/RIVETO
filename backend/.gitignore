@@ -25,3 +25,5 @@ Thumbs.db
 # Build outputs
 dist/
 build/
+dummy.png
+scripts/

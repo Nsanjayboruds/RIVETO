@@ -1,5 +1,6 @@
 import User from "../model/userModel.js";
 import { emitActivity } from "../services/notificationService.js";
+import logger from "../config/logger.js";
 
 // ✅ Add to cart
 export const addToCart = async (req, res) => {
@@ -33,7 +34,7 @@ export const addToCart = async (req, res) => {
 
     return res.status(201).json({ message: "Added to cart" });
   } catch (error) {
-    console.log("addToCart error:", error);
+    logger.error("addToCart error", { error: error.message });
     return res.status(500).json({ message: "addToCart error" });
   }
 };
@@ -62,7 +63,7 @@ export const updateCart = async (req, res) => {
 
     return res.status(201).json({ message: "Cart updated" });
   } catch (error) {
-    console.log("updateCart error:", error);
+    logger.error("updateCart error", { error: error.message });
     return res.status(500).json({ message: "updateCart error" });
   }
 };
@@ -73,7 +74,20 @@ export const getUserCart = async (req, res) => {
     const userData = await User.findById(req.userId);
     return res.status(200).json(userData.cartData || {});
   } catch (error) {
-    console.log("getUserCart error:", error);
+    logger.error("getUserCart error", { error: error.message });
     return res.status(500).json({ message: "getUserCart error" });
+  }
+};
+// ✅ Clear cart entirely
+export const clearCart = async (req, res) => {
+  try {
+    const userId = req.userId;
+    if (!userId) return res.status(400).json({ message: "Missing user ID" });
+
+    await User.findByIdAndUpdate(userId, { cartData: {} });
+    return res.status(200).json({ message: "Cart cleared successfully" });
+  } catch (error) {
+    logger.error("clearCart error:", {error: error.message});
+    return res.status(500).json({ message: "clearCart error" });
   }
 };

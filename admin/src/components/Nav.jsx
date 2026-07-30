@@ -34,7 +34,7 @@ function Nav() {
   const logout = async () => {
     setIsLoggingOut(true);
     try {
-      const result = await axios.get(`${serverUrl}/api/auth/logout`, {
+      const result = await axios.post(`${serverUrl}/api/auth/logout`, {}, {
         withCredentials: true,
       });
       console.log(result.data);

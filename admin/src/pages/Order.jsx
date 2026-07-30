@@ -54,7 +54,7 @@ function Order() {
   // Get unique status values for filter
   const statusOptions = [
     "All",
-    "Order Placed",
+    "Placed",
     "Packing",
     "Shipped",
     "Out for delivery",
@@ -65,11 +65,17 @@ function Order() {
   const filteredOrders =
     filterStatus === "All"
       ? orders
-      : orders.filter((order) => order.status === filterStatus);
+      : orders.filter((order) => {
+          if (filterStatus === "Placed") {
+            return order.status === "Placed" || order.status === "Order Placed";
+          }
+          return order.status === filterStatus;
+        });
 
   // Status color mapping
   const statusColors = {
-    "Order Placed": "bg-blue-500",
+    Placed: "bg-blue-500",
+    "Order Placed": "bg-blue-500", // backward compatibility for legacy records
     Packing: "bg-amber-500",
     Shipped: "bg-indigo-500",
     "Out for delivery": "bg-purple-500",
@@ -263,7 +269,9 @@ function Order() {
                             statusColors[order.status] || "bg-slate-600"
                           } text-white`}
                         >
-                          {order.status}
+                          {order.status === "Order Placed"
+                            ? "Placed"
+                            : order.status}
                         </span>
                       </div>
 
@@ -272,11 +280,15 @@ function Order() {
                           Update Status
                         </label>
                         <select
-                          value={order.status}
+                          value={
+                            order.status === "Order Placed"
+                              ? "Placed"
+                              : order.status
+                          }
                           onChange={(e) => statusHandler(e, order._id)}
                           className="w-full bg-slate-700/40 border border-slate-600 rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all cursor-pointer"
                         >
-                          <option value="Order Placed">Order Placed</option>
+                          <option value="Placed">Placed</option>
                           <option value="Packing">Packing</option>
                           <option value="Shipped">Shipped</option>
                           <option value="Out for delivery">

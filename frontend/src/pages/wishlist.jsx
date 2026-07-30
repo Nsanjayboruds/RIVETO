@@ -10,12 +10,8 @@ import { FaHeart, FaTrash } from 'react-icons/fa';
 
 function Wishlist() {
   const {
-    wishlist,
-    fetchWishlist,
-    currency,
-    removeFromWishlist,
-    loadingWishlist,
-    wishlistError,
+    wishlist, fetchWishlist, currency, removeFromWishlist,
+    loadingWishlist, wishlistError,
   } = useContext(shopDataContext);
 
   const navigate = useNavigate();

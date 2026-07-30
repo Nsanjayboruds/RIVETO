@@ -3,6 +3,7 @@ import isAuth from "../middleware/isAuth.js";
 import adminAuth from "../middleware/adminAuth.js";
 import Notification from "../model/notificationModel.js";
 import { userRateLimiter, adminRateLimiter } from "../middleware/rateLimiters.js";
+import logger from "../config/logger.js";
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.get("/", isAuth, userRateLimiter, async (req, res) => {
       .limit(100);
     return res.status(200).json(notifications);
   } catch (error) {
-    console.error("Error fetching user notifications:", error);
+    logger.error("Error fetching user notifications", { error: error.message });
     return res.status(500).json({ message: "Server error fetching notifications" });
   }
 });
@@ -27,7 +28,7 @@ router.get("/admin", adminAuth, adminRateLimiter, async (req, res) => {
       .limit(100);
     return res.status(200).json(notifications);
   } catch (error) {
-    console.error("Error fetching admin notifications:", error);
+    logger.error("Error fetching admin notifications", { error: error.message });
     return res.status(500).json({ message: "Server error fetching admin notifications" });
   }
 });
@@ -38,7 +39,7 @@ router.put("/read-all-user", isAuth, userRateLimiter, async (req, res) => {
     await Notification.updateMany({ userId: req.userId, read: false }, { read: true });
     return res.status(200).json({ success: true, message: "All user notifications marked as read" });
   } catch (error) {
-    console.error("Error marking all user notifications read:", error);
+    logger.error("Error marking all user notifications read", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 });
@@ -49,7 +50,7 @@ router.put("/read-all-admin", adminAuth, adminRateLimiter, async (req, res) => {
     await Notification.updateMany({ isAdmin: true, read: false }, { read: true });
     return res.status(200).json({ success: true, message: "All admin notifications marked as read" });
   } catch (error) {
-    console.error("Error marking all admin notifications read:", error);
+    logger.error("Error marking all admin notifications read", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 });
@@ -67,7 +68,7 @@ router.put("/:id/read", async (req, res) => {
     await notification.save();
     return res.status(200).json({ success: true, notification });
   } catch (error) {
-    console.error("Error marking notification read:", error);
+    logger.error("Error marking notification read", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 });
@@ -82,7 +83,7 @@ router.delete("/:id", async (req, res) => {
     }
     return res.status(200).json({ success: true, message: "Notification deleted" });
   } catch (error) {
-    console.error("Error deleting notification:", error);
+    logger.error("Error deleting notification", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 });

@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import logger from "../config/logger.js";
 
 const adminAuth = async (req, res, next) => {
   try {
@@ -12,14 +13,14 @@ const adminAuth = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    if (decoded.email !== process.env.ADMIN_EMAIL) {
+    if (decoded.id !== process.env.ADMIN_EMAIL && decoded.email !== process.env.ADMIN_EMAIL) {
       return res.status(403).json({ message: "Forbidden: Not an admin" });
     }
 
-    req.adminEmail = decoded.email;
+    req.adminEmail = decoded.id || decoded.email;
     next();
   } catch (error) {
-    console.error("admin auth error:", error.message);
+    logger.error("admin auth error", { error: error.message });
     return res
       .status(500)
       .json({ message: "admin auth error: " + error.message });

@@ -41,6 +41,7 @@ import SavedAddresses from './pages/SavedAddresses';
 import Ai from './components/Ai';
 import ComparisonPanel from './components/ComparisonPanel';
 import ScrollProgressBar from "./components/ScrollProgressBar";
+import CommandPalette from './components/CommandPalette';
 
 function App() {
   const { userData } = useContext(userDataContext);
@@ -62,6 +63,7 @@ function App() {
     <>
       <ScrollProgressBar />
       <ToastContainer position="top-center" autoClose={2000} />
+      <CommandPalette />
       {shouldShowNav && <Nav />}
 
       <Routes>

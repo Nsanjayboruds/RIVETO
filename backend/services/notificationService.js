@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import Notification from "../model/notificationModel.js";
+import logger from "../config/logger.js";
 
 let io = null;
 
@@ -42,24 +43,24 @@ export const initSocket = (server) => {
       }
       next();
     } catch (err) {
-      console.error("Socket authentication error:", err.message);
+      logger.error("Socket authentication error", { error: err.message });
       next();
     }
   });
 
   io.on("connection", (socket) => {
-    console.log(`🔌 Client connected: ${socket.id} (Role: ${socket.role || "anonymous"})`);
+    logger.debug(`Client connected: ${socket.id} (Role: ${socket.role || "anonymous"})`);
 
     if (socket.userId && socket.role === "user") {
       socket.join(`user_${socket.userId}`);
-      console.log(`👤 User ${socket.userId} joined room: user_${socket.userId}`);
+      logger.debug(`User ${socket.userId} joined room: user_${socket.userId}`);
     } else if (socket.role === "admin") {
       socket.join("admin");
-      console.log(`👑 Admin joined room: admin`);
+      logger.debug("Admin joined room: admin");
     }
 
     socket.on("disconnect", () => {
-      console.log(`🔌 Client disconnected: ${socket.id}`);
+      logger.debug(`Client disconnected: ${socket.id}`);
     });
   });
 
@@ -95,18 +96,18 @@ export const sendNotification = async ({ userId = null, isAdmin = false, title, 
       type,
     });
 
-    console.log("💾 Notification saved to DB:", notification._id);
+    logger.debug("Notification saved to DB", { notificationId: notification._id });
 
     if (io) {
       if (isAdmin) {
         io.to("admin").emit("notification", notification);
-        console.log("📢 Emitted notification to admin room");
+        logger.debug("Emitted notification to admin room");
       } else if (userId) {
         io.to(`user_${userId}`).emit("notification", notification);
-        console.log(`📢 Emitted notification to user_${userId} room`);
+        logger.debug(` Emitted notification to user_${userId} room`);
       } else {
         io.emit("notification", notification);
-        console.log("📢 Emitted global notification");
+        logger.debug(" Emitted global notification");
       }
     } else {
       console.warn("⚠️ Socket.io not initialized, skipping emit");
@@ -114,6 +115,6 @@ export const sendNotification = async ({ userId = null, isAdmin = false, title, 
 
     return notification;
   } catch (err) {
-    console.error("❌ Error in sendNotification:", err);
+    logger.error("Error in sendNotification", { error: err.message });
   }
 };

@@ -6,6 +6,7 @@ import {
   sendNotification,
   emitActivity,
 } from "../services/notificationService.js";
+import logger from "../config/logger.js";
 
 // 1. Import and initialize the sentiment library
 import Sentiment from 'sentiment';
@@ -132,7 +133,7 @@ export const addReview = async (req, res) => {
       return res.status(409).json({ message: "You have already reviewed this product" });
     }
 
-    console.log(error);
+    logger.error("addReview error", { error: error.message });
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -149,7 +150,44 @@ export const getProductReviews = async (req, res) => {
 
     res.status(200).json(reviews);
   } catch (error) {
-    console.log(error);
+    logger.error("getProductReviews error", { error: error.message });
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const deleteReview = async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+      return res.status(400).json({ message: "Invalid review ID" });
+    }
+
+    const review = await Review.findById(reviewId);
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    if (review.userId.toString() !== req.userId) {
+      return res.status(403).json({
+        message: "You are not authorized to delete this review",
+      });
+    }
+
+    await review.deleteOne();
+
+    const { avgRating, reviewCount } = await recalculateProductRating(
+      review.productId
+    );
+
+    return res.status(200).json({
+      message: "Review deleted successfully",
+      avgRating,
+      reviewCount,
+    });
+  } catch (error) {
+    logger.error("deleteReview error", { error: error.message });
     res.status(500).json({ message: "Server error" });
   }
 };

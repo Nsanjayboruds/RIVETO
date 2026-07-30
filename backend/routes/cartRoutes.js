@@ -3,6 +3,7 @@ import {
   addToCart,
   getUserCart,
   updateCart,
+  clearCart
 } from "../controller/cartController.js";
 import isAuth from "../middleware/isAuth.js";
 import validateRequest from "../middleware/validateRequest.js";
@@ -15,5 +16,6 @@ cartRoutes.use(isAuth, userRateLimiter);
 cartRoutes.post("/get", getUserCart);
 cartRoutes.post("/add", validateRequest(addToCartSchema), addToCart);
 cartRoutes.post("/update", validateRequest(updateCartSchema), updateCart);
+cartRoutes.post('/clear', isAuth, clearCart);
 
 export default cartRoutes;

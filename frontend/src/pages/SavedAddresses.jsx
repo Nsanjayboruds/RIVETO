@@ -136,10 +136,15 @@ function SavedAddresses() {
   };
 
   const onDelete = async (addressId) => {
-    if (!window.confirm('Delete this address?')) return;
+    if (
+  !window.confirm(
+    'Are you sure you want to delete this address?\n\nThis action cannot be undone.'
+  )
+)
+  return;
     try {
       await apiConfig.delete(`/user/address/${addressId}`);
-      toast.success('Address deleted');
+      toast.success('The address has been permanently deleted.');
       await fetchAddresses();
     } catch {
       toast.error('Failed to delete address');

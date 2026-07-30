@@ -14,6 +14,7 @@ import { FiLogIn, FiInfo } from 'react-icons/fi';
 import { IoSearchCircleOutline } from 'react-icons/io5';
 
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Command } from 'lucide-react';
 
 import apiConfig from '../utils/apiConfig';
 
@@ -245,6 +246,20 @@ function Nav() {
             ref={iconsRef}
             className="flex items-center gap-4 md:gap-5 relative"
           >
+            {/* COMMAND PALETTE TRIGGER */}
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-command-palette'))}
+              className="flex items-center gap-2 p-1.5 lg:px-3 lg:py-1.5 rounded-full lg:rounded-lg border border-transparent lg:border-gray-200 lg:dark:border-gray-800 lg:bg-gray-50/50 lg:dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-gray-700 dark:text-gray-300 lg:text-xs lg:text-gray-500 lg:dark:text-gray-400 cursor-pointer"
+              aria-label="Open Command Palette"
+            >
+              <Command className="w-4 h-4" />
+              <span className="hidden lg:inline">Search...</span>
+              <kbd className="pointer-events-none hidden lg:inline-flex h-5 select-none items-center gap-0.5 rounded border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-1.5 font-mono text-[9px] font-medium text-gray-400 dark:text-gray-500">
+                <span>Ctrl</span><span>K</span>
+              </kbd>
+            </button>
+
             {/* SEARCH */}
             <button
               type="button"

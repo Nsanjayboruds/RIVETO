@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import logger from "./logger.js";
 
 export const genToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, {
@@ -13,6 +14,6 @@ export const genToken1 = async (email) => {
     });
     return token;
   } catch (_error) {
-    console.log("token error");
+    logger.error("Token generation error", { error: _error.message });
   }
 };

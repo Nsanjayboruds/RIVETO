@@ -9,7 +9,7 @@ import { RiDeleteBin6Line, RiSubtractLine, RiAddLine, RiShoppingBag3Line } from 
 import { MdLocalOffer } from 'react-icons/md';
 
 function Cart() {
-  const { product, currency, cartItem, UpdateQuantity, loadingCart, cartError, getUserCart } =
+  const { product, currency, cartItem, UpdateQuantity, loadingCart, cartError, getUserCart, clearCartData } =
     useContext(shopDataContext);
   const [cartData, setCartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,6 +53,12 @@ function Cart() {
     }
   };
 
+  const handleClearCart = async () => {
+  if (window.confirm('Are you sure you want to completely empty your cart?')) {
+    await clearCartData();
+  }
+};
+
   const calculateItemTotal = (price, quantity) => {
     return (price * quantity).toFixed(2);
   };
@@ -85,17 +91,30 @@ function Cart() {
       aria-labelledby="cart-page-title"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1
-            id="cart-page-title"
-            className="text-3xl md:text-4xl font-bold text-white mb-2"
-          >
-            Shopping Cart
-          </h1>
-          <p className="text-gray-400">
-            Review and manage your items before checkout
-          </p>
+        {/* Dynamic Header with Clear Cart Button */}
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1
+              id="cart-page-title"
+              className="text-3xl md:text-4xl font-bold text-white mb-2"
+            >
+              Shopping Cart
+            </h1>
+            <p className="text-gray-400">
+              Review and manage your items before checkout
+            </p>
+          </div>
+
+          {cartData.length > 0 && (
+            <button
+              type="button"
+              onClick={handleClearCart}
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 rounded-lg transition-all duration-200 self-start sm:self-center font-medium text-sm"
+            >
+              <RiDeleteBin6Line className="w-4 h-4" />
+              Clear Cart
+            </button>
+          )}
         </div>
 
         {/* Back to Shopping Button */}
@@ -348,5 +367,4 @@ function Cart() {
     </main>
   );
 }
-
 export default Cart;

@@ -4,6 +4,7 @@ import DismissedPick from "../model/dismissedPickModel.js";
 import Product from "../model/productModel.js";
 import User from "../model/userModel.js";
 import Order from "../model/orderModel.js";
+import logger from "../config/logger.js";
 
 // Cap on how many view-history rows we keep per user.
 const MAX_HISTORY = 20;
@@ -45,7 +46,7 @@ export const logView = async (req, res) => {
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error("❌ Error in logView:", error);
+    logger.error("Error in logView", { error: error.message });
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -71,7 +72,7 @@ export const getRecentlyViewed = async (req, res) => {
 
     return res.status(200).json({ success: true, products });
   } catch (error) {
-    console.error("❌ Error in getRecentlyViewed:", error);
+    logger.error("Error in getRecentlyViewed", { error: error.message });
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -84,7 +85,7 @@ export const clearViewHistory = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Viewing history cleared" });
   } catch (error) {
-    console.error("❌ Error in clearViewHistory:", error);
+    logger.error("Error in clearViewHistory", { error: error.message });
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -100,7 +101,7 @@ export const removeViewedItem = async (req, res) => {
     await ViewHistory.deleteOne({ userId: req.userId, productId });
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error("❌ Error in removeViewedItem:", error);
+    logger.error("Error in removeViewedItem", { error: error.message });
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -123,7 +124,7 @@ export const dismissPick = async (req, res) => {
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error("❌ Error in dismissPick:", error);
+    logger.error("Error in dismissPick", { error: error.message });
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -203,7 +204,7 @@ export const getPicksForYou = async (req, res) => {
 
     return res.status(200).json({ success: true, products: picks });
   } catch (error) {
-    console.error("❌ Error in getPicksForYou:", error);
+    logger.error("Error in getPicksForYou", { error: error.message });
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };

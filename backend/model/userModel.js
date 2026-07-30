@@ -38,6 +38,7 @@ const userSchema = new mongoose.Schema(
       required: function () {
         return this.authProvider === "local";
       },
+      select: false,
     },
 
     cartData: {
@@ -57,8 +58,8 @@ const userSchema = new mongoose.Schema(
       default: [],
     },
 
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
+    resetPasswordToken: {type: String, select: false},
+    resetPasswordExpire: {type: Date, select: false},
     githubAccessToken: { type: String, select: false },
   },
   {

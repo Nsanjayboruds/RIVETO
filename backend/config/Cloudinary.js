@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import logger from "./logger.js";
 
 const uploadOnCloudinary = async (filePath) => {
   cloudinary.config({
@@ -18,7 +19,7 @@ const uploadOnCloudinary = async (filePath) => {
     return uploadResult.secure_url; // Return the secure URL of the uploaded image
   } catch (error) {
     fs.unlinkSync(filePath); // Delete the file in case of error
-    console.log(error);
+    logger.error("Cloudinary upload failed", { error: error.message });
   }
 };
 

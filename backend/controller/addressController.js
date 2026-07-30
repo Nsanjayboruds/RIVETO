@@ -1,4 +1,5 @@
 import User from "../model/userModel.js";
+import logger from "../config/logger.js";
 
 const MAX_ADDRESSES = 5;
 
@@ -10,7 +11,7 @@ export const getAddresses = async (req, res) => {
 
     return res.status(200).json(user.addresses);
   } catch (error) {
-    console.error("getAddresses error:", error);
+    logger.error("getAddresses error", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -45,7 +46,7 @@ export const addAddress = async (req, res) => {
       addresses: user.addresses,
     });
   } catch (error) {
-    console.error("addAddress error:", error);
+    logger.error("addAddress error", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -83,7 +84,7 @@ export const updateAddress = async (req, res) => {
       addresses: user.addresses,
     });
   } catch (error) {
-    console.error("updateAddress error:", error);
+    logger.error("updateAddress error", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -118,7 +119,7 @@ export const deleteAddress = async (req, res) => {
       addresses: user.addresses,
     });
   } catch (error) {
-    console.error("deleteAddress error:", error);
+    logger.error("deleteAddress error", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -143,7 +144,7 @@ export const setDefaultAddress = async (req, res) => {
       addresses: user.addresses,
     });
   } catch (error) {
-    console.error("setDefaultAddress error:", error);
+    logger.error("setDefaultAddress error", { error: error.message });
     return res.status(500).json({ message: "Server error" });
   }
 };

@@ -18,6 +18,9 @@ import reviewRoutes from "./routes/reviewRoute.js";
 import wishlistRouter from "./routes/wishlistRoutes.js";
 import recommendationsRoute from "./routes/recommendations.js";
 import { globalIpLimiter } from "./middleware/rateLimiters.js";
+import morgan from "morgan";
+import logger from "./config/logger.js";
+import requestId from "./middleware/requestId.js";
 
 const app = express();
 
@@ -33,6 +36,14 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use(express.json());
+app.use(requestId);
+
+morgan.token("id", (req) => req.id);
+const morganFormat = process.env.NODE_ENV === "production"
+  ? ":id :method :url :status :res[content-length] - :response-time ms"
+  : ":id :method :url :status :response-time ms";
+app.use(morgan(morganFormat, { stream: { write: (msg) => logger.info(msg.trim()) } }));
+
 app.use("/api", globalIpLimiter);
 
 // API routes

@@ -206,6 +206,26 @@ function ShopContext({ children }) {
     return totalAmount;
   };
 
+  const clearCartData = async () => {
+    // Instantly clear frontend state for immediate UI feedback
+    setCartItem({});
+
+    if (!userData) {
+      return;
+    }
+
+    try {
+      await apiConfig.post('/cart/clear');
+      toast.success('Cart cleared successfully');
+    } catch (error) {
+      console.log('clearCartData frontend error:', error);
+      toast.error(error.response?.data?.message || 'Failed to clear cart on server');
+
+      // Fallback: reload cart if backend call failed to sync state
+      getUserCart();
+    }
+  };
+
   const toggleCompare = (product) => {
     setCompareList((prev) => {
       const exists = prev.find((item) => item._id === product._id);
@@ -275,15 +295,14 @@ function ShopContext({ children }) {
     getCartCount,
     setCartItem,
     UpdateQuantity,
+    clearCartData,
     getCartAmount,
     compareList,
     toggleCompare,
     removeFromCompare,
     comparePanelOpen,
     toggleComparePanel,
-    wishlist,
-    loadingWishlist,
-    wishlistError,
+    wishlist, loadingWishlist, wishlistError,
     addToWishlist,
     fetchWishlist,
     removeFromWishlist,

@@ -11,12 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-three/drei": "^10.6.1",
     "@react-three/fiber": "^9.3.0",
     "@tailwindcss/vite": "^4.1.10",
-    "@untitledui/icons-react": "^0.3.0",
     "axios": "^1.10.0",
-    "clsx": "^2.1.1",
     "firebase": "^11.9.1",
     "framer-motion": "^12.18.1",
     "gsap": "^3.13.0",
@@ -35,11 +32,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.39.2",
-    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",

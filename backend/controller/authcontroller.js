@@ -13,6 +13,7 @@ import {
   sendNotification,
   emitActivity,
 } from "../services/notificationService.js";
+import logger from "../config/logger.js";
 
 const generateAccessToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
@@ -72,7 +73,7 @@ export const sendOTP = async (req, res) => {
       message: "OTP sent successfully",
     });
   } catch (_error) {
-    console.log("registration error:", _error);
+    logger.error("registration error", { error: _error.message });
     return res.status(500).json({ message: `registration error: ${_error}` });
   }
 };
@@ -101,6 +102,8 @@ export const verifyOTP = async (req, res) => {
       password: tempUser.password,
     });
 
+    user.password=undefined;
+
     await TempUser.deleteOne({ email });
 
     sendNotification({
@@ -125,7 +128,7 @@ export const verifyOTP = async (req, res) => {
       user,
     });
   } catch (_error) {
-    console.log("verifyOTP error:", _error);
+    logger.error("verifyOTP error", { error: _error.message });
     return res.status(500).json({ message: "OTP verification failed" });
   }
 };
@@ -175,7 +178,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) return res.status(400).json({ message: "User not found" });
     if (!user.password) {
       return res.status(400).json({
@@ -223,9 +226,11 @@ export const login = async (req, res) => {
       action: "User logged in",
     });
 
+    user.password=undefined;
     return res.status(200).json(user);
   } catch (_error) {
-    console.log("login error:", _error);
+     logger.error("login error", { error: _error.message });
+    
     return res.status(500).json({ message: `login error: ${_error}` });
   }
 };
@@ -266,9 +271,11 @@ export const googleLogin = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    user.password=undefined;
     return res.status(200).json(user);
   } catch (_error) {
-    console.log("google login error:", _error);
+    logger.error("google login error", { error: _error.message });
+    
     return res.status(500).json({ message: `google login error: ${_error}` });
   }
 };
@@ -293,6 +300,18 @@ export const logOut = async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
 
+    res.clearCookie("adminToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
+
+    res.clearCookie("adminRefreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
+
     emitActivity({
       type: "logout",
       user: req.user ? { id: req.user.id, email: req.user.email } : {},
@@ -301,7 +320,7 @@ export const logOut = async (req, res) => {
 
     return res.status(200).json({ message: "Logged out successfully" });
   } catch (_error) {
-    console.log("logout error:", _error);
+    logger.error("logout error", { error: _error.message });
     return res.status(500).json({ message: `logout error: ${_error}` });
   }
 };
@@ -317,13 +336,6 @@ export const adminLogin = async (req, res) => {
       
       const accessToken = generateAccessToken(email);
       const refreshToken = generateRefreshToken(email);
-
-      
-      await RefreshToken.create({
-        userId: email,
-        tokenHash: await bcrypt.hash(refreshToken, 10),
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      });
 
       res.cookie("adminToken", accessToken, {
         httpOnly: true,
@@ -343,7 +355,7 @@ export const adminLogin = async (req, res) => {
     }
     return res.status(400).json({ message: "Invalid admin credentials" });
   } catch (_error) {
-    console.log("admin login error:", _error);
+    logger.error("admin login error", { error: _error.message });
     return res.status(500).json({ message: `admin login error: ${_error}` });
   }
 };
@@ -378,7 +390,7 @@ export const forgotPassword = async (req, res) => {
     const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
     if (process.env.NODE_ENV !== "production") {
-      console.log(`[DEV MODE] PASSWORD RESET LINK: ${resetUrl}`);
+      logger.debug(`[DEV MODE] PASSWORD RESET LINK: ${resetUrl}`);
     }
 
     const message = `
@@ -392,7 +404,7 @@ export const forgotPassword = async (req, res) => {
       res.status(200).json({ success: true, message: "Email sent" });
     } catch (_error) {
       if (process.env.NODE_ENV !== "production") {
-        console.log("[DEV MODE] Email failed, but token saved for local testing.");
+        logger.warn("[DEV MODE] Email failed, but token saved for local testing.");
         return res.status(200).json({ success: true, message: "Reset link generated (check console)" });
       }
 
@@ -400,7 +412,7 @@ export const forgotPassword = async (req, res) => {
       user.resetPasswordExpire = undefined;
       await user.save();
       
-      console.error("EMAIL SENDING FAILED:", _error.message);
+      logger.error("Email sending failed", { error: _error.message });
       return res.status(500).json({ 
         message: "Email could not be sent. Please check SMTP configuration (EMAIL_USER/EMAIL_PASS)." 
       });

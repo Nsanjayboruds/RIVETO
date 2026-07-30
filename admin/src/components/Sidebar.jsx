@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { FaRectangleList } from "react-icons/fa6";
 import { SiTicktick } from "react-icons/si";
@@ -7,7 +7,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 function Sidebar() {
   let navigate = useNavigate();
   const location = useLocation();
-  const [activeItem, setActiveItem] = useState(location.pathname);
+  const [activeItem, setActiveItem] = useState(() => {
+  return localStorage.getItem("activeSidebarItem") || location.pathname;
+});
 
   const menuItems = [
     {
@@ -28,9 +30,14 @@ function Sidebar() {
   ];
 
   const handleNavigation = (path) => {
-    setActiveItem(path);
-    navigate(path);
-  };
+  setActiveItem(path);
+  localStorage.setItem("activeSidebarItem", path);
+  navigate(path);
+};
+useEffect(() => {
+  setActiveItem(location.pathname);
+  localStorage.setItem("activeSidebarItem", location.pathname);
+}, [location.pathname]);
 
   return (
     <div className="w-20 md:w-64 min-h-screen bg-gradient-to-b ffrom-slate-900 via-blue-900 to-slate-900 border-r border-gray-200 py-16 fixed left-0 top-0 shadow-lg z-40 transition-all duration-300">

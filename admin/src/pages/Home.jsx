@@ -10,6 +10,7 @@ import {
   FiTrendingUp,
   FiActivity,
 } from "react-icons/fi";
+import EmptyState from '../components/EmptyState';
 
 function Home() {
   const [totalProducts, setTotalProducts] = useState(0);
@@ -162,9 +163,10 @@ function Home() {
             </h3>
             <div className="space-y-3">
               {activities.length === 0 ? (
-                <p className="text-gray-400 text-sm">
-                  Waiting for user activity...
-                </p>
+                <EmptyState 
+                  title="No Live Activity Found" 
+                  description="We are waiting for socket connection events. Real-time store activities like user logins, orders, or carts will stream here instantly."
+                />
               ) : (
                 activities.map((activity, index) => (
                   <div
@@ -172,22 +174,22 @@ function Home() {
                     className="flex items-center space-x-3 p-3 hover:bg-gray-800/30 rounded-lg transition-colors"
                   >
                     <div
-  className={`w-2 h-2 rounded-full ${
-    activity.type === "login"
-      ? "bg-green-400"
-      : activity.type === "logout"
-      ? "bg-red-400"
-      : activity.type.includes("order")
-      ? "bg-purple-400"
-      : activity.type.includes("product")
-      ? "bg-blue-400"
-      : activity.type.includes("review")
-      ? "bg-yellow-400"
-      : activity.type.includes("cart")
-      ? "bg-cyan-400"
-      : "bg-pink-400"
-  }`}
-></div>
+                      className={`w-2 h-2 rounded-full ${
+                        activity.type === "login"
+                          ? "bg-green-400"
+                          : activity.type === "logout"
+                          ? "bg-red-400"
+                          : activity.type.includes("order")
+                          ? "bg-purple-400"
+                          : activity.type.includes("product")
+                          ? "bg-blue-400"
+                          : activity.type.includes("review")
+                          ? "bg-yellow-400"
+                          : activity.type.includes("cart")
+                          ? "bg-cyan-400"
+                          : "bg-pink-400"
+                      }`}
+                    ></div>
 
                     <p className="text-sm text-gray-300">
                       {activity.user?.name || "User"} — {activity.action}

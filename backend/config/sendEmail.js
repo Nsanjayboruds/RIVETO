@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import logger from "./logger.js";
 
 dotenv.config();
 
@@ -13,9 +14,9 @@ const transporter = nodemailer.createTransport({
 
 transporter.verify((err) => {
   if (err) {
-    console.log("SMTP ERROR =>", err);
+    logger.warn("SMTP verification failed", { error: err.message });
   } else {
-    console.log("SMTP SERVER READY");
+    logger.info("SMTP server ready");
   }
 });
 
@@ -28,9 +29,9 @@ export const sendMail = async (email, htmlContent) => {
       html: htmlContent,
     });
 
-    console.log("Email sent:", info.response);
+    logger.info("Email sent", { response: info.response });
   } catch (_error) {
-    console.error("Error sending email");
+    logger.error("Error sending email", { error: _error.message });
     throw new Error("Email could not be sent");
   }
 };

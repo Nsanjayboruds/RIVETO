@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { shopDataContext } from '../context/ShopContext';
 import { toast } from 'react-toastify';
 import { userDataContext } from '../context/UserContext';
@@ -10,6 +10,7 @@ import RelatedProduct from '../components/RelatedProduct';
 import { recordGuestView } from '../utils/guestViewHistory';
 
 function ProductDetail() {
+  const navigate = useNavigate();
   const { userData } = useContext(userDataContext);
   const { productId } = useParams();
 
@@ -33,6 +34,7 @@ function ProductDetail() {
   const [activeTab, setActiveTab] = useState('description');
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isCartActionTriggered, setIsCartActionTriggered] = useState(false);
   const sizeGroupRef = useRef(null);
 
   const [reviews, setReviews] = useState([]);
@@ -106,6 +108,7 @@ function ProductDetail() {
       setSelectedImage(found.image1);
     }
 
+    setIsCartActionTriggered(false);
     fetchReviews();
   }, [productId, product, fetchReviews]);
 
@@ -137,6 +140,7 @@ function ProductDetail() {
 
     addtoCart(productData._id, size, quantity);
     toast.success(`${quantity} x ${productData.name} added to cart!`);
+    setIsCartActionTriggered(true);
   };
 
   const handleAddToWishlist = () => {
@@ -202,6 +206,30 @@ function ProductDetail() {
     setReviewComment(userReview.comment);
     setIsEditingReview(true);
   };
+
+  const handleDeleteReview = async () => {
+  if (!userReview) return;
+
+  const confirmed = window.confirm(
+    'Are you sure you want to delete your review?'
+  );
+
+  if (!confirmed) return;
+
+  try {
+    const response = await apiConfig.delete(`/review/${userReview._id}`);
+
+    toast.success(response.data.message);
+
+    setReviewComment('');
+    setReviewRating(5);
+    setIsEditingReview(false);
+
+    fetchReviews();
+  } catch {
+    // API errors are shown by the global interceptor.
+  }
+};
 
   const handleCancelEdit = () => {
     setReviewComment('');
@@ -471,12 +499,11 @@ function ProductDetail() {
 
             <button
               type="button"
-              onClick={handleAddToCart}
+              onClick={isCartActionTriggered ? () => navigate('/cart') : handleAddToCart}
               className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg flex items-center justify-center gap-3"
             >
               <FaShoppingCart aria-hidden="true" />
-              Add to Cart - {currency}
-              {(productData.price * quantity).toLocaleString()}
+              {isCartActionTriggered ? 'Go to Cart' : `Add to Cart - ${currency}${(productData.price * quantity).toLocaleString()}`}
             </button>
 
             <div className="flex gap-3">
@@ -567,45 +594,58 @@ function ProductDetail() {
                 className="space-y-6"
               >
                 {userReview && !isEditingReview ? (
-                  <div className="bg-slate-100 dark:bg-gray-800/50 p-6 rounded-xl border border-cyan-400/40">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
-                        Your Review
-                      </h3>
-                      <button
-                        type="button"
-                        onClick={handleEditReview}
-                        className="text-cyan-400 hover:text-cyan-300 text-sm font-medium"
-                      >
-                        Edit Review
-                      </button>
-                    </div>
-                    <div className="flex items-center gap-1 mb-2" aria-hidden="true">
-                      {[...Array(userReview.rating)].map((_, i) => (
-                        <FaStar key={i} className="text-yellow-400" />
-                      ))}
-                      
-                      {/* Integrated Sentiment Badge for Current User's Review */}
-                      {userReview.sentimentLabel === 'Positive' && (
-                        <span className="ml-3 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800">
-                          Helpful Positive
-                        </span>
-                      )}
-                      {userReview.sentimentLabel === 'Negative' && (
-                        <span className="ml-3 px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800">
-                          Critical Review
-                        </span>
-                      )}
+  <div className="bg-slate-100 dark:bg-gray-800/50 p-6 rounded-xl border border-cyan-400/40">
+    <div className="flex items-center justify-between mb-4">
+      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
+        Your Review
+      </h3>
 
-                    </div>
-                    <p className="text-slate-700 dark:text-gray-300">
-                      {userReview.comment}
-                    </p>
-                    <p className="text-slate-500 dark:text-gray-400 text-sm mt-3">
-                      {new Date(userReview.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                ) : (
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={handleEditReview}
+          className="text-cyan-400 hover:text-cyan-300 text-sm font-medium"
+        >
+          Edit Review
+        </button>
+
+        <button
+          type="button"
+          onClick={handleDeleteReview}
+          className="text-red-500 hover:text-red-400 text-sm font-medium"
+        >
+          Delete Review
+        </button>
+      </div>
+    </div>
+
+    <div className="flex items-center gap-1 mb-2" aria-hidden="true">
+      {[...Array(userReview.rating)].map((_, i) => (
+        <FaStar key={i} className="text-yellow-400" />
+      ))}
+
+      {userReview.sentimentLabel === 'Positive' && (
+        <span className="ml-3 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800">
+          Helpful Positive
+        </span>
+      )}
+
+      {userReview.sentimentLabel === 'Negative' && (
+        <span className="ml-3 px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800">
+          Critical Review
+        </span>
+      )}
+    </div>
+
+    <p className="text-slate-700 dark:text-gray-300">
+      {userReview.comment}
+    </p>
+
+    <p className="text-slate-500 dark:text-gray-400 text-sm mt-3">
+      {new Date(userReview.createdAt).toLocaleDateString()}
+    </p>
+  </div>
+) : (
                   <div className="bg-slate-100 dark:bg-gray-800/50 p-6 rounded-xl border border-slate-200 dark:border-gray-700/60">
                     <h3 className="text-xl font-semibold mb-4 text-slate-900 dark:text-white">
                       {isEditingReview ? 'Edit Your Review' : 'Write a Review'}

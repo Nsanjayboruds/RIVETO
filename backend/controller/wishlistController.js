@@ -1,5 +1,6 @@
 import User from "../model/userModel.js";
 import { emitActivity } from "../services/notificationService.js";
+import logger from "../config/logger.js";
 
 
 // add product
@@ -36,11 +37,12 @@ export const addToWishlist = async (req, res) => {
 
   } catch (error) {
 
-    console.log(error);
+    logger.error("addToWishlist error", { error: error.message });
 
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Server error",
+      errors: [error.message],
     });
   }
 };
@@ -81,11 +83,12 @@ export const removeFromWishlist = async (req, res) => {
 
   } catch (error) {
 
-    console.log(error);
+    logger.error("removeFromWishlist error", { error: error.message });
 
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Server error",
+      errors: [error.message],
     });
   }
 };
@@ -107,11 +110,12 @@ export const getWishlist = async (req, res) => {
 
   } catch (error) {
 
-    console.log(error);
+    logger.error("getWishlist error", { error: error.message });
 
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Server error",
+      errors: [error.message],
     });
   }
 };

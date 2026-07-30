@@ -2,6 +2,7 @@ import uploadOnCloudinary from "../config/Cloudinary.js";
 import Product from "../model/productModel.js";
 import { emitActivity } from "../services/notificationService.js";
 import Review from "../model/reviewModel.js";
+import logger from "../config/logger.js";
 
 const safeUpload = async (fileArray) => {
   const filePath = fileArray?.[0]?.path;
@@ -23,7 +24,7 @@ const safeUpload = async (fileArray) => {
 };
 
 export const addProduct = async (req, res) => {
-  console.log("✅ Request files:", req.files);
+  logger.debug("Request files received", { files: req.files });
 
   try {
     const {
@@ -36,7 +37,7 @@ export const addProduct = async (req, res) => {
       bestseller,
     } = req.body;
 
-    console.log("✅ Request body:", req.body);
+    logger.debug("Request body received", { body: req.body });
 
     // Upload images in parallel and tolerate missing files.
     const [image1, image2, image3, image4] = await Promise.all([
@@ -49,9 +50,11 @@ export const addProduct = async (req, res) => {
     // Validate price before creating the product.
     const priceNumber = Number(price);
     if (price === undefined || price === null || Number.isNaN(priceNumber)) {
-      return res
-        .status(400)
-        .json({ message: "Invalid price. A numeric value is required." });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid price. A numeric value is required.",
+        errors: [],
+      });
     }
 
     // Safely parse sizes; handle invalid JSON or missing sizes gracefully.
@@ -61,22 +64,28 @@ export const addProduct = async (req, res) => {
         try {
           parsedSizes = JSON.parse(sizes);
           if (!Array.isArray(parsedSizes)) {
-            return res
-              .status(400)
-              .json({ message: "Invalid sizes: expected a JSON array." });
+            return res.status(400).json({
+              success: false,
+              message: "Invalid sizes: expected a JSON array.",
+              errors: [],
+            });
           }
         } catch (parseError) {
-          console.error("❌ Invalid sizes JSON in addProduct:", parseError);
-          return res.status(400).json({ message: "Invalid sizes JSON." });
+          logger.error("Invalid sizes JSON in addProduct", { error: parseError.message });
+          return res.status(400).json({
+            success: false,
+            message: "Invalid sizes JSON.",
+            errors: [],
+          });
         }
       } else if (Array.isArray(sizes)) {
         parsedSizes = sizes;
       } else {
-        return res
-          .status(400)
-          .json({
-            message: "Invalid sizes: expected an array or JSON string.",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "Invalid sizes: expected an array or JSON string.",
+          errors: [],
+        });
       }
     }
 
@@ -106,25 +115,47 @@ export const addProduct = async (req, res) => {
 
     return res.status(201).json(createdProduct);
   } catch (error) {
-    console.error("❌ Error in addProduct:", error);
-    return res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    logger.error("Error in addProduct", { error: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      errors: [error.message],
+    });
   }
 };
 
 export default addProduct;
 
 export const listProducts = async (req, res) => {
-  try {
-    const page = Math.max(1, Number(req.query.page) || 1);
-    const limit = Math.min(Math.max(1, Number(req.query.limit) || 20), 100);
-    const skip = (page - 1) * limit;
+    try {
+      const page = Math.max(1, Number(req.query.page) || 1);
+      const limit = Math.min(Math.max(1, Number(req.query.limit) || 20), 100);
+      const skip = (page - 1) * limit;
 
-    const [products, total] = await Promise.all([
-  Product.find({}).sort({ _id: 1 }).skip(skip).limit(limit).lean(),
-  Product.countDocuments({}),
-]);
+      const { category, subCategory, minPrice, maxPrice, search, sort } = req.query;
+
+      const filter = {};
+      if (category) filter.category = category;
+      if (subCategory) filter.subCategory = subCategory;
+      if (minPrice || maxPrice) {
+        filter.price = {};
+        if (minPrice) filter.price.$gte = Number(minPrice);
+        if (maxPrice) filter.price.$lte = Number(maxPrice);
+      }
+      if (search) filter.name = { $regex: search, $options: "i" };
+
+      const sortMap = {
+        price_asc: { price: 1 },
+        price_desc: { price: -1 },
+        newest: { createdAt: -1 },
+      };
+      const sortOption = sortMap[sort] || { _id: 1 };
+
+      const [products, total] = await Promise.all([
+    Product.find(filter).sort(sortOption).skip(skip).limit(limit).lean(),
+    Product.countDocuments(filter),
+  ]);
+  
 const productsWithReviewCount = await Promise.all(
   products.map(async (product) => {
     const reviewCount = await Review.countDocuments({
@@ -148,10 +179,12 @@ const productsWithReviewCount = await Promise.all(
       },
     });
   } catch (error) {
-    console.error("❌ Error in listProducts:", error);
-    return res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    logger.error("Error in listProducts", { error: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      errors: [error.message],
+    });
   }
 };
 
@@ -174,9 +207,11 @@ export const removeProduct = async (req, res) => {
       .status(200)
       .json({ message: "Product deleted successfully", product });
   } catch (error) {
-    console.error("❌ Error in removeProduct:", error);
-    return res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    logger.error("Error in removeProduct", { error: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      errors: [error.message],
+    });
   }
 };
