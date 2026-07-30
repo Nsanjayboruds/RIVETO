@@ -124,6 +124,7 @@ function Ai() {
   const chatContainerRef = useRef(null);
   const openingSoundRef = useRef(new Audio(sound));
   const recognitionRef = useRef(null);
+  const timeoutIdsRef = useRef(new Set());
 
   useEffect(() => {
     if (!showChat) return;
@@ -143,6 +144,9 @@ function Ai() {
     return () => {
       recognitionRef.current?.abort();
       window.speechSynthesis.cancel();
+
+      timeoutIdsRef.current.forEach(clearTimeout);
+      timeoutIdsRef.current.clear();
     };
   }, []);
 
@@ -152,6 +156,18 @@ function Ai() {
         chatContainerRef.current.scrollHeight;
     }
   }, [chatMessages, isTyping]);
+
+  // ─── Clean-up helpers ──────────────────────────────────────────────────────
+  const scheduleTimeout = (callback, delay) => {
+    const id = setTimeout(() => {
+      timeoutIdsRef.current.delete(id);
+      callback();
+    }, delay);
+
+    timeoutIdsRef.current.add(id);
+
+    return id;
+  };
 
   // ─── Message helpers ──────────────────────────────────────────────────────
   const addUserMessage = (text) => {
@@ -163,7 +179,7 @@ function Ai() {
 
   const addBotMessage = (text, delay = 600) => {
     setIsTyping(true);
-    setTimeout(() => {
+    scheduleTimeout(() => {
       setIsTyping(false);
       setChatMessages((prev) => [
         ...prev,
@@ -219,7 +235,7 @@ function Ai() {
       addBotMessage(
         'Please log in first to access this page. Redirecting to login...'
       );
-      setTimeout(() => navigate('/login', { state: { from: path } }), 1500);
+      scheduleTimeout(() => navigate('/login', { state: { from: path } }), 1500);
       return;
     }
     speak(message);
@@ -259,7 +275,7 @@ function Ai() {
     // Login
     if (transcript.includes('login') || transcript.includes('sign in')) {
       addBotMessage('Redirecting you to the login page...');
-      setTimeout(() => navigate('/login'), 1000);
+      scheduleTimeout(() => navigate('/login'), 1000);
       return;
     }
 
@@ -301,7 +317,7 @@ function Ai() {
     ) {
       if (!userData) {
         addBotMessage('Please log in first. Redirecting...');
-        setTimeout(() => navigate('/login'), 1500);
+        scheduleTimeout(() => navigate('/login'), 1500);
         return;
       }
       speak('Opening search for you');
