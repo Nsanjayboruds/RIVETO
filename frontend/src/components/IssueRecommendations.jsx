@@ -26,6 +26,26 @@ export default function IssueRecommendations() {
   const [stack, setStack] = useState([]);
   const [history, setHistory] = useState('');
   const [retryCount, setRetryCount] = useState(0);
+  const [githubProfile, setGithubProfile] = useState(null);
+  const [checkingGithub, setCheckingGithub] = useState(true);
+
+  useEffect(() => {
+    const fetchGithubProfile = async () => {
+      try {
+        const res = await apiConfig.get('/auth/github/profile');
+        if (res.data && res.data.connected) {
+          setGithubProfile(res.data);
+        } else {
+          setGithubProfile(null);
+        }
+      } catch (err) {
+        console.error('Error fetching github profile:', err);
+      } finally {
+        setCheckingGithub(false);
+      }
+    };
+    fetchGithubProfile();
+  }, []);
 
   const toggleStack = (tech) => {
     setStack((prev) =>
@@ -100,6 +120,64 @@ export default function IssueRecommendations() {
             Find beginner-friendly and relevant GitHub issues ranked by label
             signals, stack matching, and contribution history keywords.
           </p>
+
+          {/* GitHub OAuth Connection Status */}
+          <div className="mt-6 border-t border-slate-100 pt-6 dark:border-slate-800/60">
+            {checkingGithub ? (
+              <div className="flex items-center space-x-2 text-sm text-slate-500">
+                <svg className="animate-spin h-4 w-4 text-cyan-500" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <span>Checking connection...</span>
+              </div>
+            ) : githubProfile && githubProfile.connected ? (
+              <div className="flex items-center justify-between rounded-2xl border border-emerald-100 bg-emerald-50/40 p-4 dark:border-emerald-950/40 dark:bg-emerald-950/10">
+                <div className="flex items-center space-x-3">
+                  <img
+                    src={githubProfile.avatar_url}
+                    alt={githubProfile.login}
+                    className="h-10 w-10 rounded-full border border-emerald-200 shadow-sm dark:border-emerald-800"
+                  />
+                  <div>
+                    <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
+                      Connected to GitHub
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Logged in as <span className="font-medium text-emerald-600 dark:text-emerald-400">@{githubProfile.login}</span> • {githubProfile.public_repos} public repos
+                    </p>
+                  </div>
+                </div>
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-slate-100 bg-slate-50/40 p-4 dark:border-slate-800/40 dark:bg-slate-900/10">
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
+                    Personalize recommendations
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Connect your GitHub account to bypass rate limits and match issues to your repositories.
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    const backendBaseUrl = apiConfig.defaults.baseURL.replace(/\/api$/, '');
+                    window.location.href = `${backendBaseUrl}/api/auth/github`;
+                  }}
+                  className="inline-flex items-center justify-center space-x-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-slate-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 dark:bg-cyan-600 dark:hover:bg-cyan-500 dark:focus:ring-cyan-600 dark:focus:ring-offset-slate-900"
+                >
+                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.11.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.82 1.102.82 2.222v3.293c0 .319.22.694.825.576C20.565 21.795 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                  <span>Connect GitHub</span>
+                </button>
+              </div>
+            )}
+          </div>
 
           <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             <label className="xl:col-span-2">

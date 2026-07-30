@@ -1,5 +1,8 @@
 import express from "express";
 import { getRecommendations } from "../services/recommendationService.js";
+import jwt from "jsonwebtoken";
+import User from "../model/userModel.js";
+import { decrypt } from "../utils/crypto.js";
 
 const router = express.Router();
 
@@ -18,11 +21,27 @@ router.get("/", async (req, res) => {
           .map((item) => item.trim())
           .filter(Boolean)
       : [];
+
+    let githubToken = null;
+    const { token } = req.cookies;
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId).select("+githubAccessToken");
+        if (user && user.githubAccessToken) {
+          githubToken = decrypt(user.githubAccessToken);
+        }
+      } catch (_err) {
+        // Ignore invalid tokens for recommendations
+      }
+    }
+
     const results = await getRecommendations({
       stack: userStack,
       level,
       search,
       history: historyTerms,
+      githubToken,
     });
 
     res.json({
