@@ -5,19 +5,21 @@ const REPO_OWNER = process.env.GITHUB_REPO_OWNER || "Nsanjayboruds";
 const REPO_NAME = process.env.GITHUB_REPO_NAME || "RIVETO";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-function getGithubHeaders() {
+function getGithubHeaders(githubToken = null) {
   const headers = {
     Accept: "application/vnd.github+json",
   };
 
-  if (GITHUB_TOKEN) {
+  if (githubToken) {
+    headers.Authorization = `token ${githubToken}`;
+  } else if (GITHUB_TOKEN) {
     headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
   }
 
   return headers;
 }
 
-async function fetchIssues() {
+async function fetchIssues(githubToken = null) {
   const res = await axios.get(
     `${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/issues`,
     {
@@ -27,7 +29,7 @@ async function fetchIssues() {
         sort: "updated",
         direction: "desc",
       },
-      headers: getGithubHeaders(),
+      headers: getGithubHeaders(githubToken),
     },
   );
 
@@ -83,8 +85,9 @@ async function getRecommendations({
   level = "all",
   search = "",
   history = [],
+  githubToken = null,
 }) {
-  const issues = await fetchIssues();
+  const issues = await fetchIssues(githubToken);
   const historyTerms = Array.isArray(history)
     ? history
     : String(history)
