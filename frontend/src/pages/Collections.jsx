@@ -130,7 +130,7 @@ const FilterContent = ({
           Sub Categories
         </h3>
         <div className="flex flex-wrap gap-2">
-          {subCategories.map((sub, i) => (
+          {(subCategories ?? []).map((sub, i) => (
             <button
               key={i}
               type="button"

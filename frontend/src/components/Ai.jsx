@@ -462,7 +462,7 @@ function Ai() {
                 </p>
               </div>
             ) : (
-              chatMessages.map((msg, i) => (
+              (chatMessages ?? []).map((msg, i) => (
                 <div
                   key={i}
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
