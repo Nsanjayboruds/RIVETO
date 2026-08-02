@@ -209,7 +209,7 @@ function Ai() {
     if (results.length > 0) {
       navigate('/collection');
       setShowSearch(true);
-      return `Found ${results.length} result(s) for "${words}": ${results.map((p) => p.name).join(', ')}. Taking you to the collection!`;
+      return `Found ${results.length} result(s) for "${words}": ${(results ?? []).map((p) => p.name).join(', ')}. Taking you to the collection!`;
     }
     return null;
   };
