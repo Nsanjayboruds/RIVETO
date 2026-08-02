@@ -98,7 +98,8 @@ const USER_QUICK_REPLIES = [
 //       headers: { 'Content-Type': 'application/json' },
 //       body: JSON.stringify({ message }),
 //     });
-//     const data = await res.json();
+//     if (!res.ok) throw new Error("Request failed");
+const data = await res.json();
 //     setIsTyping(false);
 //     speak(data.reply || "Sorry, I couldn't get a response.");
 //   } catch (err) {
