@@ -191,3 +191,4 @@ export const deleteReview = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+.catch(err => console.error("Promise.all failed:", err));

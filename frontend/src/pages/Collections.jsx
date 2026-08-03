@@ -80,7 +80,7 @@ const FilterContent = ({
             max={maxPrice}
             value={priceRange[1]}
             onChange={(e) =>
-              setPriceRange([priceRange[0], parseInt(e.target.value)])
+              setPriceRange([priceRange[0], parseInt(e.target.value, 10)])
             }
             className="w-full h-2 bg-slate-300 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb"
             aria-valuemin={minPrice}
