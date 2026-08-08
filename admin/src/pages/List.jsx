@@ -16,7 +16,7 @@ function List() {
     try {
       setLoading(true);
       const result = await axios.get(serverUrl + "/api/product/list");
-      setList(result.data);
+      setList(Array.isArray(result.data?.products) ? result.data.products : []);
     } catch (error) {
       console.error(error);
       toast.error("Failed to fetch products");
