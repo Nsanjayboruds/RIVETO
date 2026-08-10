@@ -17,6 +17,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import reviewRoutes from "./routes/reviewRoute.js";
 import wishlistRouter from "./routes/wishlistRoutes.js";
 import recommendationsRoute from "./routes/recommendations.js";
+import couponRoutes from "./routes/couponRoutes.js";
 import { globalIpLimiter } from "./middleware/rateLimiters.js";
 import morgan from "morgan";
 import logger from "./config/logger.js";
@@ -56,6 +57,7 @@ app.use("/api/review", reviewRoutes);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/recommendations", recommendationsRoute);
 app.use("/api/notifications", notificationRouter);
+app.use("/api/coupon", couponRoutes);
 app.use("/api", botRoute);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

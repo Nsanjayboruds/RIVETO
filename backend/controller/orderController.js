@@ -1,5 +1,8 @@
 import Order from "../model/orderModel.js"; // ✅ Keep this
 import User from "../model/userModel.js"; // ✅ Keep this
+import Product from "../model/productModel.js";
+import Coupon from "../model/couponModel.js";
+import { validateCouponForOrder } from "./couponController.js";
 import {
   sendNotification,
   emitActivity,
@@ -9,12 +12,70 @@ import logger from "../config/logger.js";
 //for user//
 export const placeOrder = async (req, res) => {
   try {
-    const { items, amount, address } = req.body;
+    const { items, address, couponCode } = req.body;
     const userId = req.userId;
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: "No items in order" });
+    }
+
+    // Compute the real order total from actual product prices in the DB.
+    // The client's amount (if sent) is never trusted or used.
+    const productIds = items.map((item) => item.itemId);
+    const products = await Product.find({ _id: { $in: productIds } }).lean();
+
+    let subtotal = 0;
+    for (const item of items) {
+      const product = products.find((p) => p._id.toString() === item.itemId);
+      if (!product) {
+        return res.status(400).json({ message: `Invalid product in order: ${item.itemId}` });
+      }
+      const quantity = Number(item.quantity);
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        return res.status(400).json({ message: `Invalid quantity for ${product.name}` });
+      }
+      subtotal += product.price * quantity;
+    }
+
+    let amount = subtotal;
+    let discount = 0;
+    let appliedCouponCode = null;
+
+    // Coupon is re-validated here from scratch — never trust a client-side
+    // "already validated" claim, since state (usage limit, expiry, active
+    // status) can change between the preview call and actual checkout.
+    if (couponCode) {
+      const result = await validateCouponForOrder(couponCode, subtotal);
+      if (!result.valid) {
+        return res.status(400).json({ message: result.message });
+      }
+
+      // Atomically claim one usage slot. The filter re-checks the usage
+      // limit at write time, so two concurrent checkouts racing for the
+      // last remaining use can't both succeed.
+      const usageFilter = { _id: result.coupon._id };
+      if (result.coupon.usageLimit !== null) {
+        usageFilter.usageCount = { $lt: result.coupon.usageLimit };
+      }
+      const claimed = await Coupon.findOneAndUpdate(
+        usageFilter,
+        { $inc: { usageCount: 1 } },
+        { new: true }
+      );
+      if (!claimed) {
+        return res.status(400).json({ message: "This coupon has just reached its usage limit" });
+      }
+
+      discount = result.discount;
+      amount = result.finalAmount;
+      appliedCouponCode = result.coupon.code;
+    }
 
     const orderData = {
       items,
       amount,
+      discount,
+      couponCode: appliedCouponCode,
       userId,
       address,
       paymentMethod: "COD",
@@ -46,7 +107,7 @@ export const placeOrder = async (req, res) => {
       action: `Placed an order of $${amount}`,
     });
 
-    return res.status(201).json({ message: "Order Placed" });
+    return res.status(201).json({ message: "Order Placed", amount, discount });
   } catch (error) {
     logger.error("placeOrder error", { error: error.message });
     return res.status(500).json({
@@ -68,12 +129,11 @@ export const userOrders = async (req, res) => {
       success: false,
       message: "userOrders error",
       errors: [error.message],
-    }); // ❗ Fixed 200 → 500
+    });
   }
 };
 
 //for admin//
-
 export const allOrders = async (req, res) => {
   try {
     const orders = await Order.find({});
