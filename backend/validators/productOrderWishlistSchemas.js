@@ -38,7 +38,9 @@ export const placeOrderSchema = Joi.object({
 
   amount: Joi.number()
     .positive()
-    .required(),
+    .optional(),
+
+  couponCode: Joi.string().trim().optional(),
 
   address: Joi.object()
     .required()
