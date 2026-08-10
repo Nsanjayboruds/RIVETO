@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { userDataContext } from './context/UserContext';
 import { shopDataContext } from './context/ShopContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Components
 import Nav from './components/Nav';
@@ -61,6 +62,7 @@ function App() {
 
   return (
     <>
+      <ThemeProvider>
       <ScrollProgressBar />
       <ToastContainer position="top-center" autoClose={2000} />
       <CommandPalette />
@@ -288,6 +290,7 @@ function App() {
           removeProduct={removeFromCompare}
         />
       )}
+      </ThemeProvider>
     </>
   );
 }
