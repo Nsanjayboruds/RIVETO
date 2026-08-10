@@ -3,6 +3,7 @@
 [![Issues](https://img.shields.io/github/issues/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/issues)
 [![Stars](https://img.shields.io/github/stars/Nsanjayboruds/RIVETO)](https://github.com/Nsanjayboruds/RIVETO/stargazers)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11234/badge)](https://www.bestpractices.dev/projects/11234)
+[![CI](https://github.com/Nsanjayboruds/RIVETO/actions/workflows/ci.yml/badge.svg)](https://github.com/Nsanjayboruds/RIVETO/actions/workflows/ci.yml)
 ---
 ## 📑 Table of Contents
 
