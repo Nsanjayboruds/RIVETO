@@ -16,6 +16,8 @@ import { IoSearchCircleOutline } from 'react-icons/io5';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Command } from 'lucide-react';
 
+import ThemeToggle from './ThemeToggle';
+
 import apiConfig from '../utils/apiConfig';
 
 import { userDataContext } from '../context/UserContext';
@@ -713,6 +715,7 @@ function Nav() {
             </span>
           )}
         </button>
+        <ThemeToggle />
       </nav>
     </>
   );
