@@ -6,6 +6,9 @@ import { auth, provider } from '../../utils/Firebase';
 import { userDataContext } from '../context/UserContext';
 import { shopDataContext } from '../context/ShopContext';
 import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FcGoogle } from 'react-icons/fc';
@@ -19,14 +22,31 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
+const loginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, 'Email is required')
+    .email('Please enter a valid email'),
+
+  password: z
+    .string()
+    .min(1, 'Password is required'),
+});
+
 function Login() {
   const [show, setShow] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    mode: 'onBlur',
+  });
+
   const [googleLoading, setGoogleLoading] = useState(false);
   const [preload, setPreload] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -125,60 +145,25 @@ function Login() {
     };
   }, []);
 
-  const validateForm = () => {
-    const newErrors = {};
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
-    }
+const handleLogin = async (formData) => {
+  setLoading(true);
 
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    }
+  try {
+    await apiConfig.post('/auth/login', formData);
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    toast.success('🎉 Login successful! Welcome back to Riveto');
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: '',
-      }));
-    }
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await apiConfig.post('/auth/login', formData);
-
-      toast.success('🎉 Login successful! Welcome back to Riveto');
-      setTimeout(() => {
-        getCurrentUser();
-        navigate('/');
-      }, 500);
-    } catch {
-      // API errors are shown by the global interceptor.
-    } finally {
-      setLoading(false);
-    }
-  };
+    setTimeout(() => {
+      getCurrentUser();
+      navigate('/');
+    }, 500);
+  } catch {
+    // API errors are shown by the global interceptor.
+  } finally {
+    setLoading(false);
+  }
+};
 
   const googleLogin = async () => {
     setGoogleLoading(true);
@@ -407,116 +392,150 @@ function Login() {
               Continue with Google
             </button>
 
-            {/* Collapsible Email Form with Staged Entry */}
-            <div ref={emailOptRef}>
-              <button
-                onClick={() => setShowEmailForm(!showEmailForm)}
-                className="w-full text-sm text-gray-600 dark:text-gray-400 hover:text-[#2563EB] dark:hover:text-cyan-400 transition-colors font-medium"
-              >
-                {showEmailForm ? 'Hide email options' : 'Use Email Instead'}
-              </button>
+        {/* Collapsible Email Form with Staged Entry */}
+<div ref={emailOptRef}>
+  <button
+    onClick={() => setShowEmailForm(!showEmailForm)}
+    className="w-full text-sm text-gray-600 dark:text-gray-400 hover:text-[#2563EB] dark:hover:text-cyan-400 transition-colors font-medium"
+  >
+    {showEmailForm ? 'Hide email options' : 'Use Email Instead'}
+  </button>
 
-              {showEmailForm && (
-                <div className="mt-4 space-y-4 animate-fadeIn">
-                  {/* Divider */}
-                  <div className="flex items-center">
-                    <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
-                    <span className="mx-4 text-gray-500 dark:text-gray-400 text-sm">
-                      OR
-                    </span>
-                    <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
-                  </div>
+  {showEmailForm && (
+    <div className="mt-4 space-y-4 animate-fadeIn">
 
-                  {/* Form */}
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    {/* Email Field */}
-                    <div className="form-element">
-                      <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <IoMail className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-                        <input
-                          type="email"
-                          name="email"
-                          placeholder="Enter your email"
-                          className="w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-all"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                      {errors.email && (
-                        <p className="text-red-500 text-sm mt-1">
-                          {errors.email}
-                        </p>
-                      )}
-                    </div>
+      {/* Divider */}
+      <div className="flex items-center">
+        <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
 
-                    {/* Password Field */}
-                    <div className="form-element">
-                      <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
-                        Password
-                      </label>
-                      <div className="relative">
-                        <IoLockClosed className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-                        <input
-                          type={show ? 'text' : 'password'}
-                          name="password"
-                          placeholder="Enter your password"
-                          className="w-full pl-10 pr-12 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-all"
-                          value={formData.password}
-                          onChange={handleInputChange}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShow(!show)}
-                          className="absolute right-3 top-3 text-gray-400 hover:text-[#2563EB] transition-colors"
-                          aria-label={show ? 'Hide password' : 'Show password'}
-                        >
-                          {show ? (
-                            <IoEye className="w-5 h-5" />
-                          ) : (
-                            <IoEyeOutline className="w-5 h-5" />
-                          )}
-                        </button>
-                      </div>
-                      {errors.password && (
-                        <p className="text-red-500 text-sm mt-1">
-                          {errors.password}
-                        </p>
-                      )}
-                    </div>
+        <span className="mx-4 text-gray-500 dark:text-gray-400 text-sm">
+          OR
+        </span>
 
-                    {/* Forgot Password */}
-                    <div className="form-element text-right">
-                      <button
-                        type="button"
-                        onClick={() => navigate('/forgot-password')}
-                        className="text-[#2563EB] hover:text-[#1d4ed8] text-sm transition-colors font-medium"
-                      >
-                        Forgot your password?
-                      </button>
-                    </div>
+        <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+      </div>
 
-                    {/* Submit Button - Outcome Driven */}
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="form-element w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    >
-                      {loading ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          Accessing...
-                        </>
-                      ) : (
-                        'Continue Shopping'
-                      )}
-                    </button>
-                  </form>
-                </div>
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit(handleLogin)}
+        className="space-y-4"
+        noValidate
+      >
+
+        {/* Email Field */}
+        <div className="form-element">
+          <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+            Email Address
+          </label>
+
+          <div className="relative">
+            <IoMail className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+
+            <input
+              {...register('email')}
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              aria-invalid={errors.email ? 'true' : 'false'}
+              aria-describedby={errors.email ? 'email-error' : undefined}
+              className={`w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-all ${
+                errors.email
+                  ? 'border-red-500'
+                  : 'border-gray-300 dark:border-gray-700'
+              }`}
+            />
+          </div>
+
+          {errors.email && (
+            <p
+              id="email-error"
+              className="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+
+        {/* Password Field */}
+        <div className="form-element">
+          <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+            Password
+          </label>
+
+          <div className="relative">
+            <IoLockClosed className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+
+            <input
+              {...register('password')}
+              id="password"
+              type={show ? 'text' : 'password'}
+              placeholder="Enter your password"
+              aria-invalid={errors.password ? 'true' : 'false'}
+              aria-describedby={errors.password ? 'password-error' : undefined}
+              className={`w-full pl-10 pr-12 py-3 bg-white dark:bg-gray-800 border rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-all ${
+                errors.password
+                  ? 'border-red-500'
+                  : 'border-gray-300 dark:border-gray-700'
+              }`}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShow(!show)}
+              className="absolute right-3 top-3 text-gray-400 hover:text-[#2563EB] transition-colors"
+              aria-label={show ? 'Hide password' : 'Show password'}
+            >
+              {show ? (
+                <IoEye className="w-5 h-5" />
+              ) : (
+                <IoEyeOutline className="w-5 h-5" />
               )}
-            </div>
+            </button>
+          </div>
+
+          {errors.password && (
+            <p
+              id="password-error"
+              className="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        {/* Forgot Password */}
+        <div className="form-element text-right">
+          <button
+            type="button"
+            onClick={() => navigate('/forgot-password')}
+            className="text-[#2563EB] hover:text-[#1d4ed8] text-sm transition-colors font-medium"
+          >
+            Forgot your password?
+          </button>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="form-element w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {loading ? (
+            <>
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              Accessing...
+            </>
+          ) : (
+            'Continue Shopping'
+          )}
+        </button>
+
+      </form>
+    </div>
+  )}
+</div>
 
             {/* Sign Up Link */}
             <div className="form-element text-center pt-4 border-t border-gray-200 dark:border-gray-700">
