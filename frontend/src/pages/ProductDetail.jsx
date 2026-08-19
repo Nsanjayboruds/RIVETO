@@ -687,8 +687,12 @@ function ProductDetail() {
                       onChange={(e) => setReviewComment(e.target.value)}
                       placeholder="Write your review..."
                       rows="4"
+                      maxLength={500}
                       className="w-full p-4 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-slate-900 dark:text-white outline-none"
                     />
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 text-right">
+                      {reviewComment.length}/500 characters
+                    </p>
 
                     <div className="flex gap-3 mt-4">
                       <button
