@@ -30,6 +30,7 @@ function Registration() {
     password: '',
   });
   const [errors, setErrors] = useState({});
+  const [passwordStrength, setPasswordStrength] = useState("");
   const { getCurrentUser } = useContext(userDataContext);
   const navigate = useNavigate();
 
@@ -92,6 +93,9 @@ function Registration() {
       ...prev,
       [name]: value,
     }));
+    if (name === "password") {
+  setPasswordStrength(getPasswordStrength(value));
+}
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
@@ -100,6 +104,19 @@ function Registration() {
       }));
     }
   };
+  const getPasswordStrength = (password) => {
+  if (password.length < 8) return "Weak";
+
+  let score = 0;
+
+  if (/[A-Z]/.test(password)) score++;
+  if (/[a-z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+
+  if (score <= 2) return "Medium";
+  return "Strong";
+};
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -306,10 +323,24 @@ function Registration() {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {errors.password}
-                    </p>
-                  )}
+  <p className="text-red-400 text-sm mt-1">
+    {errors.password}
+  </p>
+)}
+
+{formData.password && (
+  <p
+    className={`text-sm mt-1 font-medium ${
+      passwordStrength === "Weak"
+        ? "text-red-400"
+        : passwordStrength === "Medium"
+        ? "text-yellow-400"
+        : "text-green-400"
+    }`}
+  >
+    Password Strength: {passwordStrength}
+  </p>
+)}
                 </div>
 
                 {/* Terms Agreement */}

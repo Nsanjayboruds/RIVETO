@@ -218,7 +218,6 @@ function ShopContext({ children }) {
       await apiConfig.post('/cart/clear');
       toast.success('Cart cleared successfully');
     } catch (error) {
-      console.log('clearCartData frontend error:', error);
       toast.error(error.response?.data?.message || 'Failed to clear cart on server');
 
       // Fallback: reload cart if backend call failed to sync state
