@@ -98,7 +98,8 @@ const USER_QUICK_REPLIES = [
 //       headers: { 'Content-Type': 'application/json' },
 //       body: JSON.stringify({ message }),
 //     });
-//     const data = await res.json();
+//     if (!res.ok) throw new Error("Request failed");
+const data = await res.json();
 //     setIsTyping(false);
 //     speak(data.reply || "Sorry, I couldn't get a response.");
 //   } catch (err) {
@@ -208,7 +209,7 @@ function Ai() {
     if (results.length > 0) {
       navigate('/collection');
       setShowSearch(true);
-      return `Found ${results.length} result(s) for "${words}": ${results.map((p) => p.name).join(', ')}. Taking you to the collection!`;
+      return `Found ${results.length} result(s) for "${words}": ${(results ?? []).map((p) => p.name).join(', ')}. Taking you to the collection!`;
     }
     return null;
   };
@@ -461,7 +462,7 @@ function Ai() {
                 </p>
               </div>
             ) : (
-              chatMessages.map((msg, i) => (
+              (chatMessages ?? []).map((msg, i) => (
                 <div
                   key={i}
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}

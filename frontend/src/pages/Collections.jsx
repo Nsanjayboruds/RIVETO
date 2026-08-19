@@ -106,7 +106,7 @@ const FilterContent = ({
           Category
         </h3>
         <div className="space-y-2">
-          {categories.map((cat, i) => (
+          {(categories ?? []).map((cat, i) => (
             <button
               key={i}
               type="button"
@@ -130,7 +130,7 @@ const FilterContent = ({
           Sub Categories
         </h3>
         <div className="flex flex-wrap gap-2">
-          {subCategories.map((sub, i) => (
+          {(subCategories ?? []).map((sub, i) => (
             <button
               key={i}
               type="button"
