@@ -30,7 +30,7 @@ function Registration() {
     password: '',
   });
   const [errors, setErrors] = useState({});
-  const { getCurrentUser } = useContext(userDataContext);
+  const { getCurrentUser, setUserData } = useContext(userDataContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -124,14 +124,17 @@ function Registration() {
     setOtpLoading(true);
 
     try {
-      await apiConfig.post('/auth/verify-otp', {
+      const res = await apiConfig.post('/auth/verify-otp', {
         email: formData.email,
         otp,
       });
 
       toast.success('Account verified successfully 🎉');
-      getCurrentUser();
-      navigate('/');
+      if (res?.data) {
+        setUserData(res.data);
+      }
+      await getCurrentUser();
+      navigate('/home', { replace: true });
     } catch {
       // API errors are shown by the global interceptor.
     } finally {
@@ -139,21 +142,26 @@ function Registration() {
     }
   };
 
-  const googleSignup = async () => {
+  const googleSignup = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
     setGoogleLoading(true);
     try {
+      provider.setCustomParameters({ prompt: 'select_account' });
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
 
-      await apiConfig.post('/auth/googlelogin', {
+      const res = await apiConfig.post('/auth/googlelogin', {
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
       });
 
-      getCurrentUser();
+      if (res?.data) {
+        setUserData(res.data);
+      }
+      await getCurrentUser();
       toast.success('Welcome to Riveto! 🎉');
-      navigate('/');
+      navigate('/home', { replace: true });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Google Signup Error:', error);
@@ -212,6 +220,7 @@ function Registration() {
             <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-2xl transition-colors duration-300">
               {/* Google Signup Button */}
               <button
+                type="button"
                 onClick={googleSignup}
                 disabled={googleLoading}
                 className="form-element w-full flex items-center justify-center gap-3 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-300 dark:border-gray-600 rounded-xl py-2.5 px-4 text-gray-700 dark:text-white font-medium transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed mb-4"

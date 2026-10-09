@@ -71,7 +71,14 @@ export const updateCart = async (req, res) => {
 // ✅ Get cart
 export const getUserCart = async (req, res) => {
   try {
-    const userData = await User.findById(req.userId);
+    const userId = req.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: No user ID" });
+    }
+    const userData = await User.findById(userId);
+    if (!userData) {
+      return res.status(200).json({});
+    }
     return res.status(200).json(userData.cartData || {});
   } catch (error) {
     logger.error("getUserCart error", { error: error.message });

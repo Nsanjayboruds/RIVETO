@@ -97,15 +97,19 @@ export const removeFromWishlist = async (req, res) => {
 // get wishlist
 export const getWishlist = async (req, res) => {
   try {
-
     const userId = req.userId;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized: No user ID" });
+    }
 
-    const user = await User.findById(userId)
-      .populate("wishlist");
+    const user = await User.findById(userId).populate("wishlist");
+    if (!user) {
+      return res.status(200).json({ success: true, wishlist: [] });
+    }
 
     res.status(200).json({
       success: true,
-      wishlist: user.wishlist
+      wishlist: user.wishlist || []
     });
 
   } catch (error) {

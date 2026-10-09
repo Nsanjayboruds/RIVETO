@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import apiConfig from '../utils/apiConfig';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../utils/Firebase';
@@ -51,9 +51,10 @@ function Login() {
   const [preload, setPreload] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const { getCurrentUser } = useContext(userDataContext);
+  const { getCurrentUser, setUserData } = useContext(userDataContext);
   const { product } = useContext(shopDataContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const [showEmailForm, setShowEmailForm] = useState(true);
 
   const leftPanelRef = useRef(null);
@@ -93,6 +94,15 @@ function Login() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setPreload(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (preload) return;
+
+    const animTimer = setTimeout(() => {
       // Animations after preload
       gsap.fromTo(
         '.login-container',
@@ -127,7 +137,7 @@ function Login() {
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'back.out(1.7)' }
       );
-    }, 1000);
+    }, 50);
 
     // Safety fallback: ensure elements are visible after 3 seconds
     const safetyTimer = setTimeout(() => {
@@ -140,24 +150,25 @@ function Login() {
     }, 3000);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(animTimer);
       clearTimeout(safetyTimer);
     };
-  }, []);
+  }, [preload]);
 
 
 const handleLogin = async (formData) => {
   setLoading(true);
 
   try {
-    await apiConfig.post('/auth/login', formData);
+    const res = await apiConfig.post('/auth/login', formData);
 
     toast.success('🎉 Login successful! Welcome back to Riveto');
 
-    setTimeout(() => {
-      getCurrentUser();
-      navigate('/');
-    }, 500);
+    if (res?.data) {
+      setUserData(res.data);
+    }
+    await getCurrentUser();
+    navigate(location.state?.from || '/home', { replace: true });
   } catch {
     // API errors are shown by the global interceptor.
   } finally {
@@ -165,22 +176,25 @@ const handleLogin = async (formData) => {
   }
 };
 
-  const googleLogin = async () => {
+  const googleLogin = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
     setGoogleLoading(true);
     try {
+      provider.setCustomParameters({ prompt: 'select_account' });
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
-      await apiConfig.post('/auth/googlelogin', {
+      const res = await apiConfig.post('/auth/googlelogin', {
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
       });
 
       toast.success('🎉 Google login successful!');
-      setTimeout(() => {
-        getCurrentUser();
-        navigate('/');
-      }, 500);
+      if (res?.data) {
+        setUserData(res.data);
+      }
+      await getCurrentUser();
+      navigate(location.state?.from || '/home', { replace: true });
     } catch (err) {
       // Firebase specific error codes
       const code = err?.code;
@@ -380,6 +394,7 @@ const handleLogin = async (formData) => {
             {/* LAYER 1: Google Login - Primary CTA with Staged Entry */}
             <button
               ref={googleBtnRef}
+              type="button"
               onClick={googleLogin}
               disabled={googleLoading}
               className="w-full flex items-center justify-center gap-3 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-xl py-3 px-6 font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"

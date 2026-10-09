@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import Order from "../model/orderModel.js"; // ✅ Keep this
 import User from "../model/userModel.js"; // ✅ Keep this
 import Product from "../model/productModel.js";
@@ -8,6 +9,7 @@ import {
   emitActivity,
 } from "../services/notificationService.js";
 import logger from "../config/logger.js";
+import razorpayInstance from "../config/razorpay.js";
 
 //for user//
 export const placeOrder = async (req, res) => {
@@ -21,14 +23,17 @@ export const placeOrder = async (req, res) => {
 
     // Compute the real order total from actual product prices in the DB.
     // The client's amount (if sent) is never trusted or used.
-    const productIds = items.map((item) => item.itemId);
+    const productIds = items
+      .map((item) => item.itemId || item._id || item.id)
+      .filter(Boolean);
     const products = await Product.find({ _id: { $in: productIds } }).lean();
 
     let subtotal = 0;
     for (const item of items) {
-      const product = products.find((p) => p._id.toString() === item.itemId);
+      const id = (item.itemId || item._id || item.id)?.toString();
+      const product = products.find((p) => p._id.toString() === id);
       if (!product) {
-        return res.status(400).json({ message: `Invalid product in order: ${item.itemId}` });
+        return res.status(400).json({ message: `Invalid product in order: ${id || 'unknown'}` });
       }
       const quantity = Number(item.quantity);
       if (!Number.isInteger(quantity) || quantity <= 0) {
@@ -78,7 +83,7 @@ export const placeOrder = async (req, res) => {
       couponCode: appliedCouponCode,
       userId,
       address,
-      paymentMethod: "COD",
+      paymentMethod: req.body.paymentMethod || "COD",
       payment: false,
       status: "Placed",
       date: Date.now(),
@@ -179,6 +184,179 @@ export const updateStatus = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to update order status",
+      errors: [error.message],
+    });
+  }
+};
+
+// Razorpay Order Creation
+export const placeOrderRazorpay = async (req, res) => {
+  try {
+    const { items, address, couponCode } = req.body;
+    const userId = req.userId;
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: "No items in order" });
+    }
+
+    const productIds = items
+      .map((item) => item.itemId || item._id || item.id)
+      .filter(Boolean);
+    const products = await Product.find({ _id: { $in: productIds } }).lean();
+
+    let subtotal = 0;
+    for (const item of items) {
+      const id = (item.itemId || item._id || item.id)?.toString();
+      const product = products.find((p) => p._id.toString() === id);
+      if (!product) {
+        return res.status(400).json({ message: `Invalid product in order: ${id || 'unknown'}` });
+      }
+      const quantity = Number(item.quantity);
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        return res.status(400).json({ message: `Invalid quantity for ${product.name}` });
+      }
+      subtotal += product.price * quantity;
+    }
+
+    let amount = subtotal;
+    let discount = 0;
+    let appliedCouponCode = null;
+
+    if (couponCode) {
+      const result = await validateCouponForOrder(couponCode, subtotal);
+      if (!result.valid) {
+        return res.status(400).json({ message: result.message });
+      }
+
+      const usageFilter = { _id: result.coupon._id };
+      if (result.coupon.usageLimit !== null) {
+        usageFilter.usageCount = { $lt: result.coupon.usageLimit };
+      }
+      const claimed = await Coupon.findOneAndUpdate(
+        usageFilter,
+        { $inc: { usageCount: 1 } },
+        { new: true }
+      );
+      if (!claimed) {
+        return res.status(400).json({ message: "This coupon has just reached its usage limit" });
+      }
+
+      discount = result.discount;
+      amount = result.finalAmount;
+      appliedCouponCode = result.coupon.code;
+    }
+
+    const orderData = {
+      items,
+      amount,
+      discount,
+      couponCode: appliedCouponCode,
+      userId,
+      address,
+      paymentMethod: "Razorpay",
+      payment: false,
+      status: "Pending",
+      date: Date.now(),
+    };
+
+    const newOrder = new Order(orderData);
+    await newOrder.save();
+
+    const options = {
+      amount: Math.round(amount * 100),
+      currency: "INR",
+      receipt: newOrder._id.toString(),
+    };
+
+    const razorpayOrder = await razorpayInstance.orders.create(options);
+
+    return res.status(201).json({
+      success: true,
+      order: razorpayOrder,
+      orderId: newOrder._id,
+      keyId: process.env.RAZORPAY_KEY_ID,
+      amount,
+      discount,
+    });
+  } catch (error) {
+    logger.error("placeOrderRazorpay error", { error: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Razorpay Order creation error",
+      errors: [error.message],
+    });
+  }
+};
+
+// Razorpay Payment Verification
+export const verifyRazorpay = async (req, res) => {
+  try {
+    const { orderId, razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    const userId = req.userId;
+
+    const signBody = `${razorpay_order_id}|${razorpay_payment_id}`;
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(signBody)
+      .digest("hex");
+
+    if (expectedSignature !== razorpay_signature) {
+      logger.warn("Razorpay signature verification failed", { orderId, razorpay_order_id });
+      return res.status(400).json({
+        success: false,
+        message: "Payment verification failed: Invalid signature",
+      });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      {
+        payment: true,
+        paymentMethod: "Razorpay",
+        status: "Placed",
+        paymentDetails: {
+          razorpayOrderId: razorpay_order_id,
+          razorpayPaymentId: razorpay_payment_id,
+          razorpaySignature: razorpay_signature,
+        },
+      },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    await User.findByIdAndUpdate(userId, { cartData: {} });
+    const user = await User.findById(userId);
+
+    sendNotification({
+      isAdmin: true,
+      title: "New Order Placed (Razorpay)",
+      message: `${user ? user.name : "A customer"} has paid ₹${order.amount} via Razorpay.`,
+      type: "order_placed",
+    });
+
+    emitActivity({
+      type: "order_created",
+      user: {
+        id: user?._id,
+        name: user?.name,
+        email: user?.email,
+      },
+      action: `Paid ₹${order.amount} via Razorpay for order #${order._id}`,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Payment verified successfully",
+      order,
+    });
+  } catch (error) {
+    logger.error("verifyRazorpay error", { error: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Payment verification error",
       errors: [error.message],
     });
   }

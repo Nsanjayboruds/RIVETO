@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
+import { userDataContext } from '../context/UserContext';
 import { BsSun, BsMoon } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -289,8 +290,15 @@ function SectionHeader({ eyebrow, eyebrowColor, title, highlight, subtitle }) {
 
 function LandingPage() {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { userData } = useContext(userDataContext);
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (userData) {
+      navigate('/home', { replace: true });
+    }
+  }, [userData, navigate]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
