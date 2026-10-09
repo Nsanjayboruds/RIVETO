@@ -20,6 +20,7 @@ import {
 import { RiSecurePaymentLine } from 'react-icons/ri';
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
+import { toast } from 'react-toastify';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -167,6 +168,7 @@ function PlaceOrder() {
               products.find((product) => product._id === productId)
             );
             if (itemInfo) {
+              itemInfo.itemId = itemInfo._id;
               itemInfo.size = size;
               itemInfo.quantity = cartItem[productId][size];
               orderItems.push(itemInfo);
@@ -175,18 +177,98 @@ function PlaceOrder() {
         }
       }
 
-      const orderData = {
-        address: formData,
-        items: orderItems,
-        amount: getCartAmount() + delivery_fee,
-        paymentMethod: method,
-        status: 'Placed',
-      };
+      if (orderItems.length === 0) {
+        toast.error('Your cart is empty');
+        setIsProcessing(false);
+        return;
+      }
 
-      const result = await apiConfig.post('/order/placeorder', orderData);
-      if (result.data) {
-        setCartItem({});
-        navigate('/order');
+      if (method === 'cod') {
+        const orderData = {
+          address: formData,
+          items: orderItems,
+          amount: getCartAmount() + delivery_fee,
+          paymentMethod: 'COD',
+          status: 'Placed',
+        };
+
+        const result = await apiConfig.post('/order/placeorder', orderData);
+        if (result.data) {
+          setCartItem({});
+          toast.success('🎉 Order placed successfully!');
+          navigate('/order');
+        }
+      } else if (method === 'razorpay') {
+        const orderData = {
+          address: formData,
+          items: orderItems,
+          amount: getCartAmount() + delivery_fee,
+          paymentMethod: 'Razorpay',
+        };
+
+        const result = await apiConfig.post('/order/razorpay', orderData);
+        if (result.data?.success) {
+          const { order, orderId, keyId } = result.data;
+
+          const options = {
+            key: keyId || import.meta.env.VITE_RAZORPAY_KEY_ID,
+            amount: order.amount,
+            currency: order.currency || 'INR',
+            name: 'Riveto',
+            description: 'Order Payment',
+            order_id: order.id,
+            prefill: {
+              name: `${formData.firstname} ${formData.lastname}`.trim(),
+              email: formData.email,
+              contact: formData.phone,
+            },
+            theme: {
+              color: '#06B6D4',
+            },
+            handler: async (response) => {
+              try {
+                const verifyRes = await apiConfig.post('/order/verifyRazorpay', {
+                  orderId,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                });
+
+                if (verifyRes.data?.success) {
+                  setCartItem({});
+                  toast.success('🎉 Payment successful! Order placed.');
+                  navigate('/order');
+                }
+              } catch (verifyErr) {
+                // eslint-disable-next-line no-console
+                console.error('Payment verification error:', verifyErr);
+                toast.error('Payment verification failed. Please contact support.');
+              } finally {
+                setIsProcessing(false);
+              }
+            },
+            modal: {
+              ondismiss: () => {
+                setIsProcessing(false);
+                toast.info('Payment window closed.');
+              },
+            },
+          };
+
+          if (window.Razorpay) {
+            const rzp = new window.Razorpay(options);
+            rzp.on('payment.failed', function (resp) {
+              // eslint-disable-next-line no-console
+              console.error('Payment failed:', resp.error);
+              toast.error(`Payment failed: ${resp.error?.description || 'Transaction declined'}`);
+              setIsProcessing(false);
+            });
+            rzp.open();
+          } else {
+            toast.error('Razorpay SDK failed to load. Please refresh the page and try again.');
+            setIsProcessing(false);
+          }
+        }
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -202,6 +284,13 @@ function PlaceOrder() {
       icon: FaMoneyBillWave,
       description: 'Pay when you receive your order',
       color: 'from-green-500 to-emerald-500',
+    },
+    {
+      id: 'razorpay',
+      name: 'Razorpay',
+      icon: RiSecurePaymentLine,
+      description: 'Cards, UPI, NetBanking & Wallets',
+      color: 'from-blue-500 to-cyan-500',
     },
   ];
 

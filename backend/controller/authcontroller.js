@@ -16,11 +16,11 @@ import {
 import logger from "../config/logger.js";
 
 const generateAccessToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
+  return jwt.sign({ id: userId, userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
 };
 
 const generateRefreshToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
+  return jwt.sign({ id: userId, userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 
@@ -139,14 +139,15 @@ export const refreshToken = async (req, res) => {
 
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
-    const storedToken = await RefreshToken.findOne({ userId: decoded.id });
+    const userId = decoded.userId || decoded.id;
+    const storedToken = await RefreshToken.findOne({ userId });
 
     if (!storedToken || !(await bcrypt.compare(refreshToken, storedToken.tokenHash))) {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
 
-    const newAccessToken = generateAccessToken(decoded.id);
-    const newRefreshToken = generateRefreshToken(decoded.id);
+    const newAccessToken = generateAccessToken(userId);
+    const newRefreshToken = generateRefreshToken(userId);
 
     storedToken.tokenHash = await bcrypt.hash(newRefreshToken, 10);
     storedToken.expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);

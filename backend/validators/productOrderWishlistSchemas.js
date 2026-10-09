@@ -40,10 +40,31 @@ export const placeOrderSchema = Joi.object({
     .positive()
     .optional(),
 
-  couponCode: Joi.string().trim().optional(),
+  couponCode: Joi.string().trim().optional().allow(null, ""),
 
   address: Joi.object()
-    .required()
+    .required(),
+
+  paymentMethod: Joi.string()
+    .valid("COD", "Razorpay")
+    .optional()
+    .default("COD"),
+});
+
+// Verify Razorpay Payment
+export const verifyRazorpaySchema = Joi.object({
+  orderId: Joi.string()
+    .pattern(/^[0-9a-fA-F]{24}$/)
+    .required(),
+
+  razorpay_order_id: Joi.string()
+    .required(),
+
+  razorpay_payment_id: Joi.string()
+    .required(),
+
+  razorpay_signature: Joi.string()
+    .required(),
 });
 
 // Order Status Update
