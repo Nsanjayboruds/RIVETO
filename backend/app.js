@@ -28,11 +28,14 @@ const app = express();
 app.set("trust proxy", 1);
 app.use(cors({
   origin: [
+    "https://riveto-nine.vercel.app",
+    /\.vercel\.app$/,
     "https://riveto-frontend2.onrender.com",
     "https://riveto-admin4.onrender.com",
     "http://localhost:5173",
     "http://localhost:5174",
-  ],
+    process.env.FRONTEND_URL,
+  ].filter(Boolean),
   credentials: true,
 }));
 app.use(cookieParser());
