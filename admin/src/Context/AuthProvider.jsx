@@ -7,7 +7,7 @@ function AuthProvider({ children }) {
   const serverUrl =
     import.meta.env.VITE_SERVER_URL ||
     import.meta.env.VITE_BACKEND_URL ||
-    "https://riveto-backend.onrender.com";
+    "https://riveto.onrender.com";
 
   const value = { serverUrl };
 
